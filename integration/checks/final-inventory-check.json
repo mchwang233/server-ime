@@ -1,0 +1,14 @@
+{
+  "employee_id": "platform",
+  "verifies": [],
+  "result": "PASS",
+  "tested_runtime_unchanged": true,
+  "tested_runtime_files": 42,
+  "files": 109,
+  "test_backends_packaged": false,
+  "browser_tool_packaged": false,
+  "retained_full_run": "integration/evidence/run-20261028-201830",
+  "browser_followup": "integration/evidence/run-20261028-204946",
+  "documentation_updated_after_test": true,
+  "bundle_sha256": "a6e1211100463f353a4b87f8b6da2c92e4019e3298f5a7d1100793d72b0c6c9e"
+}

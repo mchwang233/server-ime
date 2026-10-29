@@ -1,0 +1,39 @@
+{
+ "schema": "ime-lexicon-user/1",
+ "store_id": "e281bb56-f44d-4855-b144-6111c48ca80c",
+ "created_at": "2026-10-28T10:01:49Z",
+ "updated_at": "2026-10-28T10:01:49Z",
+ "revision": 2,
+ "writer": "lexicon",
+ "learning": {
+  "enabled": false,
+  "updated_at": "2026-10-28T10:01:49Z",
+  "reason": "created disabled",
+  "actor": "init"
+ },
+ "base": null,
+ "limits": {
+  "max_entries": 20000,
+  "max_count": 1000000,
+  "dedupe_window": 256
+ },
+ "last_event_ids": [],
+ "last_action": {
+  "action": "import_merge",
+  "at": "2026-10-28T10:01:49Z",
+  "added": 1,
+  "updated": 0
+ },
+ "counts": {
+  "base": 0,
+  "learned": 3,
+  "custom": 1,
+  "total": 4
+ },
+ "files": {
+  "words.jsonl": {
+   "sha256": "82cde06cc32c5fa72ad4d8af79cdca58e57a38d18130913e470511093aec3e2b",
+   "bytes": 778
+  }
+ }
+}

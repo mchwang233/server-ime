@@ -1,0 +1,933 @@
+{
+  "employee_id": "platform",
+  "verifies": [],
+  "status": "ready",
+  "source_entrypoint": "integration/bin/server-ime",
+  "assembled_entrypoint": "integration/build/product/bin/server-ime",
+  "build_command": "python3 integration/tools/build_product.py",
+  "bundle": "integration/build/server-ime-product-0.2.9.tar.gz",
+  "assembly_inventory": "integration/build/component-delivery.json",
+  "downstream_employee_id": "delivery",
+  "downstream_contract": "After packaging_ready=true, consume only server-ime-product-0.2.9.tar.gz and its matching component-delivery.json. The existing delivery task owns the new installer and companion source archive, upgrade/rollback and settings/learning preservation. Preserve all historical packages, including failed 0.2.8, 0.2.7 and installer/source 0.1.5. Prediction and Windows 11 comparison remain cancelled; no actual desktop deployment is claimed.",
+  "platform_changes": [
+    "ServerIME.controller_factory injection",
+    "ProductController real config/key/punctuation handling",
+    "cursor_rect deduplication and focus clearing",
+    "clean bus-disconnect shutdown",
+    "lossless ASCII composition and literal digit routing",
+    "explicit keypad digit insertion",
+    "caret geometry notification without preedit feedback",
+    "literal-digit panel hints",
+    "Sentence punctuation selects highlighted candidate, consumes only remaining suffix, maps Chinese/ASCII punctuation once",
+    "custom-only lookup/auxiliary presentation; application preedit retained"
+  ],
+  "runtime_components": [
+    {
+      "employee_id": "engine",
+      "version": "0.4.0",
+      "api": "1.0",
+      "factory": "server_ime_engine.platform_adapter.PlatformSession",
+      "deterministic": false,
+      "conversion": "set_composition via PlatformSession.convert; Conversion.literal_digits"
+    },
+    {
+      "employee_id": "lexicon",
+      "api": "UserStore.record_commit",
+      "path": "data_dir/learning",
+      "sole_learning_writer": true
+    },
+    {
+      "employee_id": "interface",
+      "api": "CandidatePanel / SettingsWindow.save_handler / config v1 / Binding / Punctuation",
+      "version": "0.1.5",
+      "candidate_layout": "horizontal; max_visible budgets viewport width only; full page and digit mapping retained"
+    },
+    {
+      "employee_id": "platform",
+      "api": "ServerIME / ProductController / product supervisor"
+    }
+  ],
+  "endpoints": {
+    "ibus_engine": "server-ime",
+    "state": "org.superpartner.ServerIME1",
+    "configuration": "org.superpartner.ServerIME.Product1.Call(JSON)->JSON",
+    "configuration_signal": "SettingsChanged(JSON)",
+    "geometry": "org.superpartner.ServerIME.Panel1.Geometry()->JSON"
+  },
+  "checks": {
+    "employee_id": "platform",
+    "verifies": [],
+    "result": "PASS",
+    "scope": "Fixed 0.2.9 runtime with interface 0.1.5; real narrow complete pages, automatic highlight and short-page ranges; retained input/configuration/learning/recovery",
+    "assembly_regression": "20/20",
+    "unit_logs": [
+      "integration/checks/assembly-0.2.9.log"
+    ],
+    "feedback": {
+      "employee_id": "platform",
+      "verifies": [],
+      "path": "integration/evidence/layout-assembled-0.2.9",
+      "result": "PASS",
+      "controller_checks": 8,
+      "application_checks": {
+        "managed": 32,
+        "existing": 32
+      },
+      "horizontal_checks": {
+        "managed": 8,
+        "existing": 8
+      },
+      "narrow_checks": {
+        "managed": 38,
+        "existing": 38
+      },
+      "narrow_conditions": {
+        "real_screen": [
+          360,
+          960
+        ],
+        "font_scale": 3.0,
+        "fixture": false,
+        "complete_page_candidates": 9,
+        "ni_candidates": 126,
+        "ni_pages": 14,
+        "hao_final_page_candidates": 4,
+        "saved_page_size_max_visible": [
+          [
+            9,
+            3
+          ],
+          [
+            5,
+            1
+          ]
+        ],
+        "full_short_full_scroll_upper": {
+          "9/9": [
+            859,
+            384,
+            859
+          ],
+          "9/3": [
+            859,
+            384,
+            859
+          ],
+          "5/1": [
+            479,
+            384,
+            479
+          ]
+        }
+      },
+      "framework_signals": {
+        "managed": {
+          "UpdateLookupTable": {
+            "count": 1183,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1183,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 354,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "existing": {
+          "UpdateLookupTable": {
+            "count": 1174,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1174,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 354,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "managed-narrow": {
+          "UpdateLookupTable": {
+            "count": 1217,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1217,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 480,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "existing-narrow": {
+          "UpdateLookupTable": {
+            "count": 1208,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1208,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 480,
+          "scope": "Product engine signals only; application preedit is expected"
+        }
+      },
+      "assembly_hashes": "integration/evidence/layout-assembled-0.2.9/tested-runtime-hashes.json",
+      "after_hashes": "integration/evidence/layout-assembled-0.2.9/runtime-hashes-after.json",
+      "summary": "integration/evidence/layout-assembled-0.2.9/summary.json",
+      "viewport_summary": "integration/evidence/layout-assembled-0.2.9/viewport-summary.json",
+      "baseline_reused": "integration/evidence/feedback-0.2.3-serial/baseline",
+      "execution_order": [
+        "managed-narrow",
+        "existing-narrow",
+        "managed",
+        "existing"
+      ],
+      "runtime_unchanged_during_run": true
+    },
+    "assembled": "integration/evidence/apps-assembled-0.2.9",
+    "real_engine_contract_scenarios": 10,
+    "application_observations": 43,
+    "browser_dom_events": 1898,
+    "applications": {
+      "xfce4-terminal": "PASS",
+      "gedit": "PASS",
+      "Chrome for Testing": "PASS"
+    },
+    "runtime_inventory": "integration/checks/layout-inventory-0.2.9.json",
+    "runtime_match": "integration/evidence/assembly-0.2.9-preparation/fixed-runtime-audit.json",
+    "relocation": "Programmatic entry and real mixed/punctuation conversion, checked by check_delivery.py; not a GUI deployment.",
+    "runtime_unchanged_during_run": true
+  },
+  "actual_user_session": {
+    "id": "3",
+    "protocol": "TigerVNC/X11",
+    "display": ":2",
+    "tested": false,
+    "deployed": false,
+    "reason": "Existing Xauthority, X11 sockets and user config denied by permission profile.",
+    "status": "NOT_DEPLOYED",
+    "verification_basis": "Retained session facts; current permission profile still denies existing Xauthority, X11 sockets and user configuration. No user desktop access attempted.",
+    "current_observation": "integration/evidence/assembly-0.2.8-preparation/session-access.json"
+  },
+  "gaps": [
+    {
+      "employee_id": "platform",
+      "item": "System Firefox 140.12.0esr remains unverified: toolkit profile service mkdir EACCES before explicit --profile handling, identical in wrapper and both ELF entrypoints. Browser category is verified with official Chrome for Testing.",
+      "evidence": "integration/evidence/run-20261028-203124/browser-startup.json"
+    },
+    {
+      "employee_id": "platform",
+      "item": "Chrome password controls bypass composition without reporting IBus PASSWORD purpose. Diagnostic IBus mode/caret can retain the previous field; no visible candidate or learning leak observed. compositionend.isTrusted is false in this Chrome build; all key/input and other recorded events are trusted.",
+      "evidence": "integration/evidence/apps-assembled-0.2.9/applications.json"
+    },
+    {
+      "employee_id": "platform",
+      "item": "User desktop, Wayland, native Qt, RDP, multiple monitors and fractional scaling unverified; no user-session deployment."
+    },
+    {
+      "employee_id": "platform",
+      "item": "Existing application reconnect after a full IBus crash not established; tested new clients reconnect via exec with refreshed address."
+    },
+    {
+      "employee_id": "interface",
+      "item": "Shortcut catalog is restricted to declared bindings; freeform remapping not implemented. Convenience resolver mis-matches plain Space, excluded from product key path.",
+      "evidence": "integration/checks/interface-resolver-observation.json"
+    },
+    {
+      "employee_id": "engine",
+      "item": "Unseparated lowercase boundaries remain ambiguous; corpus top1/top5 129/152 out of 200, historical slow cohort 47/338 calls over 50 ms; selection cost and search scope gaps remain.",
+      "evidence": "engine/handoff.json"
+    },
+    {
+      "employee_id": "platform",
+      "item": "A lowercase address prefix and pinyin can be ambiguous at the first dot (ni.hao@example.org, www.example.org). Sentence stops default to Chinese selection at a pinyin end; use KP_Decimal or English mode for an explicit literal dot/address. Top-row digits still select at pinyin boundaries; keypad inserts."
+    },
+    {
+      "employee_id": "delivery",
+      "item": "Existing delivery task must consume the verified 0.2.9 assembly, generate installer and matching source archive, test upgrade/rollback and configuration/learning preservation; retain 0.2.8 failure artifacts, 0.2.7 and installer/source 0.1.5. No deployment/Windows 11 comparison/prediction work added."
+    },
+    {
+      "employee_id": "platform",
+      "item": "Mouse focus oscillated twice in bare Xvnc without a window manager. Full current run passed with installed xfwm4; window-manager-free X11 mouse stability is not established.",
+      "evidence": [
+        {
+          "employee_id": "platform",
+          "configuration": "Isolated Xvnc without window manager",
+          "result": "FAIL",
+          "evidence": "integration/evidence/run-20261028-235645",
+          "reason": "Mouse candidate interaction induced repeated focus-out/in before mixed/punctuation checks"
+        },
+        {
+          "employee_id": "platform",
+          "configuration": "Isolated Xvnc without window manager",
+          "result": "FAIL",
+          "evidence": "integration/evidence/run-20261028-235853",
+          "reason": "Mouse candidate interaction induced repeated focus-out/in before mixed/punctuation checks"
+        }
+      ]
+    }
+  ],
+  "docs": [
+    "integration/README.md",
+    "integration/docs/interfaces.md",
+    "integration/docs/application-compatibility.md",
+    "integration/docs/browser-startup.md",
+    "integration/docs/mixed-input.md"
+  ],
+  "extra_reads_reason": "The prompt supplied handoff descriptions, not implementation bodies. Read only the current integration runtime/check/build contracts, interface horizontal layout, existing platform adapter, and generated evidence needed for this update.",
+  "extra_reads": [
+    "platform/server_ime/port.py",
+    "platform/server_ime/controller.py",
+    "platform/server_ime/ibus_adapter.py",
+    "platform/server_ime/service.py",
+    "platform/server_ime/state_service.py",
+    "platform/server_ime/ui_client.py",
+    "platform/tools/run_checks.py",
+    "platform/tests/ibus_client.py",
+    "platform/tests/gtk_client.py",
+    "engine/docs/API-v1.md",
+    "engine/src/server_ime_engine/core.py",
+    "engine/src/server_ime_engine/platform_adapter.py",
+    "engine/src/server_ime_engine/lexicon_adapter.py",
+    "engine/src/server_ime_engine/native.py",
+    "engine/handoff.json",
+    "engine/vendor.lock.json",
+    "engine/tools/build_bundle.py",
+    "engine/CMakeLists.txt",
+    "lexicon/src/lexicon/store.py",
+    "interface/docs/config-format.md",
+    "interface/config/defaults.json",
+    "interface/tests/x11.py",
+    "interface/src/ime_interface/config.py",
+    "interface/src/ime_interface/keymap.py",
+    "interface/src/ime_interface/punctuation.py",
+    "interface/src/ime_interface/panel.py",
+    "interface/src/ime_interface/settings_ui.py",
+    "interface/src/ime_interface/bridge.py",
+    "/usr/bin/firefox",
+    "integration/checks/run_checks.py",
+    "integration/checks/applications.py",
+    "integration/tools/build_product.py",
+    "integration/src/server_ime_product/cli.py",
+    "integration/src/server_ime_product/rpc.py",
+    "integration/src/server_ime_product/panel.py",
+    "integration/evidence/run-20261028-203124/nsXREDirProvider.cpp",
+    "integration/evidence/run-20261028-203124/nsToolkitProfileService.cpp",
+    "integration/evidence/run-20261028-204751/chromium-input-method-controller.cc"
+  ],
+  "application_compatibility": "integration/build/product/integration/compatibility.json",
+  "browser_startup_reproduction": "integration/evidence/run-20261028-203124/browser-startup.json",
+  "browser_check_tool": "integration/browser-runtime/source.json",
+  "version": "0.2.9",
+  "historical_handoff": "integration/evidence/assembly-0.2.9-preparation/integration/handoff.json",
+  "extra_reads_this_revision": [
+    "integration/handoff.json",
+    "interface/handoff.json",
+    "interface/src/ime_interface/panel.py",
+    "interface/evidence/run-20261029-131625/summary.json",
+    "integration/tools/build_product.py",
+    "integration/src/server_ime_product/__init__.py",
+    "integration/src/server_ime_product/panel.py",
+    "integration/checks/test_feedback.py",
+    "integration/checks/test_assembly.py",
+    "integration/checks/check_delivery.py",
+    "integration/checks/run_checks.py",
+    "integration/checks/test_product.py",
+    "integration/checks/applications.py",
+    "integration/checks/xinput.py",
+    "interface/tests/x11.py",
+    "integration/README.md",
+    "integration/compatibility.json",
+    "integration/docs/application-compatibility.md",
+    "integration/defects/interface-layout-after-allocation.json",
+    "Retained integration/build and delivery/dist archives/sidecars (bytes for preservation hashes only)",
+    "New fixed assembly and generated evidence listed above"
+  ],
+  "previous_assembly": {
+    "version": "0.2.7",
+    "bundle": "integration/build/server-ime-product-0.2.7.tar.gz",
+    "sha256": "427b97c33c4c53412807dadca0d1a74a77cdc9b072b854d9c979edda78a3af91",
+    "unchanged": true
+  },
+  "runtime_changes_this_revision": [
+    "integration/src/server_ime_product/__init__.py",
+    "interface/src/ime_interface/panel.py (interface-owned 0.1.5)"
+  ],
+  "downstream_required_reads": [
+    "integration/handoff.json",
+    "integration/build/component-delivery.json",
+    "integration/docs/application-compatibility.md",
+    "integration/checks/layout-inventory-0.2.9.json",
+    "integration/evidence/layout-assembled-0.2.9/summary.json",
+    "integration/evidence/layout-assembled-0.2.9/viewport-summary.json",
+    "integration/evidence/layout-assembled-0.2.9/tested-runtime-hashes.json",
+    "integration/evidence/layout-assembled-0.2.9/runtime-hashes-after.json",
+    "integration/evidence/apps-assembled-0.2.9/summary.json",
+    "integration/evidence/apps-assembled-0.2.9/tested-runtime-hashes.json",
+    "integration/evidence/apps-assembled-0.2.9/runtime-hashes-after.json",
+    "integration/evidence/assembly-0.2.9-preparation/fixed-runtime-audit.json"
+  ],
+  "feedback_user_confirmation": "User-reported two boxes on actual desktop: root cause and user-visible resolution NOT_CONFIRMED; isolated product publishing fixed.",
+  "historical_packages": [
+    {
+      "path": "delivery/dist/server-ime-0.1.0-sources.tar.gz",
+      "bytes": 86016025,
+      "sha256": "ebacb78b86de1a9fc1b36f595cbdd01bdc61393eeadb38c83adeb7774e7db50a"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.0-sources.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "967fadd679256ff22c4fe6e6ddee9b68ece56917bda26d6272bad19371eaf919"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.0.tar.gz",
+      "bytes": 23061344,
+      "sha256": "08520c3c4517669c9b27694189a028304fbabb517ddddd0e638e05c38b629e65"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.0.tar.gz.sha256",
+      "bytes": 90,
+      "sha256": "37fadcf4b3bf33b40cf7634eda27ce1c59f02c8f7caa3bdacd79b8e2244f4e5f"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.1-sources.tar.gz",
+      "bytes": 86016025,
+      "sha256": "ebacb78b86de1a9fc1b36f595cbdd01bdc61393eeadb38c83adeb7774e7db50a"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.1-sources.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "c3951af63979a7b7a8273ee977ebe608aaf052358f1b1a3e1ed638b4dfb5f1df"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.1.tar.gz",
+      "bytes": 23061322,
+      "sha256": "3e6afbf82902210e92bf7e48c8d1db1f244e7fdf49af8d5339cc186b83d6814c"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.1.tar.gz.sha256",
+      "bytes": 90,
+      "sha256": "611d4d6fabe0e55ad1db7b22a63d93047eec17520c9481de39f9a67e2f8ac17d"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.2-sources.tar.gz",
+      "bytes": 86045683,
+      "sha256": "8e7d05e1057e59f8a1ab3d3f6cd6b1d32ea4e58d92ded2efe7ed4d43d0df4565"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.2-sources.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "6bccbcb008cbdd3756ed5082b6938c6bcf5fd502128a4437166b75b26f08e578"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.2.tar.gz",
+      "bytes": 23073149,
+      "sha256": "ef663fb4b703956d8c7407d76476b5f6129ae8cb451b83ba98ddce6cfa947296"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.2.tar.gz.sha256",
+      "bytes": 90,
+      "sha256": "25b1792592e00e1d6a7b07f360fe420fc4f1ee5a0496da2719ff376c99b4a488"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.3-sources.tar.gz",
+      "bytes": 86027589,
+      "sha256": "3619c9e5f75e6304f70f82c721e50ac7ffba439ae2c1cb94653578650885ce1c"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.3-sources.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "d9eb0ace0073be381b49425c631c5ae0cf15e0ee0d19f824cfd9a87b5b545c87"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.3.tar.gz",
+      "bytes": 23061506,
+      "sha256": "8304b5c01b9c4c92a560eec4149e011798a9680dd5d4271c1279499aefa1641f"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.3.tar.gz.sha256",
+      "bytes": 90,
+      "sha256": "00cbf3fe9c32cc9d3d4b6ff9dc0e01406fd7b0c8fc50bdce23e06e743a8446f7"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.4-sources.tar.gz",
+      "bytes": 86038477,
+      "sha256": "3581491381259f3f5cdd28f4b0a16cad3a1940b682ba2584aa7606acc7efa98f"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.4-sources.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "33fde2357bf8310904eddb1af30dbb706bfddeb70b994afd9df1a5c1f28d9d32"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.4.tar.gz",
+      "bytes": 23067152,
+      "sha256": "bb0408be36e844c4cfc8f9b8d961d0d784659f97987fe93792dc1fe1df0b5b9e"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.4.tar.gz.sha256",
+      "bytes": 90,
+      "sha256": "5644c25b222c64cbdf3cd018e4d8fe8b769960208e4cf8127b48ea5d92c98d20"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.5-sources.tar.gz",
+      "bytes": 86048601,
+      "sha256": "1a8033732a75697a319be3c6a37ad21055d02ec6801dd7a8aae0f1c22f50ce6f"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.5-sources.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "591e93fc1e46deef4241f7a11bc88afbf204e7bc7453819378d5e3cacdf44d54"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.5.tar.gz",
+      "bytes": 23077183,
+      "sha256": "201f3f893b4d3b034f9446c256bc0afc2decf263cf5d7380aa5b5e5114b86450"
+    },
+    {
+      "path": "delivery/dist/server-ime-0.1.5.tar.gz.sha256",
+      "bytes": 90,
+      "sha256": "3bce499853dc023acbae50778f370f403c9e2a0e2e7f61c72810e1b1b0ee31bc"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.1.0.tar.gz",
+      "bytes": 85548003,
+      "sha256": "a6e1211100463f353a4b87f8b6da2c92e4019e3298f5a7d1100793d72b0c6c9e"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.1.0.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "4c8d6d69a05ffdf9cacdcd7775a2cf727608b104dd81bdd2ad3333f5e29820f0"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.0.tar.gz",
+      "bytes": 85573494,
+      "sha256": "1a87058ead7a829523519b5c800aef949a7324ea99515813cc635d03832a88ea"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.0.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "c6d8187d139e9c973734acaa3ba14d07d66ca431451768072f2c0995aef39bfa"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.1.tar.gz",
+      "bytes": 85575819,
+      "sha256": "6f83e9de947cb116787a063b5ea076cf11e7da94223b5f72d06502b33c3451c7"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.1.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "5b1be742289bc19a62573ffead874fd86d76d954b3f69937ff1de94ee18b9fb0"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.2.tar.gz",
+      "bytes": 85583280,
+      "sha256": "c4cb30bb6fd878efb8c3558c45220db1285cd5ef41cca2a0ee6703a7e12bd843"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.2.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "874143eb5f51bd93fe5187b97081581ccec0e4097ddd0033e46db9a9d00fabab"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.3.tar.gz",
+      "bytes": 85575800,
+      "sha256": "b0932a6e372b5ed7c11e4f207621d143c89f3bc989120c2a6ce06cac5f49f879"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.3.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "25b72f6088b1f1de3089ca43ece6ad1704dd28182ba95b96ef2f0832bf60aca0"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.4.tar.gz",
+      "bytes": 85581085,
+      "sha256": "650d8de2ce4025d9cfc8e9994c7b2769f75e5928e186f93b9f77458289e54ab1"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.4.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "ee23fcae61a43e770d3388c5e363e34e9427025b6a32b4c172cb48342abadfd5"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.5.tar.gz",
+      "bytes": 85581424,
+      "sha256": "f98aca8ee4de4db857d7529ab59588045239e2be4784828b2c8753f7b390b9a0"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.5.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "d20972a493017c2c17d45e2a148977ec630648f403f4860feda9b0c7794da350"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.6.tar.gz",
+      "bytes": 85590282,
+      "sha256": "7162704920c56e680fd0ca816eb45cddfd2d241755d67630478cc314a888c62a"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.6.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "0478219aaf415167233d48577bafcf1452c1df9191664e12bb0a78bc0f22e712"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.7.tar.gz",
+      "bytes": 85591288,
+      "sha256": "427b97c33c4c53412807dadca0d1a74a77cdc9b072b854d9c979edda78a3af91"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.7.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "25a891f1670aa97217fc2d6419a2d13b91a13fc706aca568834e1e1c1993e56f"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.8.tar.gz",
+      "bytes": 85592379,
+      "sha256": "cb8a7c0e46cdfd06beefb388dd8a0d41be65a889c150ad480aeb8466cd49ffc5"
+    },
+    {
+      "path": "integration/build/server-ime-product-0.2.8.tar.gz.sha256",
+      "bytes": 98,
+      "sha256": "ffa4232d3ef48c3adb86b32cfce21f68f7ac215e66f5b616ea425c753ebbe4f8"
+    }
+  ],
+  "historical_checks": {
+    "result": "PASS",
+    "scope": "Single candidate window and horizontal layout; retained input/learning/lifecycle regressions",
+    "source_feedback": "integration/evidence/candidate-layout-e599kpea",
+    "assembly_regression": "20/20",
+    "feedback": {
+      "path": "integration/evidence/horizontal-assembled-0.2.5",
+      "result": "PASS",
+      "controller_checks": 8,
+      "application_checks": {
+        "managed": 32,
+        "existing": 32
+      },
+      "horizontal_checks": {
+        "managed": 8,
+        "existing": 8
+      },
+      "assembly_hashes": "integration/evidence/horizontal-assembled-0.2.5/tested-runtime-hashes.json",
+      "summary": "integration/evidence/horizontal-assembled-0.2.5/summary.json",
+      "baseline_reused": "integration/evidence/feedback-0.2.3-serial/baseline"
+    },
+    "assembled": "integration/evidence/run-20261029-105306",
+    "real_engine_contract_scenarios": 10,
+    "application_observations": 43,
+    "browser_dom_events": 1900,
+    "applications": {
+      "xfce4-terminal": "PASS",
+      "gedit": "PASS",
+      "Chrome for Testing": "PASS"
+    },
+    "runtime_inventory": "integration/checks/feedback-inventory.json",
+    "runtime_match": "integration/checks/feedback-inventory.json",
+    "relocation": "Programmatic entry and real mixed/punctuation conversion; result in integration/checks/feedback-inventory.json (not GUI relocation)",
+    "unit_logs": [
+      "integration/checks/assembly-0.2.5.log"
+    ],
+    "final_inventory_result": "PASS"
+  },
+  "release_scope": "保留单候选窗、正常预编辑与输入；修复布局后高亮可见、短页范围及 max_visible 预算下的完整候选页",
+  "cancelled_scope": [
+    "continuous next-word prediction",
+    "Windows 11 comparison"
+  ],
+  "source_feedback_note": "All original 148 feedback assertions retained. Completed build was extracted to a fixed runtime; both narrow routes passed before normal routes and the full application suite. No runtime file was rebuilt or modified during graphical checks.",
+  "historical_checks_0_2_6": {
+    "result": "PASS",
+    "scope": "Narrow candidate viewport and retained product behavior",
+    "source_feedback": "integration/evidence/narrow-source-0.2.6",
+    "feedback": {
+      "employee_id": "platform",
+      "path": "integration/evidence/narrow-assembled-0.2.6-final",
+      "result": "PASS",
+      "controller_checks": 8,
+      "application_checks": {
+        "managed": 32,
+        "existing": 32
+      },
+      "horizontal_checks": {
+        "managed": 8,
+        "existing": 8
+      },
+      "narrow_checks": {
+        "managed": 21,
+        "existing": 21
+      },
+      "narrow_conditions": {
+        "real_screen": [
+          360,
+          960
+        ],
+        "font_scale": 3.0,
+        "fixture": false,
+        "complete_page_candidates": 9,
+        "ni_candidates": 126,
+        "ni_pages": 14,
+        "hao_final_page_candidates": 4
+      },
+      "framework_signals": {
+        "managed": {
+          "UpdateLookupTable": {
+            "count": 1185,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1185,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 354,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "managed-narrow": {
+          "UpdateLookupTable": {
+            "count": 711,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 711,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 296,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "existing": {
+          "UpdateLookupTable": {
+            "count": 1174,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1174,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 354,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "existing-narrow": {
+          "UpdateLookupTable": {
+            "count": 702,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 702,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 296,
+          "scope": "Product engine signals only; application preedit is expected"
+        }
+      },
+      "assembly_hashes": "integration/evidence/narrow-assembled-0.2.6-final/tested-runtime-hashes.json",
+      "summary": "integration/evidence/narrow-assembled-0.2.6-final/summary.json",
+      "baseline_reused": "integration/evidence/feedback-0.2.3-serial/baseline"
+    },
+    "assembled": "integration/evidence/run-20261029-113836",
+    "runtime_inventory": "integration/checks/narrow-inventory-0.2.6.json",
+    "unit_logs": [
+      "integration/checks/assembly-0.2.6.log"
+    ],
+    "runtime_diff": "integration/checks/narrow-runtime-diff-0.2.6.json",
+    "diagnostic_attempts": [
+      {
+        "employee_id": "platform",
+        "path": "integration/evidence/narrow-assembled-0.2.6",
+        "result": "FAIL",
+        "scope": "Both normal-width routes passed; narrow assertions sampled before deferred GTK layout/reveal completed. Runtime unchanged."
+      },
+      {
+        "employee_id": "platform",
+        "path": "integration/evidence/narrow-layout-wait-0.2.6",
+        "result": "FAIL",
+        "scope": "Xvnc displayfd pipe was closed after digits before newline; test setup failed before applications. Reader corrected to consume complete line."
+      },
+      {
+        "employee_id": "platform",
+        "path": "integration/evidence/narrow-layout-wait-0.2.6-retry",
+        "result": "PASS",
+        "scope": "Bounded wait for selected candidate visibility; real 360px/300% managed IBus; complete and partial final page. No runtime change from failed attempt."
+      }
+    ],
+    "assembly_regression": "20/20",
+    "real_engine_contract_scenarios": 10,
+    "application_observations": 43,
+    "browser_dom_events": 1901,
+    "applications": {
+      "xfce4-terminal": "PASS",
+      "gedit": "PASS",
+      "Chrome for Testing": "PASS"
+    },
+    "runtime_match": "integration/checks/narrow-inventory-0.2.6.json",
+    "relocation": "PASS: relocated entry and real mixed/punctuation conversion; programmatic smoke only, not GUI deployment. See integration/checks/narrow-inventory-0.2.6.json.",
+    "final_inventory_result": "PASS",
+    "screenshots_inspected": [
+      "integration/evidence/narrow-assembled-0.2.6-final/managed/editor-composition.png",
+      "integration/evidence/narrow-layout-wait-0.2.6-retry/managed-narrow/narrow-last-page-mouse.png",
+      "integration/evidence/narrow-source-0.2.6/managed-narrow/narrow-hidden-tail-before-mouse.png"
+    ],
+    "preliminary_inventory": "integration/checks/narrow-inventory-0.2.6-preliminary.json"
+  },
+  "historical_checks_0_2_7": {
+    "result": "PASS",
+    "scope": "Narrow candidate viewport and retained product behavior",
+    "source_feedback": "integration/evidence/candidate-layout-j0vsvn9z",
+    "feedback": {
+      "employee_id": "platform",
+      "path": "integration/evidence/narrow-assembled-0.2.7",
+      "result": "PASS",
+      "controller_checks": 8,
+      "application_checks": {
+        "managed": 32,
+        "existing": 32
+      },
+      "horizontal_checks": {
+        "managed": 8,
+        "existing": 8
+      },
+      "narrow_checks": {
+        "managed": 21,
+        "existing": 21
+      },
+      "narrow_conditions": {
+        "real_screen": [
+          360,
+          960
+        ],
+        "font_scale": 3.0,
+        "fixture": false,
+        "complete_page_candidates": 9,
+        "ni_candidates": 126,
+        "ni_pages": 14,
+        "hao_final_page_candidates": 4
+      },
+      "framework_signals": {
+        "managed": {
+          "UpdateLookupTable": {
+            "count": 1183,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1183,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 354,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "existing": {
+          "UpdateLookupTable": {
+            "count": 1174,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1174,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 354,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "managed-narrow": {
+          "UpdateLookupTable": {
+            "count": 711,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 711,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 296,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "existing-narrow": {
+          "UpdateLookupTable": {
+            "count": 709,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 709,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 296,
+          "scope": "Product engine signals only; application preedit is expected"
+        }
+      },
+      "assembly_hashes": "integration/evidence/narrow-assembled-0.2.7/tested-runtime-hashes.json",
+      "summary": "integration/evidence/narrow-assembled-0.2.7/summary.json",
+      "baseline_reused": "integration/evidence/feedback-0.2.3-serial/baseline"
+    },
+    "assembled": "integration/evidence/run-20261029-121246",
+    "runtime_inventory": "integration/checks/feedback-inventory.json",
+    "unit_logs": [
+      "integration/checks/assembly-0.2.7.log"
+    ],
+    "assembly_regression": "20/20",
+    "real_engine_contract_scenarios": 10,
+    "application_observations": 43,
+    "browser_dom_events": 1898,
+    "applications": {
+      "xfce4-terminal": "PASS",
+      "gedit": "PASS",
+      "Chrome for Testing": "PASS"
+    },
+    "runtime_match": "integration/checks/feedback-inventory.json",
+    "relocation": "Final result: integration/checks/feedback-inventory.json; relocated entry and real-engine programmatic smoke, not GUI deployment."
+  },
+  "packaging_ready": true,
+  "bundle_finalized": true,
+  "pending_work": [],
+  "historical_checks_0_2_8": {
+    "result": "FAIL",
+    "scope": "Stable 0.2.8 candidate with interface 0.1.4; selected candidate not auto-revealed after GTK layout",
+    "assembly_regression": "20/20",
+    "unit_logs": [
+      "integration/checks/assembly-0.2.8.log"
+    ],
+    "controller_checks": 8,
+    "feedback": {
+      "path": "integration/evidence/viewport-budget-0.2.8-stable",
+      "result": "FAIL",
+      "runtime_unchanged_during_run": true
+    },
+    "assembled": "",
+    "runtime_inventory": "PENDING after interface fix"
+  },
+  "fixed_assembly": {
+    "product_root": "/projects/workspace/20261028-1621-server-ime/integration/.runtime/layout-0.2.9/product",
+    "before": "integration/evidence/assembly-0.2.9-preparation/pinned-before.json",
+    "after": "integration/evidence/assembly-0.2.9-preparation/pinned-after.json",
+    "audit": "integration/evidence/assembly-0.2.9-preparation/fixed-runtime-audit.json",
+    "assertions": "integration/evidence/assembly-0.2.9-preparation/assertion-preservation.json",
+    "tested_archive": "integration/evidence/assembly-0.2.9-preparation/tested-archive.json",
+    "final_metadata_changes": [
+      "integration/README.md",
+      "integration/docs/application-compatibility.md",
+      "integration/compatibility.json"
+    ]
+  },
+  "resolved_component_defects": [
+    "integration/defects/interface-layout-after-allocation-resolution-0.2.9.json"
+  ],
+  "failed_assembly_retained": {
+    "version": "0.2.8",
+    "archive": "integration/build/server-ime-product-0.2.8.tar.gz",
+    "evidence": "integration/evidence/viewport-budget-0.2.8-stable",
+    "never_release": true,
+    "original_report": "integration/defects/interface-layout-after-allocation.json"
+  },
+  "bundle_sha256": "7256adc60cba9bea1c5c5b09f1cacc72b6ad6fcda23d46cfbc971b752025f1a7",
+  "assembly_inventory_sha256": "bda40358001aff5334e2be7515ea7b9b9f4e4cb2eeb7236963f4802879095c98",
+  "final_inventory_result": "PASS",
+  "final_inventory": "integration/checks/layout-inventory-0.2.9.json",
+  "completed_at": "2026-10-29T05:42:47.007959+00:00",
+  "closeout_note": "Latest rework supersedes the original prediction request: reuse successful 0.2.9 fixed-runtime checks when bytes match; preserve historical packages and all existing assertions. No user desktop deployment.",
+  "required_closeout_command": "python3 -B integration/checks/check_delivery.py --output integration/checks/feedback-inventory.json",
+  "closeout_validation": {
+    "employee_id": "platform",
+    "verifies": [],
+    "result": "PASS",
+    "inventory": "integration/checks/feedback-inventory.json",
+    "inventory_checks": 13,
+    "assembly_regression": "20/20 rerun from fixed 0.2.9 assembly",
+    "graphical_evidence": "Reused existing successful fixed 0.2.9 feedback and terminal/gedit/Chrome runs after byte identity verification; no graphical rerun this closeout.",
+    "runtime_changes": [],
+    "assertion_changes": [],
+    "extra_reads": "Generated feedback-inventory.json only; supplied implementation bodies used unchanged."
+  }
+}

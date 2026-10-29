@@ -1,0 +1,212 @@
+test_address_symbols_and_versions_remain_literal (__main__.Assembly) ... open  failed.open  failed.ok
+test_ambiguous_dot_has_explicit_raw_path (__main__.Assembly) ... open  failed.open  failed.FAIL
+test_apostrophe_is_a_syllable_separator_before_punctuation (__main__.Assembly) ... open  failed.open  failed.FAIL
+test_corrupt_config_is_not_overwritten (__main__.Assembly) ... open  failed.open  failed.ok
+test_digits_and_explicit_keypad_insertion (__main__.Assembly) ... open  failed.open  failed.ok
+test_existing_and_new_contexts_receive_configuration (__main__.Assembly) ... open  failed.open  failed.open  failed.ok
+test_failed_save_rolls_back_live_and_learning_switch (__main__.Assembly) ... open  failed.open  failed.ok
+test_mixed_case_numbers_symbols_without_mode_switch (__main__.Assembly) ... open  failed.open  failed.ok
+test_mixed_input_limit_keeps_consumed_text (__main__.Assembly) ... open  failed.open  failed.ok
+test_partial_prefix_remaining_and_focus_cancellation (__main__.Assembly) ... open  failed.open  failed.ok
+test_pinyin_sentence_punctuation_without_prior_selection (__main__.Assembly) ... open  failed.open  failed.test_plain_space_and_mode_modifiers (__main__.Assembly) ... open  failed.open  failed.ok
+test_punctuation_finishes_partial_candidate_and_suffix_once (__main__.Assembly) ... open  failed.open  failed.FAIL
+test_punctuation_inside_edited_composition_does_not_commit (__main__.Assembly) ... open  failed.open  failed.ok
+test_punctuation_keeps_unconvertible_suffix (__main__.Assembly) ... open  failed.open  failed.FAIL
+test_punctuation_respects_highlighted_sentence (__main__.Assembly) ... open  failed.open  failed.FAIL
+test_raw_coordinate_edits_reject_stale_candidate (__main__.Assembly) ... open  failed.open  failed.ok
+test_return_binding_and_punctuation_toggle (__main__.Assembly) ... open  failed.open  failed.ok
+test_sensitive_mixed_input_bypasses_conversion_and_learning (__main__.Assembly) ... open  failed.open  failed.open  failed.ok
+
+======================================================================
+FAIL: test_ambiguous_dot_has_explicit_raw_path (__main__.Assembly)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/projects/workspace/20261028-1621-server-ime/integration/checks/test_assembly.py", line 129, in test_ambiguous_dot_has_explicit_raw_path
+    self.assertEqual(self.commits[-2:],['nihao','，'])
+AssertionError: Lists differ: ['ni.hao@example.org', 'nihao'] != ['nihao', '，']
+
+First differing element 0:
+'ni.hao@example.org'
+'nihao'
+
+- ['ni.hao@example.org', 'nihao']
++ ['nihao', '，']
+
+======================================================================
+FAIL: test_apostrophe_is_a_syllable_separator_before_punctuation (__main__.Assembly)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/projects/workspace/20261028-1621-server-ime/integration/checks/test_assembly.py", line 105, in test_apostrophe_is_a_syllable_separator_before_punctuation
+    self.assertEqual(self.commits,['西安','，'])
+AssertionError: Lists differ: [] != ['西安', '，']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'西安'
+
+- []
++ ['西安', '，']
+
+======================================================================
+FAIL: test_pinyin_sentence_punctuation_without_prior_selection (__main__.Assembly) (chinese=True, key=',')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/projects/workspace/20261028-1621-server-ime/integration/checks/test_assembly.py", line 67, in test_pinyin_sentence_punctuation_without_prior_selection
+    self.assertEqual(self.commits,['你好',mapped if chinese else key],self.c.composition)
+AssertionError: Lists differ: [] != ['你好', '，']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'你好'
+
+- []
++ ['你好', '，'] : nihao,
+
+======================================================================
+FAIL: test_pinyin_sentence_punctuation_without_prior_selection (__main__.Assembly) (chinese=True, key='.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/projects/workspace/20261028-1621-server-ime/integration/checks/test_assembly.py", line 67, in test_pinyin_sentence_punctuation_without_prior_selection
+    self.assertEqual(self.commits,['你好',mapped if chinese else key],self.c.composition)
+AssertionError: Lists differ: [] != ['你好', '。']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'你好'
+
+- []
++ ['你好', '。'] : nihao.
+
+======================================================================
+FAIL: test_pinyin_sentence_punctuation_without_prior_selection (__main__.Assembly) (chinese=True, key='?')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/projects/workspace/20261028-1621-server-ime/integration/checks/test_assembly.py", line 67, in test_pinyin_sentence_punctuation_without_prior_selection
+    self.assertEqual(self.commits,['你好',mapped if chinese else key],self.c.composition)
+AssertionError: Lists differ: [] != ['你好', '？']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'你好'
+
+- []
++ ['你好', '？'] : nihao?
+
+======================================================================
+FAIL: test_pinyin_sentence_punctuation_without_prior_selection (__main__.Assembly) (chinese=True, key='!')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/projects/workspace/20261028-1621-server-ime/integration/checks/test_assembly.py", line 67, in test_pinyin_sentence_punctuation_without_prior_selection
+    self.assertEqual(self.commits,['你好',mapped if chinese else key],self.c.composition)
+AssertionError: Lists differ: [] != ['你好', '！']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'你好'
+
+- []
++ ['你好', '！'] : nihao!
+
+======================================================================
+FAIL: test_pinyin_sentence_punctuation_without_prior_selection (__main__.Assembly) (chinese=False, key=',')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/projects/workspace/20261028-1621-server-ime/integration/checks/test_assembly.py", line 67, in test_pinyin_sentence_punctuation_without_prior_selection
+    self.assertEqual(self.commits,['你好',mapped if chinese else key],self.c.composition)
+AssertionError: Lists differ: [] != ['你好', ',']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'你好'
+
+- []
++ ['你好', ','] : nihao,
+
+======================================================================
+FAIL: test_pinyin_sentence_punctuation_without_prior_selection (__main__.Assembly) (chinese=False, key='.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/projects/workspace/20261028-1621-server-ime/integration/checks/test_assembly.py", line 67, in test_pinyin_sentence_punctuation_without_prior_selection
+    self.assertEqual(self.commits,['你好',mapped if chinese else key],self.c.composition)
+AssertionError: Lists differ: [] != ['你好', '.']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'你好'
+
+- []
++ ['你好', '.'] : nihao.
+
+======================================================================
+FAIL: test_pinyin_sentence_punctuation_without_prior_selection (__main__.Assembly) (chinese=False, key='?')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/projects/workspace/20261028-1621-server-ime/integration/checks/test_assembly.py", line 67, in test_pinyin_sentence_punctuation_without_prior_selection
+    self.assertEqual(self.commits,['你好',mapped if chinese else key],self.c.composition)
+AssertionError: Lists differ: [] != ['你好', '?']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'你好'
+
+- []
++ ['你好', '?'] : nihao?
+
+======================================================================
+FAIL: test_pinyin_sentence_punctuation_without_prior_selection (__main__.Assembly) (chinese=False, key='!')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/projects/workspace/20261028-1621-server-ime/integration/checks/test_assembly.py", line 67, in test_pinyin_sentence_punctuation_without_prior_selection
+    self.assertEqual(self.commits,['你好',mapped if chinese else key],self.c.composition)
+AssertionError: Lists differ: [] != ['你好', '!']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'你好'
+
+- []
++ ['你好', '!'] : nihao!
+
+======================================================================
+FAIL: test_punctuation_finishes_partial_candidate_and_suffix_once (__main__.Assembly)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/projects/workspace/20261028-1621-server-ime/integration/checks/test_assembly.py", line 87, in test_punctuation_finishes_partial_candidate_and_suffix_once
+    self.assertEqual(self.commits,['尼','好','，'])
+AssertionError: Lists differ: [] != ['尼', '好', '，']
+
+Second list contains 3 additional elements.
+First extra element 0:
+'尼'
+
+- []
++ ['尼', '好', '，']
+
+======================================================================
+FAIL: test_punctuation_keeps_unconvertible_suffix (__main__.Assembly)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/projects/workspace/20261028-1621-server-ime/integration/checks/test_assembly.py", line 97, in test_punctuation_keeps_unconvertible_suffix
+    self.assertEqual(''.join(self.commits),'你好v？')
+AssertionError: '' != '你好v？'
++ 你好v？
+
+======================================================================
+FAIL: test_punctuation_respects_highlighted_sentence (__main__.Assembly)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/projects/workspace/20261028-1621-server-ime/integration/checks/test_assembly.py", line 79, in test_punctuation_respects_highlighted_sentence
+    self.assertEqual(self.commits,['你号码','。'])
+AssertionError: Lists differ: [] != ['你号码', '。']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'你号码'
+
+- []
++ ['你号码', '。']
+
+----------------------------------------------------------------------
+Ran 19 tests in 2.422s
+
+FAILED (failures=13)

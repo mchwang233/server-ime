@@ -1,0 +1,72 @@
+{
+  "employee_id": "platform",
+  "verifies": [],
+  "result": "PASS",
+  "assembly_version": "0.2.1",
+  "engine_version": "0.4.0",
+  "regression_before": "integration/checks/assembly-punctuation-before.log",
+  "regression_after": "integration/checks/assembly-punctuation-after.log",
+  "real_engine_tests": 19,
+  "platform_tests": 16,
+  "application_evidence": "integration/evidence/run-20261029-000050",
+  "applications": {
+    "terminal": 12,
+    "editor": 10,
+    "browser": 19,
+    "browser-page": 1,
+    "all": 1
+  },
+  "observations": 43,
+  "dom_events": 1898,
+  "actual_text": [
+    {
+      "application": "terminal",
+      "check": "direct-pinyin-punctuation-actual-text",
+      "result": "PASS",
+      "received": "你好，你好。你好？你好！ 你好,你好.你好?你好! 你号码。尼号，你号v？西安！ ni.hao@example.org",
+      "transport": "terminal PTY stdin"
+    },
+    {
+      "application": "editor",
+      "check": "direct-pinyin-punctuation-actual-text",
+      "result": "PASS",
+      "received": "你好， v2.0 AbC123 User+Tag@Example.org https://Example.org/A?v=2 你好API2世界 nihao@example.org https://example.org/a?v=2\n你好API2世界 abc123 你好Linux6.1世界 你好hello\n你好，你好。你好？你好！ 你好,你好.你好?你好! 你号码。尼号，你号v？西安！ ni.hao@example.org\n",
+      "transport": "gedit Ctrl+S file"
+    },
+    {
+      "application": "browser",
+      "check": "direct-pinyin-punctuation-actual-text",
+      "result": "PASS",
+      "received": "你好 v2.0 AbC123 User+Tag@Example.org https://Example.org/A?v=2 你好API2世界 nihao@example.org https://example.org/a?v=2\n你好API2世界 abc123 你好Linux6.1世界 你好hello\n你好，你好。你好？你好！ 你好,你好.你好?你好! 你号码。尼号，你号v？西安！ ni.hao@example.org",
+      "transport": "DOM input events via loopback HTTP"
+    }
+  ],
+  "product_contract_checks": 10,
+  "window_manager": "xfwm4",
+  "failed_configurations": [
+    {
+      "employee_id": "platform",
+      "configuration": "Isolated Xvnc without window manager",
+      "result": "FAIL",
+      "evidence": "integration/evidence/run-20261028-235645",
+      "reason": "Mouse candidate interaction induced repeated focus-out/in before mixed/punctuation checks"
+    },
+    {
+      "employee_id": "platform",
+      "configuration": "Isolated Xvnc without window manager",
+      "result": "FAIL",
+      "evidence": "integration/evidence/run-20261028-235853",
+      "reason": "Mouse candidate interaction induced repeated focus-out/in before mixed/punctuation checks"
+    }
+  ],
+  "user_desktop": "NOT_DEPLOYED",
+  "windows_11_comparison": "UNVERIFIED",
+  "inventory": "integration/checks/punctuation-inventory.json",
+  "bundle": "integration/build/server-ime-product-0.2.1.tar.gz",
+  "sha256": "6f83e9de947cb116787a063b5ea076cf11e7da94223b5f72d06502b33c3451c7",
+  "runtime_changed_files": [
+    "integration/src/server_ime_product/__init__.py",
+    "platform/server_ime/product_controller.py"
+  ],
+  "extra_reads_record": "integration/handoff.json#extra_reads_this_revision"
+}

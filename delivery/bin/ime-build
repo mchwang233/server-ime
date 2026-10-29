@@ -1,0 +1,774 @@
+#!/usr/bin/env python3
+"""ime-build：把各组件当前交付装配为可安装的统一发布包（ime-bundle/1）。
+
+流程（全部在 delivery/build/<版本>/ 内完成，可重复执行）：
+
+1. 调用 integration/tools/build_product.py 装配产品根（platform 所有），并校验
+   engine/vendor.lock.json 中锁定的 libpinyin 运行时哈希。
+2. 复制为 payload：只保留运行所需文件；源码包（*.src.rpm、libpinyin 源码 tar）
+   不进入安装载荷，单独打成 -sources.tar.gz 供 GPL 源码合规。许可/来源材料（含
+   interface/LICENSE、interface/SOURCES.md）与中文快速说明显式暂存进载荷，缺一即
+   以退出码 5 拒绝出包。
+3. 写入 payload/share/ime/release.json（发布元数据，运行时只读）。
+4. 生成 component-manifest.json（逐文件 sha256/大小/权限、运行依赖探测、启动入口、
+   运行数据目录），打包为 dist/server-ime-<版本>.tar.gz 并写 .sha256。
+5. 打包源码包、写构建记录 build.json（输入树摘要 + 输出哈希），更新 dist/SHA256SUMS。
+6. 用安装工具自身的 load_bundle 重新解包校验整包，失败则以退出码 5 中止。
+"""
+
+from __future__ import annotations
+
+import argparse
+import gzip
+import hashlib
+import json
+import os
+import platform
+import shutil
+import subprocess
+import sys
+import tarfile
+import tempfile
+import time
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+DELIVERY = ROOT / "delivery"
+sys.path.insert(0, str(DELIVERY / "lib"))
+
+from ime_delivery import TOOL_VERSION  # noqa: E402
+from ime_delivery.manifest import load_bundle  # noqa: E402
+
+BUILD_TOOL = "ime-build/1"
+BUILD_SCHEMA = "ime.build-record/1"
+MANIFEST_SCHEMA = "ime.component-manifest/1"
+BUNDLE_FORMAT = "ime-bundle/1"
+FIXED_MTIME = 1793145600
+COMPONENT_ID = "server-ime"
+COMPONENT_NAME = "服务器中文输入法"
+PRODUCT_LICENSE = (
+    "GPL-3.0-or-later（engine/lexicon/interface/integration 代码）+ MIT（platform）+ "
+    "词库数据 CC-BY-4.0；逐组件许可与包内许可文件见 share/ime/docs/README.zh_CN.md 第 5 节"
+)
+
+# 发布必须随包提供的许可/来源材料（工程根相对路径）。任一缺失即拒绝构建（退出码 5），
+# 不允许产出缺许可证的再分发包。interface 的许可由 interface 组件补交后在此显式纳入。
+REQUIRED_LICENSE_MEMBERS = (
+    ("engine/LICENSE", "engine/LICENSE"),
+    ("platform/LICENSE", "platform/LICENSE"),
+    ("integration/LICENSE", "integration/LICENSE"),
+    ("lexicon/SOURCES.md", "lexicon/SOURCES.md"),
+    ("interface/LICENSE", "interface/LICENSE"),
+    ("interface/SOURCES.md", "interface/SOURCES.md"),
+)
+# 中文说明随安装包分发（share/ime/docs/），安装后无需回仓库即可查安装/启动/排查与许可。
+# 文件名必须是清单允许的 ASCII 相对路径；内容不含发布包哈希，避免文档与包哈希互相引用。
+# 完整版中文文档（含证据索引与 Windows 11 对照状态）在发布目录 delivery/docs/。
+PAYLOAD_DOC_DIR = "share/ime/docs"
+PAYLOAD_GUIDE = PAYLOAD_DOC_DIR + "/README.zh_CN.md"
+GUIDE_TEXT = """# server-ime 中文输入法：安装包内快速说明
+
+本安装包内含：拼音引擎、IBus 平台适配、个人词库学习、候选面板与中文设置界面、统一入口
+`bin/server-ime`，以及许可与来源材料。安装包与源码包、校验和、构建记录均在发布目录
+`delivery/dist/`；完整中文文档见发布目录 `delivery/docs/使用指南.md`（含故障排查与证据索引）。
+
+## 1. 安装（用户级，无需 root）
+
+    python3 delivery/bin/ime-install install delivery/dist/server-ime-0.1.6.tar.gz \\
+        --prefix "$HOME/.local/opt/server-ime" \\
+        --data-dir "$HOME/.local/share/server-ime" --json
+
+安装后入口为 `<prefix>/bin/server-ime`，个人数据在 `--data-dir`（默认
+`$XDG_DATA_HOME/server-ime`），与安装前缀分离，升级/回滚/卸载默认保留。
+
+## 2. 启动与使用
+
+    <prefix>/bin/server-ime --data-dir "$HOME/.local/share/server-ime" \\
+        --state-dir "$HOME/.cache/server-ime/run" start --managed-ibus
+    <prefix>/bin/server-ime --state-dir "$HOME/.cache/server-ime/run" exec -- <应用>
+    <prefix>/bin/server-ime --state-dir "$HOME/.cache/server-ime/run" stop
+
+中英切换 `Ctrl+Space`；数字/空格/鼠标选词；Page Up/Down 翻页；`Enter` 提交原拼音；
+`Esc` 取消。需要可用的 X11 `DISPLAY`/`XAUTHORITY` 与会话总线；无图形会话时 `start` 会失败。
+
+本版单一候选窗、完整候选页及布局后高亮滚动、短页宽度收缩；上屏后隐藏候选，不提供连续联想。
+产品只使用自绘候选窗，应用内预编辑仍保留；用户实机双框是否消失待反馈。
+升级或回滚前先 stop，完成后用相同配置、数据及 state 路径重新 start 并重新启动应用。
+
+## 3. 设置、升级、回滚、卸载与诊断
+
+    <prefix>/bin/server-ime --state-dir "$HOME/.cache/server-ime/run" settings          # 中文设置界面
+    python3 delivery/bin/ime-install upgrade delivery/dist/server-ime-0.1.6.tar.gz --prefix <prefix>
+    python3 delivery/bin/ime-install rollback --prefix <prefix>
+    python3 delivery/bin/ime-install uninstall --prefix <prefix>
+    python3 delivery/bin/ime-diagnose --prefix <prefix> --data-dir <datadir> --json
+
+退出码：0 成功；2 参数/策略拒绝；5 校验失败；6 前缀并发占用。
+
+## 4. 常见故障
+
+| 现象 | 处理 |
+| --- | --- |
+| `Gtk couldn't be initialized` / `panel exited before ready` | 检查 `DISPLAY`、`XAUTHORITY` 是否属于当前会话 |
+| `Explicit DISPLAY and DBUS_SESSION_BUS_ADDRESS are required` | 在桌面会话内运行，或 `dbus-run-session -- …` |
+| `socket path too long` | 用较短的 `--state-dir`（如 `~/.cache/si/run`） |
+| 安装报系统目录/退出码 2 | 前缀须为用户可写的绝对路径 |
+| `verify` 报文件漂移（退出码 5） | 同版本 `--repair`，或升级/回滚到干净版本 |
+| 候选不出现 | 应用须经 `server-ime exec --` 启动，且 `IBUS_ADDRESS` 属于受管 daemon |
+
+## 5. 许可与来源
+
+| 范围 | 许可 | 包内许可文件 |
+| --- | --- | --- |
+| engine / lexicon 代码 / interface / integration | GPL-3.0-or-later | `engine/LICENSE`、`lexicon/licenses/GPL-3.0.txt`、`interface/LICENSE`、`integration/LICENSE` |
+| platform | MIT | `platform/LICENSE` |
+| 词库增强数据（CC-BY-4.0） | CC-BY-4.0 | `lexicon/SOURCES.md` |
+| interface 第三方依赖 | 各自上游许可 | `interface/SOURCES.md` |
+
+对应源码、构建材料与上述许可原文在发布目录的 `-sources.tar.gz` 中；详见
+`delivery/docs/licenses.md` 与包内 `share/ime/release.json` 的 `license_material` 字段。
+本服务器无 Windows 11 运行环境，未做同机对照，不声称达到 Windows 11 水平。
+"""
+
+# 安装载荷中排除的路径前缀（源码合规材料，随 -sources 包分发，不进安装包）。
+EXCLUDE_FROM_PAYLOAD = (
+    "engine/vendor/sources",
+    "engine/vendor/libpinyin-2.6.0.tar.gz",
+    "engine/vendor/libpinyin-2.6.0-4.el9.src.rpm",
+)
+# 随源码包一起分发的合规材料。
+SOURCE_MEMBERS = (
+    "engine/vendor/sources",
+    "engine/vendor/libpinyin-2.6.0.tar.gz",
+    "engine/vendor/libpinyin-2.6.0-4.el9.src.rpm",
+    "engine/vendor.lock.json",
+    "engine/licenses",
+    "engine/LICENSE",
+    "platform/LICENSE",
+    "integration/LICENSE",
+    "lexicon/licenses",
+    "lexicon/SOURCES.md",
+    "interface/LICENSE",
+    "interface/SOURCES.md",
+)
+# 源码包中缺一不可的构建材料（其余成员存在才收录）。
+SOURCE_REQUIRED = (
+    "engine/vendor/libpinyin-2.6.0.tar.gz",
+    "engine/vendor/libpinyin-2.6.0-4.el9.src.rpm",
+    "engine/vendor/sources",
+    "engine/vendor.lock.json",
+)
+PROJECT_SOURCE_MEMBERS = (
+    "engine/src", "engine/data", "engine/tools", "engine/tests", "engine/docs", "engine/bin",
+    "engine/CMakeLists.txt", "engine/dependencies.json", "engine/README.md", "engine/vendor/runtime",
+    "platform/server_ime", "platform/README.md", "platform/docs",
+    "interface/handoff.json", "interface/src", "interface/config", "interface/bin", "interface/docs", "interface/README.md",
+    "integration/src", "integration/bin", "integration/tools", "integration/docs", "integration/README.md", "integration/compatibility.json", "integration/handoff.json",
+    "lexicon/src", "lexicon/data/base", "lexicon/bin", "lexicon/tools", "lexicon/format",
+    "delivery/bin", "delivery/lib", "delivery/tests", "delivery/docs/install-lifecycle.md",
+    "delivery/docs/diagnostics-privacy.md", "delivery/docs/SOURCE-BUILD.md", "delivery/docs/实机验收.md",
+    "delivery/manifest/component-manifest.schema.json",
+)
+SOURCE_REQUIRED += PROJECT_SOURCE_MEMBERS
+
+# 运行依赖探测（清单 runtime.requires）；probe 只读版本号，不接触用户内容。
+REQUIRES = (
+    {
+        "id": "python3",
+        "kind": "executable",
+        "probe": ["python3", "--version"],
+        "minimum": "3.9",
+        "description": "产品入口使用 python3（3.9+）",
+    },
+    {
+        "id": "ibus-daemon",
+        "kind": "executable",
+        "probe": ["ibus-daemon", "--version"],
+        "minimum": "1.5.25",
+        "description": "受管 IBus 会话（start --managed-ibus）",
+    },
+    {
+        "id": "dbus-daemon",
+        "kind": "executable",
+        "probe": ["dbus-daemon", "--version"],
+        "description": "会话总线；已有会话可用 DBUS_SESSION_BUS_ADDRESS 复用",
+    },
+    {
+        "id": "gi",
+        "kind": "python-module",
+        "module": "gi",
+        "description": "Python GI：IBus 1.0 / Gtk 3.0 typelib（ibus_daemon 与候选面板）",
+    },
+    {
+        "id": "libpinyin-runtime",
+        "kind": "file",
+        "path": "{prefix}/ime/current/engine/vendor/runtime/lib/libpinyin.so.13.0.0",
+        "description": "随包分发的 libpinyin 2.6.0 运行时（含 libdb/libglib/libpcre）",
+    },
+    {
+        "id": "libpinyin-data",
+        "kind": "file",
+        "path": "{prefix}/ime/current/engine/vendor/runtime/data/merged.bin",
+        "description": "随包分发的二进制词库表（binary format 6 / model 14）",
+    },
+)
+DATA_DIRS = (
+    {"path": "learning", "description": "个人词库与学习数据（卸载/升级保留）", "preserve": True},
+)
+
+
+def sha256_file(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def tree_digest(path, skip=()):
+    """目录内容摘要：对排序后的 <相对路径, sha256> 求哈希。"""
+    h = hashlib.sha256()
+    count = 0
+    total = 0
+    for base, dirs, names in os.walk(path):
+        dirs.sort()
+        kept = []
+        for name in sorted(dirs):
+            rel = os.path.relpath(os.path.join(base, name), path).replace(os.sep, "/")
+            if any(rel == s or rel.startswith(s + "/") for s in skip):
+                continue
+            kept.append(name)
+        dirs[:] = kept
+        for name in sorted(names):
+            full = os.path.join(base, name)
+            if os.path.islink(full):
+                continue
+            rel = os.path.relpath(full, path).replace(os.sep, "/")
+            if any(rel == s or rel.startswith(s + "/") for s in skip):
+                continue
+            if rel.endswith(".pyc") or "__pycache__" in rel:
+                continue
+            digest = sha256_file(full)
+            size = os.path.getsize(full)
+            h.update(("%s\0%s\n" % (rel, digest)).encode("utf-8"))
+            count += 1
+            total += size
+    return {"digest": h.hexdigest(), "files": count, "bytes": total}
+
+
+def classify(rel):
+    if rel == "bin/server-ime":
+        return "executable", "0755"
+    if rel.startswith("engine/vendor/runtime/lib/"):
+        return "library", "0644"
+    if rel.startswith("engine/vendor/runtime/data/"):
+        return "data", "0644"
+    if rel.startswith("engine/vendor/runtime/licenses/"):
+        return "doc", "0644"
+    name = rel.rsplit("/", 1)[-1]
+    if name in ("LICENSE", "COPYING", "SOURCES.md", "AUTHORS", "README.md") or rel.endswith(".md"):
+        return "doc", "0644"
+    if rel.endswith(".py"):
+        return "library", "0644"
+    if rel.endswith(".json"):
+        return "config", "0644"
+    return "data", "0644"
+
+
+def stage_payload(product, payload):
+    if payload.exists():
+        shutil.rmtree(payload)
+    payload.mkdir(parents=True)
+    skipped = []
+
+    def skip(rel):
+        for prefix in EXCLUDE_FROM_PAYLOAD:
+            if rel == prefix or rel.startswith(prefix + "/"):
+                return True
+        return rel.endswith(".pyc") or "__pycache__" in rel
+
+    for base, dirs, names in os.walk(product):
+        dirs.sort()
+        rel_base = os.path.relpath(base, product).replace(os.sep, "/")
+        rel_base = "" if rel_base == "." else rel_base
+        dirs[:] = [d for d in sorted(dirs) if not skip((rel_base + "/" + d).lstrip("/"))]
+        for name in sorted(names):
+            src = Path(base) / name
+            rel = (rel_base + "/" + name).lstrip("/")
+            if skip(rel):
+                skipped.append(rel)
+                continue
+            dst = payload / rel
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(src, dst)
+            dst.chmod(0o755 if rel in ("bin/server-ime", "integration/bin/server-ime") else 0o644)
+    return skipped
+
+
+def stage_release_docs(payload):
+    """把许可/来源材料与中文说明显式暂存进安装载荷。
+
+    返回 (staged, missing)：staged 为 [{path, sha256, size, source}]；missing 为缺失项。
+    缺失任意一项时调用方必须中止构建（退出码 5）。
+    """
+    staged = []
+    missing = []
+    for src_rel, dst_rel in REQUIRED_LICENSE_MEMBERS:
+        src = ROOT / src_rel
+        if not src.is_file() or src.stat().st_size == 0:
+            missing.append(src_rel)
+            continue
+        dst = payload / dst_rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(src, dst)
+        dst.chmod(0o644)
+        staged.append({"path": dst_rel, "sha256": sha256_file(dst), "size": dst.stat().st_size, "source": src_rel})
+    guide = payload / PAYLOAD_GUIDE
+    guide.parent.mkdir(parents=True, exist_ok=True)
+    guide.write_text(GUIDE_TEXT, encoding="utf-8")
+    guide.chmod(0o644)
+    staged.append({"path": PAYLOAD_GUIDE, "sha256": sha256_file(guide), "size": guide.stat().st_size, "source": "ime-build:GUIDE_TEXT"})
+    return staged, missing
+
+
+def write_release_json(payload, version, assembly, built_at, note=""):
+    record = {
+        "schema": "ime.release/1",
+        "product": COMPONENT_ID,
+        "name": COMPONENT_NAME,
+        "version": version,
+        "built_at": built_at,
+        "builder": BUILD_TOOL,
+        "bundle_format": BUNDLE_FORMAT,
+        "release_note": note,
+        "components": [
+            {
+                "id": "engine",
+                "version": "0.4.0",
+                "path": "engine",
+                "license": "GPL-3.0-or-later",
+                "license_file": "engine/LICENSE",
+                "docs": "engine/docs/QUALITY-PERFORMANCE.md",
+            },
+            {
+                "id": "lexicon",
+                "format": "ime-lexicon-user/1",
+                "path": "lexicon",
+                "license": "代码 GPL-3.0-or-later / 数据 CC-BY-4.0",
+                "license_file": "lexicon/SOURCES.md",
+                "docs": "lexicon/SOURCES.md",
+            },
+            {
+                "id": "interface",
+                "settings_version": 1,
+                "path": "interface",
+                "license": "GPL-3.0-or-later",
+                "license_file": "interface/LICENSE",
+                "sources_file": "interface/SOURCES.md",
+                "docs": "interface/docs/config-format.md",
+            },
+            {
+                "id": "platform",
+                "path": "platform",
+                "license": "MIT",
+                "license_file": "platform/LICENSE",
+                "docs": "platform/README.md",
+            },
+            {
+                "id": "integration",
+                "version": assembly.get("version"),
+                "path": "integration",
+                "license": "GPL-3.0-or-later",
+                "license_file": "integration/LICENSE",
+                "docs": "integration/README.md",
+            },
+        ],
+        "license_material": [dst for _src, dst in REQUIRED_LICENSE_MEMBERS],
+        "documentation": {
+            "guide": PAYLOAD_GUIDE,
+            "full_docs": "发布目录 delivery/docs/使用指南.md",
+            "licenses": "share/ime/docs/README.zh_CN.md 第 5 节 + delivery/docs/licenses.md",
+            "troubleshooting": PAYLOAD_GUIDE + " 第 4 节",
+        },
+        "entrypoint": "bin/server-ime",
+        "runtime_layout": "payload 根即产品根；入口 bin/server-ime 自行定位 integration/src 等组件",
+        "assembly_version": assembly.get("version"),
+        "assembly_backend": assembly.get("production_backend"),
+        "source_package": "%s-%s-sources.tar.gz" % (COMPONENT_ID, version),
+        "support": {"python": ">=3.9", "arch": ["x86_64"], "platform": ["linux"], "session": "X11 + IBus 1.5.25"},
+    }
+    target = payload / "share" / "ime" / "release.json"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(record, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return target
+
+
+def build_manifest(payload, version, built_at):
+    files = []
+    for base, dirs, names in os.walk(payload):
+        dirs.sort()
+        for name in sorted(names):
+            full = Path(base) / name
+            if full.is_symlink() or not full.is_file():
+                raise SystemExit("payload 中出现链接或非普通文件: %s" % full)
+            rel = str(full.relative_to(payload)).replace(os.sep, "/")
+            kind, mode = classify(rel)
+            full.chmod(int(mode, 8))
+            files.append(
+                {
+                    "path": rel,
+                    "sha256": sha256_file(full),
+                    "size": full.stat().st_size,
+                    "mode": mode,
+                    "kind": kind,
+                }
+            )
+    files.sort(key=lambda item: item["path"])
+    return {
+        "schema": MANIFEST_SCHEMA,
+        "component": {
+            "id": COMPONENT_ID,
+            "name": COMPONENT_NAME,
+            "version": version,
+            "kind": "product",
+            "license": PRODUCT_LICENSE,
+            "description": "统一安装包：拼音引擎、IBus 平台适配、个人词库学习、候选/设置界面与产品入口",
+            "homepage": "https://example.invalid/server-ime",
+        },
+        "package": {
+            "format": BUNDLE_FORMAT,
+            "payload_root": "payload",
+            "created_at": built_at,
+            "builder": BUILD_TOOL,
+        },
+        "compatibility": {
+            "platform": ["linux"],
+            "python": ">=3.9",
+            "arch": ["x86_64"],
+            "notes": "X11 + IBus 1.5.25（受管或既有会话）；Wayland 未验证；本机无 -devel，引擎为 ctypes 绑定 + Python GI 适配器",
+        },
+        "files": files,
+        "runtime": {
+            "requires": list(REQUIRES),
+            "env": {},
+            "data_dirs": list(DATA_DIRS),
+        },
+        "entrypoints": [
+            {
+                "id": "server-ime",
+                "kind": "cli",
+                "argv": ["{prefix}/bin/server-ime"],
+                "description": "统一入口：start/stop/status/settings/exec/config/learning-status 等子命令",
+            }
+        ],
+        "preserve": {"data_globs": ["learning/**"]},
+        "notes": "安装后入口为 <prefix>/bin/server-ime；个人数据在 --data-dir（默认 $XDG_DATA_HOME/server-ime），与安装前缀分离。",
+    }
+
+
+def tar_add_tree(tar, root, arc_prefix, skip=()):
+    entries = []
+    for base, dirs, names in os.walk(root):
+        dirs.sort()
+        for name in sorted(names):
+            full = Path(base) / name
+            rel = str(full.relative_to(root)).replace(os.sep, "/")
+            if any(rel == s or rel.startswith(s + "/") for s in skip):
+                continue
+            if full.is_symlink():
+                raise SystemExit("打包时遇到符号链接: %s" % full)
+            entries.append((rel, full))
+    for rel, full in sorted(entries):
+        info = tar.gettarinfo(str(full), arc_prefix + rel if arc_prefix else rel)
+        info.uid = info.gid = 0
+        info.uname = info.gname = ""
+        info.mtime = FIXED_MTIME
+        info.mode = 0o755 if os.access(str(full), os.X_OK) and "bin/" in rel else 0o644
+        with open(full, "rb") as stream:
+            tar.addfile(info, stream)
+
+
+def make_tar_gz(target, members):
+    """members: [(arcname, path)]，目录递归加入，确定性 mtime/uid。"""
+    with open(target, "wb") as raw, gzip.GzipFile(filename="", fileobj=raw, mode="wb", mtime=FIXED_MTIME, compresslevel=6) as gz:
+        with tarfile.open(fileobj=gz, mode="w", format=tarfile.GNU_FORMAT) as tar:
+            for arcname, path in members:
+                if path.is_dir():
+                    tar_add_tree(tar, path, arcname + "/")
+                else:
+                    info = tar.gettarinfo(str(path), arcname)
+                    info.uid = info.gid = 0
+                    info.uname = info.gname = ""
+                    info.mtime = FIXED_MTIME
+                    with open(path, "rb") as stream:
+                        tar.addfile(info, stream)
+
+
+def write_sidecar(package):
+    digest = sha256_file(package)
+    side = package.with_name(package.name + ".sha256")
+    side.write_text("%s  %s\n" % (digest, package.name), encoding="utf-8")
+    return digest, side
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(prog="ime-build", description="构建 server-ime 统一安装包（无需 root）")
+    parser.add_argument("--version", default="0.1.0", help="发布版本号（默认 0.1.0）")
+    parser.add_argument("--out", default=str(DELIVERY / "dist"), help="输出目录（默认 delivery/dist）")
+    parser.add_argument("--work", default=None, help="工作目录（默认 delivery/build/<版本>）")
+    parser.add_argument("--note", default="", help="发布说明（写入包内 share/ime/release.json）")
+    parser.add_argument("--build-epoch", type=int, default=None,
+                        help="构建时间戳（默认取 SOURCE_DATE_EPOCH，否则包内固定 mtime），保证重复构建字节一致")
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args(argv)
+
+    version = args.version
+    epoch = args.build_epoch
+    if epoch is None:
+        epoch = int(os.environ.get("SOURCE_DATE_EPOCH", FIXED_MTIME))
+    out = Path(args.out).resolve()
+    work = Path(args.work).resolve() if args.work else (DELIVERY / "build" / version)
+    out.mkdir(parents=True, exist_ok=True)
+    work.mkdir(parents=True, exist_ok=True)
+    built_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(epoch))
+
+    # Preflight before any archive is written.
+    missing = [rel for rel in SOURCE_REQUIRED + tuple(x[0] for x in REQUIRED_LICENSE_MEMBERS)
+               if not (ROOT / rel).exists() or ((ROOT / rel).is_file() and not (ROOT / rel).stat().st_size)]
+    if missing:
+        sys.stderr.write("缺少必需源码/许可材料: " + ", ".join(missing) + "\n")
+        return 5
+    # 1. 装配产品根（platform 的装配脚本，会校验 engine/vendor.lock.json）。
+    log = work / "build-product.log"
+    proc = subprocess.run(
+        [sys.executable, "-c",
+         "import runpy,sys; from pathlib import Path; "
+         "d=runpy.run_path(sys.argv[1]); g=d['main'].__globals__; "
+         "g['BUILD']=Path(sys.argv[2]); g['OUT']=g['BUILD']/'product'; "
+         "g['BUILD'].mkdir(parents=True,exist_ok=True); d['main']()",
+         str(ROOT / "integration/tools/build_product.py"), str(work / "assembly")],
+        cwd=str(ROOT),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+    log.write_bytes(proc.stdout)
+    if proc.returncode != 0:
+        sys.stderr.write(proc.stdout.decode("utf-8", "replace"))
+        sys.stderr.write("产品装配失败，日志: %s\n" % log)
+        return 2
+    product = work / "assembly/product"
+    assembly = json.loads((work / "assembly/component-delivery.json").read_text(encoding="utf-8"))
+    lock = json.loads((ROOT / "engine/vendor.lock.json").read_text(encoding="utf-8"))
+    for row in lock["files"]:
+        actual = sha256_file(ROOT / "engine" / row["path"])
+        if actual != row["sha256"]:
+            sys.stderr.write("运行时锁定文件哈希不符: %s\n" % row["path"])
+            return 5
+
+    # 2. 复制安装载荷（排除源码合规材料）。
+    payload = work / "payload"
+    skipped = stage_payload(product, payload)
+    # 2b. 许可/来源材料与中文说明显式暂存；任一必需许可材料缺失即拒绝出包。
+    staged_docs, missing = stage_release_docs(payload)
+    if missing:
+        sys.stderr.write("缺少必需许可/说明材料，拒绝构建（退出码 5）: %s\n" % ", ".join(missing))
+        return 5
+    release = write_release_json(payload, version, assembly, built_at, args.note)
+    # 交付物不得夹带测试运行时、认证文件、会话临时文件或合成个人数据。
+    forbidden = ("browser-runtime", "auth", "synthetic-personal-data", ".runtime", ".Xauthority", "personal")
+    leaked = sorted(
+        rel for rel in (str(p.relative_to(payload)).replace(os.sep, "/") for p in payload.rglob("*"))
+        if any(part in forbidden for part in rel.split("/"))
+        or rel.endswith((".pyc", ".sha256"))
+    )
+    if leaked:
+        sys.stderr.write("载荷夹带禁止内容: %s\n" % ", ".join(leaked[:10]))
+        return 5
+
+    # 3. 清单 + 安装包。
+    manifest = build_manifest(payload, version, built_at)
+    bundle_root = work / "bundle"
+    if bundle_root.exists():
+        shutil.rmtree(bundle_root)
+    bundle_root.mkdir()
+    manifest_path = bundle_root / "component-manifest.json"
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    package = out / ("%s-%s.tar.gz" % (COMPONENT_ID, version))
+    make_tar_gz(package, [("component-manifest.json", manifest_path), ("payload", payload)])
+    digest, sidecar = write_sidecar(package)
+    shutil.copyfile(manifest_path, out / ("%s-%s.component-manifest.json" % (COMPONENT_ID, version)))
+
+    # 4. 源码合规包（GPL 对应源码与许可证明，不进入安装载荷）。
+    sources = out / ("%s-%s-sources.tar.gz" % (COMPONENT_ID, version))
+    members = []
+    source_missing = []
+    for rel in SOURCE_MEMBERS:
+        path = ROOT / rel
+        if path.exists():
+            members.append((rel, path))
+        elif rel in SOURCE_REQUIRED:
+            source_missing.append(rel)
+    for rel, _dst in REQUIRED_LICENSE_MEMBERS:
+        if rel not in [item[0] for item in members]:
+            source_missing.append(rel)
+    if source_missing:
+        sys.stderr.write("源码包缺少必需源码/许可材料，拒绝构建（退出码 5）: %s\n" % ", ".join(sorted(set(source_missing))))
+        return 5
+    record_path = work / "build.json"
+    # Explicit project source allowlist excludes evidence, generated builds and browsers.
+    selected = {name: path for name, path in members}
+    for rel in PROJECT_SOURCE_MEMBERS:
+        path = ROOT / rel
+        candidates = sorted(path.rglob("*")) if path.is_dir() else [path]
+        for candidate in candidates:
+            if candidate.is_file() and not candidate.is_symlink() and "__pycache__" not in candidate.parts and candidate.suffix != ".pyc":
+                selected[str(candidate.relative_to(ROOT))] = candidate
+    # Standalone source distributions have no historical binary archives. Preserve
+    # their audit inventory as metadata, without making them build prerequisites.
+    source_handoff = json.loads((ROOT / "integration/handoff.json").read_text())
+    if source_handoff.get("historical_packages"):
+        source_handoff["distribution_history_not_required"] = source_handoff["historical_packages"]
+    source_handoff["historical_packages"] = []
+    source_handoff["source_distribution_note"] = "Historical archives retained in original release directory; not required to rebuild standalone sources."
+    source_handoff_path = work / "source-handoff.json"
+    source_handoff_path.write_text(json.dumps(source_handoff, ensure_ascii=False, indent=2) + "\n")
+    selected["integration/handoff.json"] = source_handoff_path
+    make_tar_gz(sources, sorted(selected.items()))
+    sources_digest, sources_sidecar = write_sidecar(sources)
+
+    # 5. 构建记录（版本锁定：输入树摘要 + 输出哈希）。
+    inputs = {}
+    for name, rel in (
+        ("engine", "engine"),
+        ("lexicon", "lexicon"),
+        ("interface", "interface"),
+        ("platform", "platform"),
+        ("integration", "integration"),
+    ):
+        skip = ("__pycache__", "build", "checks", "evidence", ".runtime", "browser-runtime")
+        inputs[name] = tree_digest(ROOT / rel, skip=skip)
+    record = {
+        "schema": BUILD_SCHEMA,
+        "product": COMPONENT_ID,
+        "version": version,
+        "built_at": built_at,
+        "finished_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "release_note": args.note,
+        "builder": BUILD_TOOL,
+        "installer_tool_version": TOOL_VERSION,
+        "environment": {
+            "python": platform.python_version(),
+            "machine": platform.machine(),
+            "system": platform.system() + " " + platform.release(),
+            "root": str(ROOT),
+        },
+        "inputs": inputs,
+        "locked_runtime": lock,
+        "assembly_version": assembly.get("version"),
+        "package": {
+            "path": str(package),
+            "sha256": digest,
+            "bytes": package.stat().st_size,
+            "files": len(manifest["files"]),
+            "payload_bytes": sum(item["size"] for item in manifest["files"]),
+            "manifest_sha256": sha256_file(manifest_path),
+            "sidecar": str(sidecar),
+        },
+        "sources": {"path": str(sources), "sha256": sources_digest, "bytes": sources.stat().st_size, "sidecar": str(sources_sidecar)},
+        "excluded_from_payload": sorted(set(skipped)),
+        "license_material": staged_docs,
+        "payload_docs": [item["path"] for item in staged_docs if item["path"].startswith(PAYLOAD_DOC_DIR + "/")],
+        "release_metadata": str(release.relative_to(payload)),
+    }
+    record_path.write_text(json.dumps(record, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    # 6. dist/SHA256SUMS（所有包与伴随文件）。
+    sums = out / "SHA256SUMS"
+    lines = []
+    for path in sorted(out.iterdir()):
+        if path.name == "SHA256SUMS" or path.suffix == ".sha256" or not path.is_file():
+            continue
+        lines.append("%s  %s" % (sha256_file(path), path.name))
+    sums.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    # 7. 用安装工具自身重新解包校验整包，并核对许可/中文说明确实在包内。
+    tmp = tempfile.mkdtemp(prefix="ime-build-verify-")
+    try:
+        loaded, _payload, _root = load_bundle(str(package), tmp)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    required_paths = [dst for _src, dst in REQUIRED_LICENSE_MEMBERS] + [PAYLOAD_GUIDE]
+    present = {item["path"] for item in loaded.files}
+    absent = [path for path in required_paths if path not in present]
+    if absent:
+        sys.stderr.write("安装包缺少必需许可/说明材料，拒绝出包（退出码 5）: %s\n" % ", ".join(absent))
+        return 5
+
+    # Only canonical output/work publishes a lock, after successful validation.
+    if out == (DELIVERY / "dist").resolve() and work.resolve() == (DELIVERY / "build" / version).resolve():
+        lock_data = {
+                "schema": "ime.version-lock/1",
+                "product": COMPONENT_ID,
+                "version": version,
+                "built_at": built_at,
+                "installer_tool_version": TOOL_VERSION,
+                "release_note": args.note,
+                "components": record["inputs"],
+                "assembly_version": assembly.get("version"),
+                "locked_runtime": lock,
+                "package": {
+                    "path": os.path.relpath(str(package), str(DELIVERY)),
+                    "sha256": digest,
+                    "files": len(manifest["files"]),
+                },
+                "sources": {
+                    "path": os.path.relpath(str(sources), str(DELIVERY)),
+                    "sha256": sources_digest,
+                },
+                "license_material": staged_docs,
+                "build_record": os.path.relpath(str(record_path), str(DELIVERY)),
+            }
+        lock_data["path_base"] = "delivery"
+        lock_data["build_record_sha256"] = sha256_file(record_path)
+        lockfile = DELIVERY / "manifest/lock.json"
+        lockfile.parent.mkdir(parents=True, exist_ok=True)
+        temporary = lockfile.with_suffix(".json.tmp")
+        temporary.write_text(json.dumps(lock_data, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
+        temporary.replace(lockfile)
+
+    result = {
+        "schema": "ime.build-result/1",
+        "version": version,
+        "package": str(package),
+        "sha256": digest,
+        "bytes": package.stat().st_size,
+        "files": len(manifest["files"]),
+        "payload_bytes": record["package"]["payload_bytes"],
+        "sources": str(sources),
+        "sources_sha256": sources_digest,
+        "build_record": str(record_path),
+        "manifest": str(out / ("%s-%s.component-manifest.json" % (COMPONENT_ID, version))),
+        "verified": {
+            "bundle_component": loaded.component_id,
+            "bundle_version": loaded.version,
+            "bundle_files": len(loaded.files),
+            "entrypoint": loaded.entrypoints[0]["argv"],
+            "license_material": [dst for _src, dst in REQUIRED_LICENSE_MEMBERS],
+            "payload_docs": [PAYLOAD_GUIDE],
+        },
+        "excluded_from_payload": record["excluded_from_payload"],
+    }
+    if args.json:
+        sys.stdout.write(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
+    else:
+        sys.stdout.write("package: %s\n" % package)
+        sys.stdout.write("sha256:  %s\n" % digest)
+        sys.stdout.write("files:   %d (%d 字节载荷)\n" % (len(manifest["files"]), record["package"]["payload_bytes"]))
+        sys.stdout.write("manifest 校验通过: %s %s\n" % (loaded.component_id, loaded.version))
+        sys.stdout.write("sources: %s\n" % sources)
+        sys.stdout.write("record:  %s\n" % record_path)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

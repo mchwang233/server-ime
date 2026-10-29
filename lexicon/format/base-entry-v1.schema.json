@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://server-ime.local/schema/base-entry-v1.json",
+  "title": "server-ime base lexicon entry (one JSONL line)",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "text", "pinyin", "count", "kind", "domain", "source", "license"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^w-[0-9a-f]{16}$"},
+    "text": {"type": "string", "minLength": 1, "maxLength": 16},
+    "pinyin": {"type": "string", "pattern": "^[a-zv]+(?:'[a-zv]+)*$"},
+    "count": {"type": "integer", "minimum": 1, "maximum": 1000000},
+    "kind": {"const": "base"},
+    "domain": {"type": "string", "pattern": "^[a-z][a-z0-9_-]{0,31}$"},
+    "source": {"type": "string", "minLength": 1},
+    "reading_source": {"type": "string"},
+    "license": {"type": "string", "minLength": 1}
+  }
+}

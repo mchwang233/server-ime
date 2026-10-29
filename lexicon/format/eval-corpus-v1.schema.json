@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://server-ime.local/schema/eval-corpus-v1.json",
+  "title": "server-ime fixed evaluation corpus (one JSONL line)",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "category", "input", "expected"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[A-Z][0-9]{3}$"},
+    "category": {"enum": ["common", "sentence", "ambiguity", "long", "mixed", "typo"]},
+    "input": {"type": "string", "minLength": 1, "maxLength": 128},
+    "expected": {"type": "string", "minLength": 1, "maxLength": 80},
+    "tags": {"type": "array", "items": {"type": "string"}},
+    "note": {"type": "string"}
+  }
+}

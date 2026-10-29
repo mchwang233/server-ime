@@ -1,0 +1,136 @@
+{
+  "compatibility": {
+    "arch": [
+      "x86_64",
+      "aarch64"
+    ],
+    "platform": [
+      "linux"
+    ],
+    "python": ">=3.6"
+  },
+  "component": {
+    "description": "隔离样例组件，仅用于安装工具自检，不代表最终输入法。",
+    "id": "ime-demo",
+    "kind": "tool",
+    "license": "MIT",
+    "name": "隔离样例输入法组件",
+    "version": "1.0.0"
+  },
+  "entrypoints": [
+    {
+      "argv": [
+        "{prefix}/bin/ime-demo",
+        "--version"
+      ],
+      "description": "样例版本查询入口",
+      "id": "demo-cli",
+      "kind": "cli"
+    }
+  ],
+  "files": [
+    {
+      "description": "样例命令行入口",
+      "kind": "executable",
+      "mode": "0755",
+      "path": "bin/ime-demo",
+      "sha256": "b3be9ddcd7f03bef9b8927a4c2d8eee3ea8dcf8cab199e89bdbfe1711514d1bb",
+      "size": 1146
+    },
+    {
+      "description": "样例库",
+      "kind": "library",
+      "mode": "0644",
+      "path": "lib/ime_demo/__init__.py",
+      "sha256": "f0a8c742838a33633eb57fd7ee405db7abc50868a76ba7056e95f138e43fc2d7",
+      "size": 68
+    },
+    {
+      "description": "样例说明",
+      "kind": "doc",
+      "mode": "0644",
+      "path": "share/ime/README.txt",
+      "sha256": "f19cb1776a8be97076f315fb4865d74d574b0386ddb5008021cb0214c917a442",
+      "size": 101
+    },
+    {
+      "description": "默认配置",
+      "kind": "config",
+      "mode": "0644",
+      "path": "share/ime/defaults.json",
+      "sha256": "82a1f5e45db3bfe3a2a83acb436bdad39441d4303710d5d3100a208f358b18e9",
+      "size": 121
+    },
+    {
+      "description": "界面文案",
+      "kind": "locale",
+      "mode": "0644",
+      "path": "share/ime/locale/zh_CN.json",
+      "sha256": "a9ff385e5c174cbb43643dd5765bc64ea0a3c4b00da688a4f29dd37f1d21afe7",
+      "size": 115
+    },
+    {
+      "description": "样例命令行入口",
+      "kind": "executable",
+      "mode": "0755",
+      "path": "bin/ime-demo",
+      "sha256": "b3be9ddcd7f03bef9b8927a4c2d8eee3ea8dcf8cab199e89bdbfe1711514d1bb",
+      "size": 1146
+    }
+  ],
+  "install": {
+    "link_dir": "bin",
+    "retain_versions": 2
+  },
+  "notes": "",
+  "package": {
+    "builder": "delivery/tests/make_samples.py",
+    "created_at": "2026-10-28T00:00:00Z",
+    "format": "ime-bundle/1",
+    "payload_root": "payload"
+  },
+  "preserve": {
+    "data_globs": [
+      "personal/**",
+      "learning/**"
+    ]
+  },
+  "runtime": {
+    "data_dirs": [
+      {
+        "description": "个人词库与短语（安装/升级/卸载不得删除）",
+        "path": "personal",
+        "preserve": true
+      },
+      {
+        "description": "学习与统计状态",
+        "path": "learning",
+        "preserve": true
+      }
+    ],
+    "env": {
+      "IME_DATA_DIR": "{data_dir}"
+    },
+    "requires": [
+      {
+        "description": "样例组件的解释器",
+        "id": "python3",
+        "kind": "executable",
+        "minimum": "3.6",
+        "probe": [
+          "python3",
+          "--version"
+        ],
+        "required": true
+      },
+      {
+        "description": "标准库 JSON",
+        "id": "json",
+        "kind": "python-module",
+        "module": "json",
+        "required": true
+      }
+    ]
+  },
+  "schema": "ime.component-manifest/1"
+}

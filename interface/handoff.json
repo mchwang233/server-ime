@@ -1,0 +1,198 @@
+{
+  "employee_id": "interface",
+  "status": "ready",
+  "version": "0.1.5",
+  "license": "GPL-3.0-or-later",
+  "license_file": "interface/LICENSE",
+  "sources_file": "interface/SOURCES.md",
+  "license_scope": "interface/ 原创部分（src/、bin/、config/、tests/、tools/、docs/、README.md、SOURCES.md、LICENSE）为 GPL-3.0-or-later，完整 GPL-3.0 文本在 interface/LICENSE（36,160 字节/696 行，SPDX 头 + 逐字未改的 GPL-3.0 正文 35,147 字节，与系统 libpinyin COPYING diff 无差异）；evidence/ 中系统进程日志与截图按原归属保留。第三方（GTK3、PyGObject、GLib、Pango、IBus、libpinyin、Python，及检查用 Xvnc/XTest/D-Bus）为系统包，各自保留原许可，本目录不复制、不重新分发，也未修改。",
+  "license_metadata": {
+    "spdx": "GPL-3.0-or-later",
+    "license_paths": [
+      "interface/LICENSE"
+    ],
+    "sources_path": "interface/SOURCES.md",
+    "scope": "interface/ original code and docs only",
+    "third_party_in_this_dir": "none (system packages, not redistributed)",
+    "verified": "python3 -c \"import json; from pathlib import Path; h=json.loads(Path('interface/handoff.json').read_text()); assert h['license']=='GPL-3.0-or-later'; assert Path(h['license_file']).is_file(); assert Path(h['sources_file']).is_file(); print('interface license metadata: PASS')\" -> PASS"
+  },
+  "settings_format": "server-ime settings v1",
+  "settings_schema": "interface/config/settings-v1.schema.json",
+  "settings_defaults": "interface/config/defaults.json",
+  "settings_path": "$XDG_CONFIG_HOME/server-ime/settings.json (override with SERVER_IME_CONFIG)",
+  "entrypoints": {
+    "gui_settings": "PYTHONPATH=interface/src python3 -m ime_interface.app settings",
+    "gui_panel": "PYTHONPATH=interface/src python3 -m ime_interface.app panel  (needs DISPLAY + IBUS_ADDRESS)",
+    "validate": "python3 -m ime_interface.app validate",
+    "apply_engine": "python3 -m ime_interface.app apply-engine",
+    "reset": "python3 -m ime_interface.app reset",
+    "checks": "python3 interface/tools/run_checks.py"
+  },
+  "interfaces": {
+    "config": {
+      "module": "ime_interface.config",
+      "functions": [
+        "defaults()",
+        "load(path=None, caps=None, env=None)",
+        "save(settings, path=None, caps=None, env=None)",
+        "reset(path=None, caps=None, env=None)",
+        "validate(raw, caps, base=None)",
+        "engine_patch(settings, caps=None)",
+        "platform_patch(settings)",
+        "panel_options(settings)  # 含 layout，缺省 horizontal",
+        "apply_engine(settings, engine=None, caps=None, user_data_dir=None, env=None)",
+        "learning_data_dir(env=None)",
+        "mapping_report(settings, caps)",
+        "Capabilities.from_engine(engine)",
+        "Capabilities.from_file(path)"
+      ],
+      "errors": "ConfigError with .errors = [{code, path, message(zh)}]"
+    },
+    "keymap": {
+      "module": "ime_interface.keymap",
+      "functions": [
+        "parse_binding(text)",
+        "validate_shortcuts(shortcuts)",
+        "resolve(keyval, state, bindings=None)",
+        "describe(bindings)"
+      ],
+      "actions": [
+        "toggle_mode",
+        "select_digit",
+        "page_prev",
+        "page_next",
+        "move_prev",
+        "move_next",
+        "commit_raw",
+        "cancel",
+        "pass_focus"
+      ]
+    },
+    "punctuation": {
+      "module": "ime_interface.punctuation",
+      "class": "Punctuation(chinese=True, full_width_pairs=True)",
+      "methods": [
+        "map_char(char)",
+        "map_text(text)",
+        "reset_pairs()",
+        "table()"
+      ]
+    },
+    "panel": {
+      "module": "ime_interface.panel",
+      "class": "CandidatePanel(options, client, snapshot=None)",
+      "methods": [
+        "render(snapshot, feedback='')",
+        "set_options(options)",
+        "select(candidate_id)",
+        "page(delta)",
+        "toggle_mode()",
+        "geometry()",
+        "row_geometry()",
+        "metrics()",
+        "scroll_by(delta_px)",
+        "reveal(index)  # True=scrolled, False=already fully visible, None=GTK has not allocated the row yet"
+      ],
+      "options": [
+        "layout（horizontal 缺省 / vertical 旧式单列）",
+        "font_scale",
+        "max_visible（只作视口宽度预算，不裁剪候选）",
+        "show_page_info",
+        "show_hints",
+        "edge_margin",
+        "chinese_punctuation"
+      ],
+      "rows": "self.rows[i] = {id, text, index, selected, widget, text_widget, note_widget, label_text, annotation}；text/id 始终是引擎原值，省略号只影响显示",
+      "row_geometry_i": "{id, text, index, x, y, w, h, text_w, text_needed, ellipsized, selected, in_view}（in_view = 是否完整落在横向视口可见区域；不额外暴露显示文本，避免 D-Bus 泄漏输入内容）",
+      "layout_contract": "默认 horizontal：同一页候选同一行、x 依次增加；宽度上限 = 屏幕宽 - 2*edge_margin；超宽只省略文字（最少 2 字），再超宽则用 Gtk.ScrolledWindow 单行横向视口 + 可见滚动条；render 始终放 candidates[page_start:page_start+page_size] 整页，max_visible 只决定视口宽度预算（metrics().viewport_cap），逻辑页/候选编号/数字映射/完整 ID 不变（metrics().dropped_for_width 恒为 []）",
+      "reveal_contract": "高亮自动滚动只在 GTK 完成真实 size-allocate 之后执行：新行分配前只有 1px 占位，reveal() 返回 None 且不移动视口；rows_box/scroller/每一行的 size-allocate 会再排一次核对（render serial + 视口指纹去重，无固定延时）。用户自己拖动横向滚动条不会被拽回；视口宽度、page_size 或 upper 改变时才会重新核对。",
+      "short_page_contract": "每次 _fit_to_screen 先撤销 rows_box/scroller 的旧 size_request 再测自然宽度，短页的 content_natural_width 与 scroll.upper 按新内容收缩，布局稳定后 _clamp_scroll() 把 value 收敛到 upper-page_size，滚到末端不会整页空白；回到整页时范围恢复，页首高亮重新可见。",
+      "metrics": "{layout, font_scale, screen, width_limit, content_width, content_natural_width, max_visible, viewport_cap, page_start, page_size, visible, dropped_for_width(恒 []), ids, in_view, scroll:{value, page_size, upper, scrollable, scrollbar_visible}}",
+      "consumes": "org.freedesktop.IBus.ServerIME /org/freedesktop/IBus/ServerIME/State org.superpartner.ServerIME1"
+    },
+    "settings_ui": {
+      "module": "ime_interface.settings_ui",
+      "class": "SettingsWindow(settings, caps, path, on_saved=None, save_handler=None, user_data_dir=None)",
+      "methods": [
+        "collect()",
+        "save()->bool",
+        "reset(close=False)->dict|False",
+        "refresh_controls(settings)",
+        "show_errors(errors)",
+        "screenshot(path)"
+      ],
+      "errors": "save_handler 返回非 dict → handler-result；抛异常 → handler-error；两者都不写盘、不提示成功、不触发 on_saved。无回调时先引擎后写盘，引擎失败原文件字节不变。"
+    }
+  },
+  "handoff_to": {
+    "platform": [
+      "CandidatePanel is horizontal by default (panel.layout, default horizontal); ProductPanel inherits it, so product assertions on same-row/increasing-x need no extra code. Use metrics() for width_limit/content_width/ids/in_view/scroll; dropped_for_width is kept for compatibility and is always []. panel.max_visible is only a viewport width budget (metrics()['viewport_cap']): every page_size candidate is still rendered, numbered and selectable; only the visible window is narrower and scrolls horizontally.",
+      "row_geometry() entries carry id/text/index/x/y/w/h/text_w/text_needed/ellipsized/selected/in_view; text is the full engine candidate, 'ellipsized' only describes display, 'in_view' is true when the cell is fully inside the horizontal viewport (scroll with panel.scroll_by/reveal or check panel.metrics()['scroll']).",
+      "Narrow width never removes candidates: the page keeps all of them in a single-row scroller, the hint line no longer claims 'the rest need Page Down'.",
+      "Read interface settings via ime_interface.config.load() and pass platform_patch()['page_size'] into Controller(page_size=…).",
+      "Optional: call ime_interface.punctuation.Punctuation.map_char() in the key path for Chinese punctuation.",
+      "Optional: use ime_interface.keymap.resolve() for shortcut actions; defaults already match Controller.key().",
+      "The scroller now keeps the row's natural width (rows_box minimum width) and does not propagate it to the popup, so the product panel can be narrower than the candidate row and still shows a horizontal scrollbar; product-side cursor placement should use panel.geometry() as before.",
+      "0.1.5 layout fix: auto-reveal now happens only after GTK size-allocate; reveal() returns None while the new row still has its 1px pre-layout placeholder. Do not treat None as 'in view' and do not add fixed sleeps. The panel re-checks on rows_box/scroller/row allocation and clamps the scroll range (short pages: content_natural_width and scroll.upper shrink). Manually scrolling the viewport is not snapped back unless the viewport size or scroll range changes. Rebuild/re-run the product narrow checks against this version.",
+      "ProductPanel.render calls _fit_to_screen() a second time after super().render() (product hint text). That is still supported: a changed width triggers a new allocation, and the render serial keeps one reveal owed until a real allocation is measured."
+    ],
+    "delivery": [
+      "License metadata for the release bundle: license=GPL-3.0-or-later, license_file=interface/LICENSE (SPDX header + verbatim GPL-3.0 full text, 36,160 bytes / 696 lines), sources_file=interface/SOURCES.md; both paths are relative to the project root and both files must be shipped.",
+      "Ship interface/src/ime_interface, interface/config/*.json and the launcher entrypoints; settings file belongs in user config dir and must be preserved on upgrade/uninstall.",
+      "GUI needs python3-gi + GTK3; panel additionally needs IBUS_ADDRESS of the running IBus bus."
+    ],
+    "integration": [
+      "Candidate panel consumes the platform D-Bus state interface only; no private files.",
+      "Preferred path is the IBus native panel (IBus.LookupTable already filled by platform); this panel is the equivalent fallback when the framework panel is disabled."
+    ]
+  },
+  "checks": {
+    "command": "python3 interface/tools/run_checks.py",
+    "result": "PASS",
+    "evidence": "interface/evidence/run-20261029-131625/summary.json",
+    "detail": "interface/docs/checks.md",
+    "counts": {
+      "unit": 51,
+      "panel-ui": 20,
+      "settings-ui": 12
+    },
+    "real_components": [
+      "GTK3 candidate panel",
+      "GTK3 settings window",
+      "GTK size allocation",
+      "platform D-Bus candidate/status interface",
+      "IBus 1.5 adapter",
+      "libpinyin 2.6.0 backend",
+      "settings v1 validation",
+      "keymap validation"
+    ],
+    "fixtures": [
+      "interface/config/capabilities-fixture.json — only proves control gating when capabilities are enabled",
+      "panel 宽度/滚动检查的 9 项：夹具候选文本 + 360px 夹具宽度上限 + 夹具 selected_index 跳转 + client.act 点击回放；面板控件/Pango 排版/Gtk.ScrolledWindow 视口/GTK 分配/XTest 坐标是真实组件，结果 JSON 带 fixture:true",
+      "布局回归的 94 项夹具分页（末页 4 项，模拟真实 hao 末页形状）与“提前触发一次面板自己的 _after_layout()”时序（复现 0.2.8 的空闲回调早于 size-allocate）；滚动仍由面板在真实分配后完成，测试不调用 reveal()"
+    ]
+  },
+  "changes": [
+    "许可核对：确认 interface/ 原创代码与文档为 GPL-3.0-or-later，interface/LICENSE 为 SPDX 头 + 逐字未改的 GPL-3.0 全文（正文与系统 libpinyin COPYING diff 无差异）；README 增加适用范围表，SOURCES.md 增加第三方（系统包、不重新分发）清单与核验记录；handoff 补 license/license_file/sources_file 及 license_metadata。运行代码未改动，未重跑图形场景。",
+    "候选容器改为从左到右横向排列，panel.layout 缺省 horizontal（旧配置无该键也立即横排），vertical 仅为旧式偏好保留",
+    "返工：修复宽度适配丢弃横排候选的问题——超宽改为单行横向滚动视口（可见滚动条），保留逻辑页大小/候选编号/完整 ID，高亮候选自动滚进可见区域；删除“其余用 Page Down 翻页”的错误提示；dropped_for_width 保留为兼容字段且恒为 []",
+    "新增 CandidatePanel.metrics() 与 row_geometry() 的 text_w/text_needed/ellipsized 字段，便于装配层做几何断言；本轮追加 metrics().scroll/ids/in_view 与 row_geometry().selected/in_view，以及 scroll_by()/reveal()",
+    "辅助信息（状态/页码/序号/注释/提示）字号放大有上限，避免提示行把面板撑出屏幕",
+    "检查：17 项 panel-ui（含一页 9 项与 20 项多页的视口遍历、末尾候选点击、高亮自动滚动、真实最后一页点击上屏），单元 51 项，证据在 evidence/run-20261029-111216/",
+    "返工（负责人 367ae8b5）：render 放整页 candidates[page_start:page_start+page_size]，max_visible 只作视口宽度预算（viewport_cap = min(自然宽度, 屏幕上限, 前 max_visible 项的宽度)），不再用 min(page_size, max_visible) 截断候选；行保自然宽度（rows_box 最小宽度）+ ScrolledWindow 不传播自然宽度，滚动条真正出现；头部/提示行按视口宽度收窄",
+    "检查：新增 panel-ui 第 18 项 max-visible-is-viewport-budget-not-page-truncation（page_size=9/max_visible=3、旧配置 page_size=5/max_visible=1，各测两页：整页 ID/序号不变、视口宽度只由预算决定、逐项滚动可达、高亮自动进视野、末项点击送完整 ID）；sweep 改为逐项 reveal，避免宽视口下步进跳项；证据 evidence/run-20261029-123114/",
+    "0.1.5 返工（平台缺陷 interface-layout-after-allocation，0.2.8）：修复“布局后高亮候选仍被裁切”。render 不再在 allocation 之前同步 reveal；新行 1px 占位时 reveal() 返回 None，rows_box/scroller/每一行的 size-allocate 会再排一次核对（render serial + 视口指纹去重，无固定等待）。用户拖动滚动条不会被拽回；视口宽度/page_size/upper 变化时才重新核对。",
+    "0.1.5 返工：修复短页保留旧滚动范围。每次 _fit_to_screen 先撤销 rows_box/scroller 的旧 size_request 再测量自然宽度；布局稳定后 _clamp_scroll() 收敛到新的 upper-page_size。整页 9 项 → 末页 4 项：content_natural_width/upper 967→432px，滚到末端 value=90=span、末项可见、无整页空白；回到整页恢复 967px 且 9 个 ID/序号不变。",
+    "检查：新增 panel-ui 第 19 项 keyboard-highlight-reveals-after-real-layout（9/3 与 5/1 各两段：页首→末项 2→638/377px；末端→中间项布局前 640/379 不变，分配后 430/216px，中间项 in_view+selected，点击送 la-4/la-2；不调用 reveal 补救）、第 20 项 short-page-shrinks-scroll-extent-and-end-not-blank（967→432px、末端 90=span、末项可见、回到整页 967px）；原有 18 项全部保留，页首滚动断言改为“精确回到起始值/首行 x（rows_box 2px 内边距）”并继续要求首项 in_view；证据 evidence/run-20261029-131625/"
+  ],
+  "known_limits": [
+    "Panel position is fixed at screen corner + edge_margin; caret-following needs an insertion-point rect from the integration layer.",
+    "Narrow screens or very large font_scale shrink candidate text to 2 chars and then scroll a single-row viewport; all candidates of the logical page stay present and reachable, no hint about Page Down remains.",
+    "panel.layout=vertical is only unit-checked (config enum + orientation switch); the UI scenarios run the default horizontal layout.",
+    "Framework native panel (ibus-ui-gtk3) not exercised here; checks run with --panel=disable.",
+    "shortcuts and punctuation are validated, stored and mapped, but not yet consumed by the framework key/commit path.",
+    "双拼/模糊音/纠错/学习按引擎真实 capabilities 渲染：当前引擎声明 ziranma、10 条模糊音、12 条纠错与 learning，因此控件可见；引擎没声明的方案/规则仍被拒绝保存。",
+    "本轮只交付 interface 0.1.5 与其真实 GTK 回归证据；产品装配（integration/）消费该版本后的 360px/300% 真实应用复验由平台任务重跑，不在本目录宣称通过。"
+  ],
+  "verifies": []
+}

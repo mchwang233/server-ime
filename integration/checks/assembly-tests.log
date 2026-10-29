@@ -1,0 +1,10 @@
+test_corrupt_config_is_not_overwritten (__main__.Assembly) ... open  failed.open  failed.ok
+test_existing_and_new_contexts_receive_configuration (__main__.Assembly) ... open  failed.open  failed.open  failed.ok
+test_failed_save_rolls_back_live_and_learning_switch (__main__.Assembly) ... open  failed.open  failed.ok
+test_plain_space_and_mode_modifiers (__main__.Assembly) ... open  failed.open  failed.ok
+test_return_binding_and_punctuation_toggle (__main__.Assembly) ... open  failed.open  failed.ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.323s
+
+OK

@@ -1,0 +1,25 @@
+test_address_symbols_and_versions_remain_literal (__main__.Assembly) ... open  failed.open  failed.ok
+test_ambiguous_dot_has_explicit_raw_path (__main__.Assembly) ... open  failed.open  failed.ok
+test_apostrophe_is_a_syllable_separator_before_punctuation (__main__.Assembly) ... open  failed.open  failed.ok
+test_corrupt_config_is_not_overwritten (__main__.Assembly) ... open  failed.open  failed.ok
+test_digits_and_explicit_keypad_insertion (__main__.Assembly) ... open  failed.open  failed.ok
+test_existing_and_new_contexts_receive_configuration (__main__.Assembly) ... open  failed.open  failed.open  failed.ok
+test_failed_save_rolls_back_live_and_learning_switch (__main__.Assembly) ... open  failed.open  failed.ok
+test_legacy_panel_layout_load_save_and_restart (__main__.Assembly) ... open  failed.open  failed.open  failed.open  failed.ok
+test_mixed_case_numbers_symbols_without_mode_switch (__main__.Assembly) ... open  failed.open  failed.ok
+test_mixed_input_limit_keeps_consumed_text (__main__.Assembly) ... open  failed.open  failed.ok
+test_partial_prefix_remaining_and_focus_cancellation (__main__.Assembly) ... open  failed.open  failed.ok
+test_pinyin_sentence_punctuation_without_prior_selection (__main__.Assembly) ... open  failed.open  failed.ok
+test_plain_space_and_mode_modifiers (__main__.Assembly) ... open  failed.open  failed.ok
+test_punctuation_finishes_partial_candidate_and_suffix_once (__main__.Assembly) ... open  failed.open  failed.ok
+test_punctuation_inside_edited_composition_does_not_commit (__main__.Assembly) ... open  failed.open  failed.ok
+test_punctuation_keeps_unconvertible_suffix (__main__.Assembly) ... open  failed.open  failed.ok
+test_punctuation_respects_highlighted_sentence (__main__.Assembly) ... open  failed.open  failed.ok
+test_raw_coordinate_edits_reject_stale_candidate (__main__.Assembly) ... open  failed.open  failed.ok
+test_return_binding_and_punctuation_toggle (__main__.Assembly) ... open  failed.open  failed.ok
+test_sensitive_mixed_input_bypasses_conversion_and_learning (__main__.Assembly) ... open  failed.open  failed.open  failed.ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 2.132s
+
+OK

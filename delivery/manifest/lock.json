@@ -1,0 +1,298 @@
+{
+  "assembly_version": "0.2.9",
+  "build_record": "build/0.1.12/build.json",
+  "build_record_sha256": "8b1ceb63ce3aa46784ff3ff98c841e6195ea247189493ab4b37554d545b91ee2",
+  "built_at": "2026-10-28T00:00:00Z",
+  "components": {
+    "engine": {
+      "bytes": 186471306,
+      "digest": "52dafcb9c9176a9bc99d4c29b8741a48d22393c2e5effbe48a9f89cbe5d77446",
+      "files": 302
+    },
+    "integration": {
+      "bytes": 162873,
+      "digest": "f2a3b92b9c5638529b7c67ff29ee80eb37a66f500ecbf22c2dd4b5008c25b6cb",
+      "files": 21
+    },
+    "interface": {
+      "bytes": 361737,
+      "digest": "33ec19376e469a3c9204ee7fb31dfda04dd3b04169607544cc033d9eda041cd7",
+      "files": 28
+    },
+    "lexicon": {
+      "bytes": 406872,
+      "digest": "c6e2b53a4d9d89577622f65ef1a2e2598ea04c725d60582992e26967d2e11cea",
+      "files": 38
+    },
+    "platform": {
+      "bytes": 104458,
+      "digest": "3eb758a4ee88b0f0a80a0db332dc30ffe14495676d141715e49c9fd2a3b92dc3",
+      "files": 22
+    }
+  },
+  "installer_tool_version": "0.1.0",
+  "license_material": [
+    {
+      "path": "engine/LICENSE",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "size": 35147,
+      "source": "engine/LICENSE"
+    },
+    {
+      "path": "platform/LICENSE",
+      "sha256": "383964f2fdbd755d5d76095fab2358aab5caa314144b1abcc24e337e11adabc4",
+      "size": 1080,
+      "source": "platform/LICENSE"
+    },
+    {
+      "path": "integration/LICENSE",
+      "sha256": "1f1547ae69cc6711b9b2d2b47fa137461813a97574806bfbe551cf52d1f4cf47",
+      "size": 405,
+      "source": "integration/LICENSE"
+    },
+    {
+      "path": "lexicon/SOURCES.md",
+      "sha256": "1c741c2c446a09ef406a9ec4fe1797c3b4f9f3a7ca63b71718c98e79fa1a411d",
+      "size": 4016,
+      "source": "lexicon/SOURCES.md"
+    },
+    {
+      "path": "interface/LICENSE",
+      "sha256": "496b6e30bc12c058d621e220506c88b85c4a8e6ee70c5ca8a0999633b441fe59",
+      "size": 36160,
+      "source": "interface/LICENSE"
+    },
+    {
+      "path": "interface/SOURCES.md",
+      "sha256": "b976ba3cf22f6d73ae7baff021a6b76335b4f9e26963718d8754283264d6a249",
+      "size": 7557,
+      "source": "interface/SOURCES.md"
+    },
+    {
+      "path": "share/ime/docs/README.zh_CN.md",
+      "sha256": "b16ea6d591918eda3be5c2c6b07138d4d50dacd584326783b5365cfca1080daf",
+      "size": 3725,
+      "source": "ime-build:GUIDE_TEXT"
+    }
+  ],
+  "locked_runtime": {
+    "employee_id": "engine",
+    "files": [
+      {
+        "path": "vendor/libpinyin-2.6.0-4.el9.src.rpm",
+        "sha256": "3e4e7a9fe8556b98047ac21826ec16974505e6eb99a78e894135ce59fff994c7",
+        "size": 20576836
+      },
+      {
+        "path": "vendor/libpinyin-2.6.0.tar.gz",
+        "sha256": "339d4f8562a4e341faaa07ab2bba089f82d4f90a992312622750f2bb5ffe0644",
+        "size": 259916
+      },
+      {
+        "path": "vendor/runtime/data/addon_phrase_index.bin",
+        "sha256": "f5cec76bb9afe583e663afd063dd5b1179dbd907945d6bbc81983caa18950cb3",
+        "size": 970752
+      },
+      {
+        "path": "vendor/runtime/data/addon_pinyin_index.bin",
+        "sha256": "7fd9be363bbcf9500df3595ca17f1815a7bd8e1a9f127596fd666f5b0e12fb89",
+        "size": 1523712
+      },
+      {
+        "path": "vendor/runtime/data/art.bin",
+        "sha256": "dc41472cb390a6aede4ee9707529972df7945cb5e6f75831c9a26c466140e5a1",
+        "size": 15791
+      },
+      {
+        "path": "vendor/runtime/data/bigram.db",
+        "sha256": "cf6fbb1406264e5b48e68ac33495f15895d5b257862162597226b6a1dc9029ed",
+        "size": 25853952
+      },
+      {
+        "path": "vendor/runtime/data/culture.bin",
+        "sha256": "d5f76e5644e6602327a528a9e8f78be96090342b0fe9517b9bdde5055756a670",
+        "size": 1063
+      },
+      {
+        "path": "vendor/runtime/data/economy.bin",
+        "sha256": "a6abd766c81751ed2b1c58824d2a660c3fcb75e570bbc6d234cbcc23deed6aa8",
+        "size": 36315
+      },
+      {
+        "path": "vendor/runtime/data/gb_char.bin",
+        "sha256": "28c3afc825fd2d109aa33693e11cca830dc17ceeab1c17ac6933dc013e9a9e92",
+        "size": 2972097
+      },
+      {
+        "path": "vendor/runtime/data/gbk_char.bin",
+        "sha256": "9a1269f803fa46cccd060dd1bbd39b7454880ff357ed1f2041889288b1f73647",
+        "size": 346011
+      },
+      {
+        "path": "vendor/runtime/data/geology.bin",
+        "sha256": "206b26f4b370c6f83cb362bbf164dd7d1120971972973d3f4ac81eb8d05651a4",
+        "size": 17985
+      },
+      {
+        "path": "vendor/runtime/data/history.bin",
+        "sha256": "f232a8615bbb99ba44e311a4346f8a6da8117ffd5be4011ed18c971064e44624",
+        "size": 5321
+      },
+      {
+        "path": "vendor/runtime/data/life.bin",
+        "sha256": "1061029e5df6dcd0c3e3ea26bae112ab279e966d89f2e9d5213410d9b38244e6",
+        "size": 76501
+      },
+      {
+        "path": "vendor/runtime/data/merged.bin",
+        "sha256": "516de224eb19249b6bab2de7051b4636dcf0329ce4fb7d4fdae91fcd91824b22",
+        "size": 32259
+      },
+      {
+        "path": "vendor/runtime/data/nature.bin",
+        "sha256": "0e78771e600f5f47f7279379bb375652650c18d363fcc80b7050c01694ddc942",
+        "size": 13017
+      },
+      {
+        "path": "vendor/runtime/data/opengram.bin",
+        "sha256": "14a7d729396ccebd003df1b2364d52c0d7786f300598c98005f0a776b30c5c3e",
+        "size": 821157
+      },
+      {
+        "path": "vendor/runtime/data/people.bin",
+        "sha256": "ced086daf359fe5b627e35358fbf2200d18cc5a9c17a33111f00e6ad9814ff19",
+        "size": 67447
+      },
+      {
+        "path": "vendor/runtime/data/phrase_index.bin",
+        "sha256": "9e9200b6e8d173a54a7da7af66db7a1009d80163daa5b56208a8f497877e6796",
+        "size": 7811072
+      },
+      {
+        "path": "vendor/runtime/data/pinyin_index.bin",
+        "sha256": "840a0eb3b64a779f4e6a15e902ed61c0fcc385947dcf20f4cd35b6baf3da7247",
+        "size": 10579968
+      },
+      {
+        "path": "vendor/runtime/data/science.bin",
+        "sha256": "87f6b6a268ca8c95a21556e6aa8aa896565cd374e69c6a45aa4cdb6e8e16a223",
+        "size": 12795
+      },
+      {
+        "path": "vendor/runtime/data/society.bin",
+        "sha256": "3191f9e46744cf16b9d94ddaf1eff048c4881d1395f74fcab5da82ebd6bf8e1a",
+        "size": 271189
+      },
+      {
+        "path": "vendor/runtime/data/sport.bin",
+        "sha256": "076f931b7ceccda0245cfbde92597c3fe5fee78ffbdb2d69a6ccb758eeea92d6",
+        "size": 3111
+      },
+      {
+        "path": "vendor/runtime/data/table.conf",
+        "sha256": "daac60034e2abb734a3bb15bb7765e3f67c0f13541ffa91943e0f3a5e293958e",
+        "size": 1234
+      },
+      {
+        "path": "vendor/runtime/data/technology.bin",
+        "sha256": "579d6f25f5270525ac7faf9dfef7469f2008b0aced78748c4da249f847fbe1d8",
+        "size": 13543
+      },
+      {
+        "path": "vendor/runtime/lib/libdb-5.3.so",
+        "sha256": "b9031a4c90b9377519f907be72efe97fbe48dce316ae3160b807f05329263b36",
+        "size": 1863792
+      },
+      {
+        "path": "vendor/runtime/lib/libglib-2.0.so.0",
+        "sha256": "af186a764c1f8aeceec6eb16b3af453d5de4cb4b0b1950abcdeba67068e03304",
+        "size": 1303056
+      },
+      {
+        "path": "vendor/runtime/lib/libpcre.so.1",
+        "sha256": "5a17f15edfd8d33ade89f5b206cb7dd6d1a94199a41352a34482c01ade9faad4",
+        "size": 488664
+      },
+      {
+        "path": "vendor/runtime/lib/libpinyin.so.13.0.0",
+        "sha256": "c4ba6208feaf5462eaa77a0a37b11f0c6ade76af909207fc9dfc80f4ff3b4845",
+        "size": 624064
+      },
+      {
+        "path": "vendor/runtime/licenses/glib2/COPYING",
+        "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+        "size": 26530
+      },
+      {
+        "path": "vendor/runtime/licenses/libdb/LICENSE",
+        "sha256": "b78815181a53241f9347c6b47d1031fd669946f863e1edc807a291354cec024b",
+        "size": 7310
+      },
+      {
+        "path": "vendor/runtime/licenses/libdb/lgpl-2.1.txt",
+        "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+        "size": 26530
+      },
+      {
+        "path": "vendor/runtime/licenses/libpinyin/AUTHORS",
+        "sha256": "0ba6d49c905ac5c2510b5a162910d67ae7e295e24e24a3b97ba495e75dd837f6",
+        "size": 98
+      },
+      {
+        "path": "vendor/runtime/licenses/libpinyin/COPYING",
+        "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+        "size": 35147
+      },
+      {
+        "path": "vendor/runtime/licenses/libpinyin/README",
+        "sha256": "fd9fd79be676b344eebd3bbe8812bcbb39b866f0e254f3200b6059932511d2c2",
+        "size": 159
+      },
+      {
+        "path": "vendor/runtime/licenses/libpinyin/opengram.license",
+        "sha256": "333805914071a1d5aaed743db9e786d139ef4ddeef0813cceaef6c497ac245be",
+        "size": 11565
+      },
+      {
+        "path": "vendor/runtime/licenses/pcre/COPYING",
+        "sha256": "17abe1dbb92b21ab173cf9757dd57b0b15cd8d863b2ccdef635fdbef03077fb0",
+        "size": 95
+      },
+      {
+        "path": "vendor/runtime/licenses/pcre/LICENCE",
+        "sha256": "0dd9c13864dbb9ee4d77a1557e96be29b2d719fb6584192ee36611aae264c4a3",
+        "size": 3182
+      },
+      {
+        "path": "vendor/sources/glib2-2.68.4-19.el9_8.1.src.rpm",
+        "sha256": "6329f1c26ec28bcd61923eddedf18d8bc94c87cf09e752cee7ad814aa771ef7c",
+        "size": 5085843
+      },
+      {
+        "path": "vendor/sources/libdb-5.3.28-57.el9_6.src.rpm",
+        "sha256": "a4f69f05dd8328a332ee3b8adb7e9bd56eeb47f46d5e46ca56a43c25b2bc7c4d",
+        "size": 35282723
+      },
+      {
+        "path": "vendor/sources/pcre-8.44-4.el9.src.rpm",
+        "sha256": "7e228c7eb2aa94de0544d5156114ab01063c939b0ea8b41fe0208e004a61c8e8",
+        "size": 1620247
+      }
+    ],
+    "lock_version": 1
+  },
+  "package": {
+    "files": 134,
+    "path": "dist/server-ime-0.1.12.tar.gz",
+    "sha256": "1690d3d1fc126f0866bbeff5dae9377842a9a79e863f5740a58caa254205be3b"
+  },
+  "path_base": "delivery",
+  "product": "server-ime",
+  "release_note": "候选框拼音行显示光标，左右键编辑时可见；联想测试导入路径修复",
+  "schema": "ime.version-lock/1",
+  "sources": {
+    "path": "dist/server-ime-0.1.12-sources.tar.gz",
+    "sha256": "f5afcfbecfb0a8930389b89c8239e5749dc29d6bf82d1e8cf5ad138130580faa"
+  },
+  "version": "0.1.12"
+}

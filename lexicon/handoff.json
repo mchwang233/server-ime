@@ -1,0 +1,107 @@
+{
+  "employee_id": "lexicon",
+  "status": "ready",
+  "version": "0.1.0",
+  "verifies": [],
+  "provides": {
+    "base_lexicon": {
+      "version": "base-v1",
+      "data": "lexicon/data/base/lexicon-v1.jsonl",
+      "manifest": "lexicon/data/base/manifest.json",
+      "sha256": "8d4f53d5553055e7f206bc79b7630c7c70ba346f7bb97a170756a8fc202fac67",
+      "entries": 369,
+      "license": "CC-BY-4.0",
+      "native_table": "lexicon/build/base-v1/native",
+      "native_manifest": "lexicon/build/base-v1/manifest.json"
+    },
+    "user_data": {
+      "schema": "ime-lexicon-user/1",
+      "layout": "meta.json + words.jsonl + lock + audit.jsonl + native/ + native-manifest.json + backups/",
+      "default_path": "$XDG_DATA_HOME/server-ime/lexicon or ~/.local/share/server-ime/lexicon",
+      "write_owner": "lexicon",
+      "engine_access": "read-only native directory at engine construction",
+      "python": {
+        "store": "lexicon.store.UserStore",
+        "methods": [
+          "record_commit(text, pinyin, source='commit', event_id=None, learning_eligible=True, private=False, purpose='text')",
+          "set_learning(enabled, reason='', actor='user')",
+          "add_phrase(text, pinyin, count=50, source='custom')",
+          "remove_phrase(text=None, pinyin=None, all_entries=False)",
+          "list_words(kind=None, query=None, limit=100, offset=0)",
+          "snapshot()",
+          "verify()",
+          "repair(apply=False)"
+        ],
+        "transfer": [
+          "lexicon.transfer.export_bundle(store, out_path)",
+          "lexicon.transfer.import_bundle(store, path, mode='merge', dry_run=False)",
+          "lexicon.transfer.make_backup(store, label='', note='')",
+          "lexicon.transfer.restore_backup(store, backup_id)",
+          "lexicon.transfer.verify_backup(store, backup_id)",
+          "lexicon.transfer.list_backups(store)",
+          "lexicon.transfer.prune_backups(store, keep=10)"
+        ],
+        "native": [
+          "lexicon.service.rebuild_native(store, base_lexicon, base_manifest=None, runtime_dir=None, system_data=None, probe=0)",
+          "lexicon.service.list_native(store, runtime_dir=None, system_data=None)",
+          "lexicon.engine.open_engine(user_dir=None, data_dir=None, runtime_dir=None)"
+        ]
+      },
+      "cli": "lexicon/bin/lexicon (init/status/verify/repair/learning/learn/phrase/words/export/import/backup/backups/native/engine-probe/eval)"
+    },
+    "formats": {
+      "base": "ime-lexicon-base/1",
+      "user": "ime-lexicon-user/1",
+      "bundle": "ime-lexicon-user-bundle/1",
+      "backup": "ime-lexicon-backup/1",
+      "native_manifest": "ime-lexicon-native/1",
+      "corpus": "ime-eval-corpus/1",
+      "schemas": "lexicon/format/*.schema.json",
+      "documentation": "lexicon/format/README.md"
+    },
+    "evaluation": {
+      "corpus": "lexicon/corpus/eval/cases-v1.jsonl",
+      "manifest": "lexicon/corpus/eval/manifest.json",
+      "sha256": "0f8c1c371872e28ef2b1b39c28e092a21090d58144b81800276ae48527a69ae3",
+      "cases": 200,
+      "categories": {"common": 60, "sentence": 40, "ambiguity": 25, "long": 25, "mixed": 25, "typo": 25},
+      "scoring": "ime-eval-score/1",
+      "contamination": "zero exact answer/readings overlap with base lexicon"
+    }
+  },
+  "engine_integration": {
+    "backend": "libpinyin 2.6.0 (GPL-3.0-or-later)",
+    "engine_api": "1.0 / component 0.1.0",
+    "current_limitation": "engine 0.1.0 hardcodes pinyin_init(data_dir, NULL); no user_dir or import_dictionary API",
+    "bridge": "lexicon.engine.open_engine injects the user directory for the construction call and restores Native; no engine files changed",
+    "reload_rule": "rebuild native/ then create a new engine context; existing sessions do not see new entries",
+    "request_to_engine": "add user_dir or import_dictionary with capability flags and stable error codes",
+    "write_ownership": "lexicon writes user data; engine loads native/ read-only and must not call pinyin_train/save there"
+  },
+  "handoff_notes": {
+    "platform": "Pass the chosen user-data path to lexicon; call record_commit only for eligible, non-private, allowed-purpose commits with event_id; rebuild native at idle and recreate the engine context.",
+    "interface": "Expose a persistent learning switch and custom phrase management through these APIs; never write meta.json/words.jsonl directly; show learning-disabled reasons.",
+    "delivery": "Preserve the user data directory across install/upgrade/uninstall; ship data/base, build/base-v1, corpus/eval and licenses; run lexicon/tools/run_checks.py after packaging; native tables are version-bound to libpinyin 2.6.0.",
+    "engine": "Formalize user_dir/import_dictionary; keep the current lexicon JSONL/native contract; do not write into the lexicon user directory."
+  },
+  "checks": {
+    "runner": "python3 lexicon/tools/run_checks.py",
+    "summary": "lexicon/checks/summary.json",
+    "unit_tests": "25 passed",
+    "engine_data_unchanged": true,
+    "engine_source_unchanged": true,
+    "base_lexicon_unchanged": true,
+    "corpus_unchanged": true,
+    "eval_baseline": {"top1": 113, "top5": 136, "cases": 200, "errors": 5},
+    "eval_with_base_lexicon": {"top1": 113, "top5": 136, "cases": 200, "errors": 5},
+    "coverage_probe": {"pristine_top1": 282, "with_base_top1": 369, "improved": 87, "regressed": 0}
+  },
+  "licenses": {
+    "code": "GPL-3.0-or-later",
+    "base_data": "CC-BY-4.0",
+    "eval_corpus": "CC0-1.0",
+    "readings_generator": "pypinyin 0.55.0 MIT",
+    "reference": "CC-CEDICT CC BY-SA 4.0 (verification only)",
+    "engine_data": "libpinyin-data GPL-3.0-or-later, owned by engine, not redistributed here"
+  }
+}

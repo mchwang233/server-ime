@@ -1,0 +1,172 @@
+{
+  "employee_id": "engine",
+  "version": 1,
+  "selected_backend": {
+    "project": "libpinyin/libpinyin",
+    "version": "2.6.0",
+    "commit": "19d8e9a1e577fb0d93dc9fb51ea982d677331755",
+    "distribution": "Rocky Linux",
+    "package": "libpinyin-2.6.0-4.el9.x86_64",
+    "license": "GPL-3.0-or-later",
+    "source": "https://github.com/libpinyin/libpinyin/tree/19d8e9a1e577fb0d93dc9fb51ea982d677331755",
+    "use": "reuse",
+    "ranking_score": 75
+  },
+  "runtime_copies": [
+    {
+      "source": "/usr/lib64/libpinyin.so.13.0.0",
+      "file": "engine/vendor/runtime/lib/libpinyin.so.13.0.0",
+      "package": "libpinyin-2.6.0-4.el9.x86_64",
+      "sha256": "c4ba6208feaf5462eaa77a0a37b11f0c6ade76af909207fc9dfc80f4ff3b4845"
+    },
+    {
+      "source": "/usr/lib64/libglib-2.0.so.0",
+      "file": "engine/vendor/runtime/lib/libglib-2.0.so.0",
+      "package": "glib2-2.68.4-19.el9_8.1.x86_64",
+      "sha256": "af186a764c1f8aeceec6eb16b3af453d5de4cb4b0b1950abcdeba67068e03304"
+    },
+    {
+      "source": "/usr/lib64/libdb-5.3.so",
+      "file": "engine/vendor/runtime/lib/libdb-5.3.so",
+      "package": "libdb-5.3.28-57.el9_6.x86_64",
+      "sha256": "b9031a4c90b9377519f907be72efe97fbe48dce316ae3160b807f05329263b36"
+    },
+    {
+      "source": "/usr/lib64/libpcre.so.1",
+      "file": "engine/vendor/runtime/lib/libpcre.so.1",
+      "package": "pcre-8.44-4.el9.x86_64",
+      "sha256": "5a17f15edfd8d33ade89f5b206cb7dd6d1a94199a41352a34482c01ade9faad4"
+    }
+  ],
+  "downloads": [
+    {
+      "file": "engine/vendor/libpinyin-2.6.0.tar.gz",
+      "url": "https://codeload.github.com/libpinyin/libpinyin/tar.gz/19d8e9a1e577fb0d93dc9fb51ea982d677331755",
+      "sha256": "339d4f8562a4e341faaa07ab2bba089f82d4f90a992312622750f2bb5ffe0644",
+      "bytes": 259916
+    },
+    {
+      "file": "engine/vendor/research/librime-README.md",
+      "url": "https://raw.githubusercontent.com/rime/librime/56737cd29a4d393a104a2098ece3697aa2810465/README.md",
+      "sha256": "cda5c76f9fa870c9b97e99b2de6720c9d594f360e02d11cd174ef084228183c9",
+      "bytes": 6217
+    },
+    {
+      "file": "engine/vendor/research/librime-LICENSE",
+      "url": "https://raw.githubusercontent.com/rime/librime/56737cd29a4d393a104a2098ece3697aa2810465/LICENSE",
+      "sha256": "f67d27a6d2d586fcfed4b4c886a83747095396a39b6641e18e855086be2ec400",
+      "bytes": 1513
+    },
+    {
+      "file": "engine/vendor/libpinyin-2.6.0-4.el9.src.rpm",
+      "url": "https://download.rockylinux.org/pub/rocky/9/AppStream/source/tree/Packages/l/libpinyin-2.6.0-4.el9.src.rpm",
+      "sha256": "3e4e7a9fe8556b98047ac21826ec16974505e6eb99a78e894135ce59fff994c7",
+      "bytes": 20576836
+    },
+    {
+      "file": "engine/vendor/sources/glib2-2.68.4-19.el9_8.1.src.rpm",
+      "url": "https://download.rockylinux.org/pub/rocky/9/BaseOS/source/tree/Packages/g/glib2-2.68.4-19.el9_8.1.src.rpm",
+      "bytes": 5085843,
+      "sha256": "6329f1c26ec28bcd61923eddedf18d8bc94c87cf09e752cee7ad814aa771ef7c",
+      "attempts": []
+    },
+    {
+      "file": "engine/vendor/sources/libdb-5.3.28-57.el9_6.src.rpm",
+      "url": "https://download.rockylinux.org/pub/rocky/9/BaseOS/source/tree/Packages/l/libdb-5.3.28-57.el9_6.src.rpm",
+      "bytes": 35282723,
+      "sha256": "a4f69f05dd8328a332ee3b8adb7e9bd56eeb47f46d5e46ca56a43c25b2bc7c4d",
+      "attempts": []
+    },
+    {
+      "file": "engine/vendor/sources/pcre-8.44-4.el9.src.rpm",
+      "url": "https://download.rockylinux.org/pub/rocky/9/BaseOS/source/tree/Packages/p/pcre-8.44-4.el9.src.rpm",
+      "bytes": 1620247,
+      "sha256": "7e228c7eb2aa94de0544d5156114ab01063c939b0ea8b41fe0208e004a61c8e8",
+      "attempts": []
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "libpinyin-data",
+      "version": "2.6.0-4.el9",
+      "license": "GPL-3.0-or-later AND Apache-2.0",
+      "location": "vendor/runtime/data",
+      "notes": "Unmodified distribution stock data, binary format 6, model 14, BerkeleyDB. opengram.license covers incorporated Android entries; complete source tables/model in libpinyin source RPM."
+    },
+    {
+      "name": "glib2",
+      "version": "2.68.4-19.el9_8.1",
+      "license": "LGPL-2.0-or-later",
+      "location": "vendor/runtime/lib/libglib-2.0.so.0"
+    },
+    {
+      "name": "libdb",
+      "version": "5.3.28-57.el9_6",
+      "license": "BSD and LGPLv2 and Sleepycat and MIT",
+      "location": "vendor/runtime/lib/libdb-5.3.so",
+      "notes": "Preserves the exact RPM license expression; original LICENSE and lgpl-2.1.txt are shipped."
+    },
+    {
+      "name": "pcre",
+      "version": "8.44-4.el9",
+      "license": "BSD-3-Clause",
+      "location": "vendor/runtime/lib/libpcre.so.1"
+    }
+  ],
+  "system_dependencies": [
+    {
+      "name": "python3",
+      "version_tested": "3.9.25-7.el9_8",
+      "requirement": ">=3.9 with ctypes, standard library only",
+      "bundled": false
+    },
+    {
+      "name": "glibc",
+      "version_tested": "2.34-270.el9_8.x86_64",
+      "bundled": false
+    },
+    {
+      "name": "libstdc++ and libgcc",
+      "version_tested": "11.5.0-14.el9.x86_64",
+      "bundled": false
+    }
+  ],
+  "build_only": [
+    {
+      "name": "cmake",
+      "version_tested": "3.31.8",
+      "required": ">=3.18"
+    },
+    {
+      "name": "GNU make",
+      "version_tested": "4.3"
+    }
+  ],
+  "reference_alternative": {
+    "project": "rime/librime",
+    "commit": "56737cd29a4d393a104a2098ece3697aa2810465",
+    "version": "git snapshot at pinned commit",
+    "license": "BSD-3-Clause",
+    "use": "reference",
+    "ranking_score": 81
+  },
+  "source_signature_check": "checks/abi-and-packages.txt",
+  "input_hashes": "vendor.lock.json",
+  "ownership": {
+    "source": "engine/src",
+    "dependencies": "engine/vendor",
+    "build": "engine/build",
+    "checks": "engine/checks"
+  },
+  "derived_data": [
+    {
+      "file": "data/syllables-v1.json",
+      "sha256": "e3b89f6f2c6f3a7415f81b0a890c87df0fb37bdae1a264bc195538a15faaaed4",
+      "source": "libpinyin/libpinyin@19d8e9a1e577fb0d93dc9fb51ea982d677331755/src/storage/pinyin_parser_table.h",
+      "source_sha256": "b438e3bb1472191e93ffcfb9f851d02a39c1e973ca47c70fd19a11fdb395ed74",
+      "license": "GPL-3.0-or-later",
+      "entries": 405,
+      "derivation": "pinyin_index entries with IS_PINYIN, excluding INCOMPLETE and CORRECT flags; sorted unique spellings; no word or corpus data"
+    }
+  ]
+}

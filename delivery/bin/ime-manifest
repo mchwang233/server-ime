@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+"""ime-manifest：组件清单/安装包/产品清单校验入口。"""
+
+import os
+import sys
+
+_HERE = os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, os.path.join(_HERE, os.pardir, "lib"))
+
+from ime_delivery.cli import main_manifest  # noqa: E402
+
+if __name__ == "__main__":
+    sys.exit(main_manifest(sys.argv[1:]))

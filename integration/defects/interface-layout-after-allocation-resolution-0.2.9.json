@@ -1,0 +1,61 @@
+{
+  "employee_id": "platform",
+  "owner_employee_id": "interface",
+  "verifies": [],
+  "status": "RESOLVED_IN_FIXED_ASSEMBLY",
+  "original_defect": "integration/defects/interface-layout-after-allocation.json",
+  "original_defect_sha256": "2c5920612ede5f2e4c615fd526ca484aac3765492ca4c7bd1f05ae09a2f2d62b",
+  "failed_version": "0.2.8",
+  "fixed_version": "0.2.9",
+  "interface_version": "0.1.5",
+  "component_evidence": "interface/evidence/run-20261029-131625/summary.json",
+  "product_evidence": "integration/evidence/layout-assembled-0.2.9/summary.json",
+  "viewport_evidence": "integration/evidence/layout-assembled-0.2.9/viewport-summary.json",
+  "fixture": false,
+  "routes": [
+    "managed",
+    "existing"
+  ],
+  "screen": [
+    360,
+    960
+  ],
+  "font_scale": 3.0,
+  "configurations": [
+    [
+      9,
+      9
+    ],
+    [
+      9,
+      3
+    ],
+    [
+      5,
+      1
+    ]
+  ],
+  "full_short_full_scroll_upper": {
+    "9/9": [
+      859,
+      384,
+      859
+    ],
+    "9/3": [
+      859,
+      384,
+      859
+    ],
+    "5/1": [
+      479,
+      384,
+      479
+    ]
+  },
+  "assertions": "All original 148 feedback assertions retained; real key highlight auto-reveal, complete IDs, real mouse/digit commit readback and short-page range added. No reveal RPC or fixture text.",
+  "release_gate": "Final product/application and archive checks must pass before the handoff enables packaging.",
+  "historical_report_policy": "The original OPEN defect report and failed evidence are retained unchanged; this record supplies its resolution.",
+  "final_inventory": "integration/checks/layout-inventory-0.2.9.json",
+  "final_inventory_result": "PASS",
+  "packaging_ready": true
+}

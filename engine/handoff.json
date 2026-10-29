@@ -1,0 +1,117 @@
+{
+  "employee_id": "engine",
+  "verifies": [],
+  "status": "ready",
+  "version": "0.4.0",
+  "api_version": "1.0",
+  "bundle": "/projects/workspace/20261028-1621-server-ime/engine/build/server-ime-engine-0.4.0.tar.gz",
+  "sha256": "6491a8fc7801f615f63fe2eb3bd5cfad24daea77d20e1080c5d562a5d20d6a79",
+  "runtime_entrypoint": "engine/bin/server-ime-engine",
+  "python_import": "server_ime_engine.Engine",
+  "python_path": "engine/src",
+  "platform_factory": "server_ime_engine.platform_adapter:create_session",
+  "factory_signature": "create_session(config=None, **engine_options)",
+  "engine_signature": "Engine(runtime_dir=None, data_dir=None, user_dir=None, *, user_data_dir=None, base_lexicon=None)",
+  "new_session_methods": [
+    "set_composition(text,cursor=None)",
+    "input_text(text)"
+  ],
+  "new_fields": [
+    "state.composition.mode/spans/literal_digits",
+    "Conversion.literal_digits",
+    "candidate.input_end/literal",
+    "commit.learning.segments"
+  ],
+  "contract": "engine/docs/API-v1.md",
+  "composition_contract": "engine/docs/MIXED-INPUT.md",
+  "machine_contract": "engine/api-v1.schema.json",
+  "capabilities": "engine/checks/mixed-revision/capabilities.json",
+  "feature_matrix": "engine/checks/mixed-revision/feature-matrix.json",
+  "composition_features": "engine/checks/mixed-revision/composition-features.json",
+  "configured_composition": "engine/checks/mixed-revision/configured-composition.json",
+  "evidence": "engine/checks/mixed-revision/completion.json",
+  "report": "engine/docs/QUALITY-PERFORMANCE.md",
+  "quality_summary": "engine/checks/mixed-revision/summary.json",
+  "quality_delta": "engine/checks/mixed-revision/composition-comparison.json",
+  "dependency_manifest": "engine/dependencies.json",
+  "consumers": [
+    "platform",
+    "interface",
+    "lexicon",
+    "delivery"
+  ],
+  "integration_notes": [
+    "API 1.0 old set_input validation/normalization and no-argument factories remain compatible. New set_composition/input_text preserve original Unicode/case/digits/symbols. Candidate IDs and raw-coordinate edit rules remain revision-bound.",
+    "PlatformSession.convert(composition,cursor) now uses mixed composition and returns an optional literal_digits flag. Preserve incoming case/digits/symbols and use that flag to distinguish digit insertion from numeric candidate selection; explicit select always selects. Space/Return retain selection/literal semantics; input_text always inserts.",
+    "Core partial selection stays in preedit; platform port still commits the accepted prefix immediately and returns the original remaining text with cursor=0. Integration must test actual application text, editing, focus and stale IDs.",
+    "Set purpose/private/hints before forwarding input. Context switches clear composition/caches and use the public model. Password key bypass is still owned by platform; core additionally rejects personal ranking/learning.",
+    "Use explicit product user_data_dir=<product-data-dir>/learning. Lexicon CLI --data-dir must target exactly this directory. Preserve it during upgrades/uninstalls; after external import/remove use reload_lexicon as needed.",
+    "Only ziranma double pinyin is declared. All named fuzzy/correction switches are preserved. Measurements enable correction; all_features also enables every fuzzy rule and learning. Record actual product settings when integrating.",
+    "Mixed selection learns only canonical Chinese fragments, never raw email/URL/English/numeric tokens. Learning off stops new records but retains ranking of existing words. New sessions default to learning=false.",
+    "Complete corpus and all 338 historical slow samples are retained. Raw data and standalone profiling scripts live under checks/mixed-revision and tools; no test answers were imported into lexicons.",
+    "Do not substitute the 12 short mixed behavior cases for the 200-case full-corpus timing/quality denominators. Read composition_corpus profiles for the new product API."
+  ],
+  "unresolved": [
+    {
+      "id": "selection-cost",
+      "detail": "Same 169 solved cases: mean selection actions 1.4793 -> 1.6036; P95/P99 6/8 -> 7/11. Literal choices and fragment recomputation increase some costs."
+    },
+    {
+      "id": "latency-tail",
+      "detail": "All-feature composition corpus P95 32.3663 ms meets 50 ms; 66 calls exceed 50 ms, max 75.1492 ms. Historical slow cohort P95 54.882 ms, gap 4.8820 ms; 47/338 still over 50 ms."
+    },
+    {
+      "id": "quality-and-ambiguity",
+      "detail": "New input API exact top1/top5 129/152 out of 200, 28 unsolved by fixed policy; mixed 1/25 exact top1 and 2/25 solvable. Missing symbols/case are not reconstructed; uninterrupted lowercase boundaries remain ambiguous."
+    },
+    {
+      "id": "search-scope",
+      "detail": "Full sentence N-best stays full-length; local phrase enumeration has a 24-codepoint window, repairs decode at most 4 of the general edit hypotheses, alternatives use 2 first-syllable branches; no hard cancellation inside native calls. Long partial phrases may be absent."
+    },
+    {
+      "id": "benchmark-scope",
+      "detail": "Process-local candidate computation, no GUI/IPC timing. Cold runs do not flush OS page cache. Personal benchmark uses 128 entries; no large-store/Windows 11 comparison."
+    },
+    {
+      "id": "learning-length",
+      "detail": "Only canonical, validated Chinese fragments are learned. Native personal phrases below 16 characters combine; 16-character phrases are exact-only; longer or ambiguous readings do not persist."
+    }
+  ],
+  "previous_release": {
+    "version": "0.3.0",
+    "bundle": "/projects/workspace/20261028-1621-server-ime/engine/build/server-ime-engine-0.3.0.tar.gz",
+    "sha256": "4fc9402e6d196fd22c8be4d155ca28a8ed6c6d10326c69e493fc5cd5e5b402d4",
+    "unchanged": true
+  },
+  "reference": "libpinyin/libpinyin@19d8e9a1e577fb0d93dc9fb51ea982d677331755 license=GPL-3.0-or-later score=75 use=reuse; existing pinned runtime/API, no new third-party code or dependency",
+  "extra_reads": [
+    "engine/src/server_ime_engine/*.py",
+    "engine/tests/test_engine.py",
+    "engine/tests/test_enhanced.py",
+    "engine/tests/test_quality_revision.py",
+    "engine/tools/evaluate_enhancement.py",
+    "engine/tools/evaluate_revision.py",
+    "engine/tools/build_bundle.py",
+    "engine/tools/check_install.py",
+    "engine/docs/API-v1.md",
+    "engine/docs/FEATURES.md",
+    "engine/docs/EXTENSIONS.md",
+    "engine/README.md",
+    "engine/checks/README.md",
+    "engine/handoff.json",
+    "engine/api-v1.schema.json",
+    "engine/CMakeLists.txt",
+    "engine/checks/quality-revision/over-50ms.json",
+    "engine/checks/quality-revision/*quality*.json",
+    "engine/checks/quality-revision/*performance.json",
+    "engine/checks/quality-revision/summary.json",
+    "engine/vendor/libpinyin-2.6.0/src/pinyin.cpp",
+    "engine/vendor/libpinyin-2.6.0/src/pinyin.h",
+    "engine/vendor/libpinyin-2.6.0/src/lookup/pinyin_lookup2.cpp",
+    "engine/vendor/libpinyin-2.6.0/src/lookup/pinyin_lookup2.h",
+    "lexicon/corpus/eval/cases-v1.jsonl",
+    "lexicon/corpus/eval/manifest.json",
+    "lexicon/data/base/lexicon-v1.jsonl",
+    "lexicon/src/lexicon/ (existing public API consumed)"
+  ]
+}

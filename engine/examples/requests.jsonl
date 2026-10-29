@@ -1,0 +1,5 @@
+{"api_version":"1.0","id":1,"op":"capabilities"}
+{"api_version":"1.0","id":2,"op":"create","args":{"session_id":"example"}}
+{"api_version":"1.0","id":3,"op":"input","session_id":"example","args":{"text":"woaibeijingtiananmen"}}
+{"api_version":"1.0","id":4,"op":"commit","session_id":"example"}
+{"api_version":"1.0","id":5,"op":"destroy","session_id":"example"}

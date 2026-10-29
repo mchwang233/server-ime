@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://server-ime.local/schema/user-data-v1.json",
+  "title": "server-ime personal lexicon data (meta.json and words.jsonl entries)",
+  "definitions": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "text", "pinyin", "count", "kind", "source"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^w-[0-9a-f]{16}$"},
+        "text": {"type": "string", "minLength": 1, "maxLength": 16},
+        "pinyin": {"type": "string", "pattern": "^[a-zv]+(?:'[a-zv]+)*$"},
+        "count": {"type": "integer", "minimum": 1, "maximum": 1000000},
+        "kind": {"enum": ["learned", "custom"]},
+        "source": {"type": "string", "minLength": 1},
+        "first_seen": {"type": "string"},
+        "last_seen": {"type": "string"}
+      }
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["schema", "store_id", "revision", "writer", "learning", "base", "limits", "counts", "files"],
+      "properties": {
+        "schema": {"const": "ime-lexicon-user/1"},
+        "store_id": {"type": "string", "minLength": 1},
+        "created_at": {"type": "string"},
+        "updated_at": {"type": "string"},
+        "revision": {"type": "integer", "minimum": 0},
+        "writer": {"const": "lexicon"},
+        "learning": {
+          "type": "object",
+          "required": ["enabled"],
+          "properties": {
+            "enabled": {"type": "boolean"},
+            "updated_at": {"type": "string"},
+            "reason": {"type": "string"},
+            "actor": {"type": "string"}
+          }
+        },
+        "base": {
+          "type": ["object", "null"],
+          "properties": {
+            "lexicon_version": {"type": ["string", "null"]},
+            "sha256": {"type": "string"},
+            "entry_count": {"type": "integer"}
+          }
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "max_entries": {"type": "integer", "minimum": 1},
+            "max_count": {"type": "integer", "minimum": 1},
+            "dedupe_window": {"type": "integer", "minimum": 0}
+          }
+        },
+        "counts": {
+          "type": "object",
+          "properties": {
+            "base": {"type": "integer", "minimum": 0},
+            "learned": {"type": "integer", "minimum": 0},
+            "custom": {"type": "integer", "minimum": 0},
+            "total": {"type": "integer", "minimum": 0}
+          }
+        },
+        "last_event_ids": {"type": "array", "items": {"type": "string"}, "maxItems": 256},
+        "files": {"type": "object"},
+        "native": {"type": ["object", "null"]}
+      }
+    }
+  }
+}

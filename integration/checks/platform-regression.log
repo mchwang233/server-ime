@@ -1,0 +1,21 @@
+test_backend_failure_keeps_raw_text_recoverable (test_controller.ControllerTests) ... ok
+test_cursor_delete_and_raw_commit (test_controller.ControllerTests) ... ok
+test_duplicate_candidate_ids_rejected (test_controller.ControllerTests) ... ok
+test_focus_out_discards_without_committing (test_controller.ControllerTests) ... ok
+test_input_hints_preserved_and_numeric_direct (test_controller.ControllerTests) ... ok
+test_input_length_bound (test_controller.ControllerTests) ... ok
+test_invalid_display_cursor_falls_back_to_raw (test_controller.ControllerTests) ... ok
+test_paging_and_number_selection (test_controller.ControllerTests) ... ok
+test_partial_selection_supported (test_controller.ControllerTests) ... ok
+test_password_and_pin_never_convert (test_controller.ControllerTests) ... ok
+test_preedit_candidates_commit_clear (test_controller.ControllerTests) ... ok
+test_shortcuts_release_and_english_passthrough (test_controller.ControllerTests) ... ok
+test_stale_candidate_and_duplicate_action_rejected (test_controller.ControllerTests) ... ok
+test_structural_backend_needs_no_platform_import (test_controller.ControllerTests) ... ok
+test_tab_escape_reset_disable_cleanup (test_controller.ControllerTests) ... ok
+test_x11_super_and_altgr_modifiers_pass_through (test_controller.ControllerTests) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.005s
+
+OK

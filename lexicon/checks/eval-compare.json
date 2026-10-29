@@ -1,0 +1,46 @@
+{
+ "overall": {
+  "top1_delta": 0.0,
+  "top5_delta": 0.0,
+  "cer_delta": 0.0,
+  "errors_delta": 0
+ },
+ "categories": {
+  "ambiguity": {
+   "top1_delta": 0.0,
+   "top5_delta": 0.0,
+   "cer_delta": 0.0,
+   "errors_delta": 0
+  },
+  "common": {
+   "top1_delta": 0.0,
+   "top5_delta": 0.0,
+   "cer_delta": 0.0,
+   "errors_delta": 0
+  },
+  "long": {
+   "top1_delta": 0.0,
+   "top5_delta": 0.0,
+   "cer_delta": 0.0,
+   "errors_delta": 0
+  },
+  "mixed": {
+   "top1_delta": 0.0,
+   "top5_delta": 0.0,
+   "cer_delta": 0.0,
+   "errors_delta": 0
+  },
+  "sentence": {
+   "top1_delta": 0.0,
+   "top5_delta": 0.0,
+   "cer_delta": 0.0,
+   "errors_delta": 0
+  },
+  "typo": {
+   "top1_delta": 0.0,
+   "top5_delta": 0.0,
+   "cer_delta": 0.0,
+   "errors_delta": 0
+  }
+ }
+}

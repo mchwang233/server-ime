@@ -1,0 +1,200 @@
+{"id": "C001", "category": "common", "input": "nihao", "expected": "你好", "tags": ["greeting"]}
+{"id": "C002", "category": "common", "input": "xiexie", "expected": "谢谢", "tags": ["greeting"]}
+{"id": "C003", "category": "common", "input": "zaijian", "expected": "再见", "tags": ["greeting"]}
+{"id": "C004", "category": "common", "input": "qingwen", "expected": "请问", "tags": ["polite"]}
+{"id": "C005", "category": "common", "input": "duibuqi", "expected": "对不起", "tags": ["polite"]}
+{"id": "C006", "category": "common", "input": "meiguanxi", "expected": "没关系", "tags": ["polite"]}
+{"id": "C007", "category": "common", "input": "zaoshanghao", "expected": "早上好", "tags": ["greeting"]}
+{"id": "C008", "category": "common", "input": "wanshanghao", "expected": "晚上好", "tags": ["greeting"]}
+{"id": "C009", "category": "common", "input": "shengrikuaile", "expected": "生日快乐", "tags": ["greeting"]}
+{"id": "C010", "category": "common", "input": "xinniankuaile", "expected": "新年快乐", "tags": ["greeting"]}
+{"id": "C011", "category": "common", "input": "yilupingan", "expected": "一路平安", "tags": ["greeting"]}
+{"id": "C012", "category": "common", "input": "gongzuoshunli", "expected": "工作顺利", "tags": ["greeting"]}
+{"id": "C013", "category": "common", "input": "shentijiankang", "expected": "身体健康", "tags": ["greeting"]}
+{"id": "C014", "category": "common", "input": "wanshiruyi", "expected": "万事如意", "tags": ["greeting"]}
+{"id": "C015", "category": "common", "input": "xinku", "expected": "辛苦", "tags": ["thanks"]}
+{"id": "C016", "category": "common", "input": "mafan", "expected": "麻烦", "tags": ["polite"]}
+{"id": "C017", "category": "common", "input": "bangmang", "expected": "帮忙", "tags": ["help"]}
+{"id": "C018", "category": "common", "input": "keyi", "expected": "可以", "tags": ["answer"]}
+{"id": "C019", "category": "common", "input": "bukeyi", "expected": "不可以", "tags": ["answer"]}
+{"id": "C020", "category": "common", "input": "mingbai", "expected": "明白", "tags": ["answer"]}
+{"id": "C021", "category": "common", "input": "zhidao", "expected": "知道", "tags": ["answer"]}
+{"id": "C022", "category": "common", "input": "xihuan", "expected": "喜欢", "tags": ["feeling"]}
+{"id": "C023", "category": "common", "input": "aihao", "expected": "爱好", "tags": ["life"]}
+{"id": "C024", "category": "common", "input": "pengyou", "expected": "朋友", "tags": ["people"]}
+{"id": "C025", "category": "common", "input": "tongxue", "expected": "同学", "tags": ["people"]}
+{"id": "C026", "category": "common", "input": "laoshi", "expected": "老师", "tags": ["people"]}
+{"id": "C027", "category": "common", "input": "xuesheng", "expected": "学生", "tags": ["people"]}
+{"id": "C028", "category": "common", "input": "jiaoshi", "expected": "教室", "tags": ["place"]}
+{"id": "C029", "category": "common", "input": "tushuguan", "expected": "图书馆", "tags": ["place"]}
+{"id": "C030", "category": "common", "input": "shitang", "expected": "食堂", "tags": ["place"]}
+{"id": "C031", "category": "common", "input": "sushe", "expected": "宿舍", "tags": ["place"]}
+{"id": "C032", "category": "common", "input": "bangongshi", "expected": "办公室", "tags": ["place"]}
+{"id": "C033", "category": "common", "input": "huiyi", "expected": "会议", "tags": ["work"]}
+{"id": "C034", "category": "common", "input": "gongsi", "expected": "公司", "tags": ["work"]}
+{"id": "C035", "category": "common", "input": "jingli", "expected": "经理", "tags": ["work"]}
+{"id": "C036", "category": "common", "input": "tongshi", "expected": "同事", "tags": ["work"]}
+{"id": "C037", "category": "common", "input": "kehu", "expected": "客户", "tags": ["work"]}
+{"id": "C038", "category": "common", "input": "chanpin", "expected": "产品", "tags": ["work"]}
+{"id": "C039", "category": "common", "input": "xiangmu", "expected": "项目", "tags": ["work"]}
+{"id": "C040", "category": "common", "input": "jihua", "expected": "计划", "tags": ["work"]}
+{"id": "C041", "category": "common", "input": "renwu", "expected": "任务", "tags": ["work"]}
+{"id": "C042", "category": "common", "input": "jindu", "expected": "进度", "tags": ["work"]}
+{"id": "C043", "category": "common", "input": "jieguo", "expected": "结果", "tags": ["work"]}
+{"id": "C044", "category": "common", "input": "yuanyin", "expected": "原因", "tags": ["work"]}
+{"id": "C045", "category": "common", "input": "wenti", "expected": "问题", "tags": ["work"]}
+{"id": "C046", "category": "common", "input": "fangfa", "expected": "方法", "tags": ["work"]}
+{"id": "C047", "category": "common", "input": "jingyan", "expected": "经验", "tags": ["work"]}
+{"id": "C048", "category": "common", "input": "jianyi", "expected": "建议", "tags": ["work"]}
+{"id": "C049", "category": "common", "input": "yijian", "expected": "意见", "tags": ["work"]}
+{"id": "C050", "category": "common", "input": "taolun", "expected": "讨论", "tags": ["work"]}
+{"id": "C051", "category": "common", "input": "jueding", "expected": "决定", "tags": ["work"]}
+{"id": "C052", "category": "common", "input": "anpai", "expected": "安排", "tags": ["work"]}
+{"id": "C053", "category": "common", "input": "zhunbei", "expected": "准备", "tags": ["work"]}
+{"id": "C054", "category": "common", "input": "kaishi", "expected": "开始", "tags": ["work"]}
+{"id": "C055", "category": "common", "input": "jieshu", "expected": "结束", "tags": ["work"]}
+{"id": "C056", "category": "common", "input": "wancheng", "expected": "完成", "tags": ["work"]}
+{"id": "C057", "category": "common", "input": "jiancha", "expected": "检查", "tags": ["work"]}
+{"id": "C058", "category": "common", "input": "ceshi", "expected": "测试", "tags": ["work"]}
+{"id": "C059", "category": "common", "input": "xiufu", "expected": "修复", "tags": ["work"]}
+{"id": "C060", "category": "common", "input": "gengxin", "expected": "更新", "tags": ["work"]}
+{"id": "S001", "category": "sentence", "input": "woxiangheniyiqichifan", "expected": "我想和你一起吃饭"}
+{"id": "S002", "category": "sentence", "input": "jintiantianqihenhao", "expected": "今天天气很好"}
+{"id": "S003", "category": "sentence", "input": "mingtianshangwukaihui", "expected": "明天上午开会"}
+{"id": "S004", "category": "sentence", "input": "xiawusandianjian", "expected": "下午三点见"}
+{"id": "S005", "category": "sentence", "input": "qingbangwobaocunwendang", "expected": "请帮我保存文档"}
+{"id": "S006", "category": "sentence", "input": "woxuyaoyigebeifen", "expected": "我需要一个备份"}
+{"id": "S007", "category": "sentence", "input": "zheduanwenbenyoucuowu", "expected": "这段文本有错误"}
+{"id": "S008", "category": "sentence", "input": "qingjianchawangluolianjie", "expected": "请检查网络连接"}
+{"id": "S009", "category": "sentence", "input": "fuwuqiyijingqidongle", "expected": "服务器已经启动了"}
+{"id": "S010", "category": "sentence", "input": "shujukumeitianwanchengbeifen", "expected": "数据库每天完成备份"}
+{"id": "S011", "category": "sentence", "input": "anzhuangxindebanben", "expected": "安装新版本"}
+{"id": "S012", "category": "sentence", "input": "womingtianxuyaoqingjia", "expected": "我明天需要请假"}
+{"id": "S013", "category": "sentence", "input": "jintianxiawuliudianxiaban", "expected": "今天下午六点下班"}
+{"id": "S014", "category": "sentence", "input": "qingtijiaoxiangguanwenjian", "expected": "请提交相关文件"}
+{"id": "S015", "category": "sentence", "input": "zhegongnengshangzaiceshi", "expected": "这个功能尚在测试"}
+{"id": "S016", "category": "sentence", "input": "qinglianxiwomendekehu", "expected": "请联系我们的客户"}
+{"id": "S017", "category": "sentence", "input": "jihuayijingtijiaoshenpi", "expected": "计划已经提交审批"}
+{"id": "S018", "category": "sentence", "input": "wozaijialibangong", "expected": "我在家里办公"}
+{"id": "S019", "category": "sentence", "input": "womenyaokaihui", "expected": "我们要开会"}
+{"id": "S020", "category": "sentence", "input": "qingquerenxiangmujindu", "expected": "请确认项目进度"}
+{"id": "S021", "category": "sentence", "input": "zhecihuiyifeichangzhongyao", "expected": "这次会议非常重要"}
+{"id": "S022", "category": "sentence", "input": "qingtigongyigeshijian", "expected": "请提供一个时间"}
+{"id": "S023", "category": "sentence", "input": "wojintianyoudianmang", "expected": "我今天有点忙"}
+{"id": "S024", "category": "sentence", "input": "wanchenghouqinggaozhiwo", "expected": "完成后请告知我"}
+{"id": "S025", "category": "sentence", "input": "qingbaocunzhefenwenjian", "expected": "请保存这份文件"}
+{"id": "S026", "category": "sentence", "input": "tashuomingtianhuilaile", "expected": "他说明天回来了"}
+{"id": "S027", "category": "sentence", "input": "womenyiqitaolunyixia", "expected": "我们一起讨论一下"}
+{"id": "S028", "category": "sentence", "input": "zhegetaozhuanghenhaoyong", "expected": "这个套装很好用"}
+{"id": "S029", "category": "sentence", "input": "qingtianxiexiangxixinxi", "expected": "请填写详细信息"}
+{"id": "S030", "category": "sentence", "input": "wohuijinkuaichulihaode", "expected": "我会尽快处理好的"}
+{"id": "S031", "category": "sentence", "input": "mingtianzaoshangjiudianjian", "expected": "明天早上九点见"}
+{"id": "S032", "category": "sentence", "input": "qingxianxiewanwenjian", "expected": "请先写完文件"}
+{"id": "S033", "category": "sentence", "input": "zhegeguzhangyijingpaichule", "expected": "这个故障已经排除了"}
+{"id": "S034", "category": "sentence", "input": "fuwuqidezhanyonghengao", "expected": "服务器的占用很高"}
+{"id": "S035", "category": "sentence", "input": "qingjiangrizhifageiwo", "expected": "请将日志发给我"}
+{"id": "S036", "category": "sentence", "input": "womenmingtianzaiyue", "expected": "我们明天再约"}
+{"id": "S037", "category": "sentence", "input": "qingzaiwudianqianwancheng", "expected": "请在五点前完成"}
+{"id": "S038", "category": "sentence", "input": "zheshiyigexinxiangmu", "expected": "这是一个新项目"}
+{"id": "S039", "category": "sentence", "input": "woyijingfasongle", "expected": "我已经发送了"}
+{"id": "S040", "category": "sentence", "input": "qinganquancunchuwenjian", "expected": "请安全存储文件"}
+{"id": "A001", "category": "ambiguity", "input": "xian", "expected": "先", "note": "unseparated xian normally reads 先; 西安 needs the explicit boundary in A002"}
+{"id": "A002", "category": "ambiguity", "input": "xi'an", "expected": "西安", "note": "explicit syllable boundary"}
+{"id": "A003", "category": "ambiguity", "input": "changan", "expected": "长安"}
+{"id": "A004", "category": "ambiguity", "input": "chang'an", "expected": "长安"}
+{"id": "A005", "category": "ambiguity", "input": "fangan", "expected": "方案"}
+{"id": "A006", "category": "ambiguity", "input": "fang'an", "expected": "方案"}
+{"id": "A007", "category": "ambiguity", "input": "tiananmen", "expected": "天安门"}
+{"id": "A008", "category": "ambiguity", "input": "tian'anmen", "expected": "天安门"}
+{"id": "A009", "category": "ambiguity", "input": "haerbin", "expected": "哈尔滨"}
+{"id": "A010", "category": "ambiguity", "input": "ha'erbin", "expected": "哈尔滨"}
+{"id": "A011", "category": "ambiguity", "input": "xianzai", "expected": "现在"}
+{"id": "A012", "category": "ambiguity", "input": "xi'an'zai'xian", "expected": "西安在线", "note": "four syllables in one string"}
+{"id": "A013", "category": "ambiguity", "input": "shijian", "expected": "时间"}
+{"id": "A014", "category": "ambiguity", "input": "shijie", "expected": "世界"}
+{"id": "A015", "category": "ambiguity", "input": "yiyuan", "expected": "医院"}
+{"id": "A016", "category": "ambiguity", "input": "yuanqu", "expected": "园区"}
+{"id": "A017", "category": "ambiguity", "input": "jiqi", "expected": "机器"}
+{"id": "A018", "category": "ambiguity", "input": "jinqi", "expected": "近期"}
+{"id": "A019", "category": "ambiguity", "input": "gongshi", "expected": "公示"}
+{"id": "A020", "category": "ambiguity", "input": "gongsi", "expected": "公司"}
+{"id": "A021", "category": "ambiguity", "input": "shishi", "expected": "事实"}
+{"id": "A022", "category": "ambiguity", "input": "shishiqiushi", "expected": "实事求是"}
+{"id": "A023", "category": "ambiguity", "input": "womende", "expected": "我们的"}
+{"id": "A024", "category": "ambiguity", "input": "nihaoma", "expected": "你好吗"}
+{"id": "A025", "category": "ambiguity", "input": "shurufa", "expected": "输入法"}
+{"id": "L001", "category": "long", "input": "jintiantianqihenhaowomenyiqiqugongyuanba", "expected": "今天天气很好我们一起去公园吧"}
+{"id": "L002", "category": "long", "input": "qingnizaishangwushidianqianwanchengrenwu", "expected": "请你在上午十点前完成任务"}
+{"id": "L003", "category": "long", "input": "wozaifuwuqishangbushuleyigexinjiaoben", "expected": "我在服务器上部署了一个新脚本"}
+{"id": "L004", "category": "long", "input": "zhegewentixuyaojinyibudingweibingxiufu", "expected": "这个问题需要进一步定位并修复"}
+{"id": "L005", "category": "long", "input": "qingjiangsuoyourizhihebeifenbaocunqilai", "expected": "请将所有日志和备份保存起来"}
+{"id": "L006", "category": "long", "input": "womenxuyaozaiyuedizhiqianwanchengshangxian", "expected": "我们需要在月底之前完成上线"}
+{"id": "L007", "category": "long", "input": "mingtianxiawuwomenzaihuiyishitaolunxijie", "expected": "明天下午我们在会议室讨论细节"}
+{"id": "L008", "category": "long", "input": "qingjishitongzhiwomenzuixindejindu", "expected": "请及时通知我们最新的进度"}
+{"id": "L009", "category": "long", "input": "zhegefanganhaixuyaojingguoyanjiuhoujueding", "expected": "这个方案还需要经过研究后决定"}
+{"id": "L010", "category": "long", "input": "fuwuqimeitianwanshanghuizidongchongqiyici", "expected": "服务器每天晚上会自动重启一次"}
+{"id": "L011", "category": "long", "input": "qingdakaiwangyebingdengluwodezhanghao", "expected": "请打开网页并登录我的账号"}
+{"id": "L012", "category": "long", "input": "wozaijiaxiangxuexihanyu", "expected": "我在家乡学习汉语"}
+{"id": "L013", "category": "long", "input": "zhecihuodongdeyusuanzaijihuazhinei", "expected": "这次活动的预算在计划之内"}
+{"id": "L014", "category": "long", "input": "qingjiangzheduangushigaixiechengyingwen", "expected": "请将这段故事改写成英文"}
+{"id": "L015", "category": "long", "input": "wanchengshoucehouqingjiaogeizhuli", "expected": "完成手册后请交给助理"}
+{"id": "L016", "category": "long", "input": "tamenjihuazaifaguokaishexindegongsi", "expected": "他们计划在法国开设新的公司"}
+{"id": "L017", "category": "long", "input": "qingzaixiabanqianbazhejianshiqingwancheng", "expected": "请在下班前把这件事情完成"}
+{"id": "L018", "category": "long", "input": "zhegewangluowentiyijingyingxianglezhongduan", "expected": "这个网络问题已经影响了终端"}
+{"id": "L019", "category": "long", "input": "womenjiangzaishangwushidianzuzhishipinjiaoliu", "expected": "我们将在上午十点组织视频交流"}
+{"id": "L020", "category": "long", "input": "qingjishifankuizhegebanbendeshijiqingkuang", "expected": "请及时反馈这个版本的实际状况"}
+{"id": "L021", "category": "long", "input": "suoyouwenjiandouyinggaidingqijianchahebeifen", "expected": "所有文件都应该定期检查和备份"}
+{"id": "L022", "category": "long", "input": "zhegeminglingkeyichakansuoyouyonghudexinxi", "expected": "这个命令可以查看所有用户的信息"}
+{"id": "L023", "category": "long", "input": "ruoguoyudaoqingkuangqingjilianxiwomendezongbu", "expected": "如果遇到情况请立即联系我们的总部"}
+{"id": "L024", "category": "long", "input": "womenyiqibazhegewentitaolunqingchu", "expected": "我们一起把这个问题讨论清楚"}
+{"id": "L025", "category": "long", "input": "qingzaizhuyaodeliulanqishangfangwenzhegewangzhan", "expected": "请在主要的浏览器上访问这个网站"}
+{"id": "M001", "category": "mixed", "input": "woyongdockerbushuxiangmu", "expected": "我用Docker部署项目", "note": "mixed Chinese and Latin"}
+{"id": "M002", "category": "mixed", "input": "qingdakaigithubchakandaima", "expected": "请打开GitHub查看代码"}
+{"id": "M003", "category": "mixed", "input": "woshiyongvimxiugaiwenjian", "expected": "我使用Vim修改文件"}
+{"id": "M004", "category": "mixed", "input": "qingshuruyamlgeshi", "expected": "请输入YAML格式"}
+{"id": "M005", "category": "mixed", "input": "jiangjsonzhuanhuanchengxml", "expected": "将JSON转换成XML"}
+{"id": "M006", "category": "mixed", "input": "qingyunxingpythinjiaoben", "expected": "请运行Python脚本"}
+{"id": "M007", "category": "mixed", "input": "cpuzhanyonglvtaigao", "expected": "CPU占用率太高"}
+{"id": "M008", "category": "mixed", "input": "neicunzhanyongchaoguo8gb", "expected": "内存占用超过8GB"}
+{"id": "M009", "category": "mixed", "input": "qingxiazaipdfwenjian", "expected": "请下载PDF文件"}
+{"id": "M010", "category": "mixed", "input": "woxuyaoyigeusbjiekou", "expected": "我需要一个USB接口"}
+{"id": "M011", "category": "mixed", "input": "zhegeshujukuyongmysql", "expected": "这个数据库用MySQL"}
+{"id": "M012", "category": "mixed", "input": "qingfasongyoujianzhidemoexamplecom", "expected": "请发送邮件至demo@example.com"}
+{"id": "M013", "category": "mixed", "input": "jintianriqi2026nian10yue28ri", "expected": "今天日期2026年10月28日"}
+{"id": "M014", "category": "mixed", "input": "wodeidhaoshi9527", "expected": "我的ID号是9527"}
+{"id": "M015", "category": "mixed", "input": "qingjiangappgengxindaozuixinbanben", "expected": "请将APP更新到最新版本"}
+{"id": "M016", "category": "mixed", "input": "zhegewangzhanshihttps", "expected": "这个网站是HTTPS"}
+{"id": "M017", "category": "mixed", "input": "windows11zhichizhongwenshurufa", "expected": "Windows 11支持中文输入法"}
+{"id": "M018", "category": "mixed", "input": "qingyongwpsdakaiwenjian", "expected": "请用WPS打开文件"}
+{"id": "M019", "category": "mixed", "input": "jiangcsvdaoruexcel", "expected": "将CSV导入Excel"}
+{"id": "M020", "category": "mixed", "input": "qingchakanserverrizhi", "expected": "请查看server日志"}
+{"id": "M021", "category": "mixed", "input": "xitonganzhuangzailinuxfuwuqishang", "expected": "系统安装在Linux服务器上"}
+{"id": "M022", "category": "mixed", "input": "dengqi10fenzhong", "expected": "等待10分钟"}
+{"id": "M023", "category": "mixed", "input": "qingfasongpdfhewordliangzhonggeshi", "expected": "请发送PDF和Word两种格式"}
+{"id": "M024", "category": "mixed", "input": "wozaibrowserzhongdakaiguanwang", "expected": "我在browser中打开官网"}
+{"id": "M025", "category": "mixed", "input": "qingyongapiqingqiushuju", "expected": "请用API请求数据"}
+{"id": "T001", "category": "typo", "input": "nihap", "expected": "你好", "note": "one wrong vowel"}
+{"id": "T002", "category": "typo", "input": "xiexei", "expected": "谢谢", "note": "transposed letters"}
+{"id": "T003", "category": "typo", "input": "zaijain", "expected": "再见", "note": "transposed letters"}
+{"id": "T004", "category": "typo", "input": "qingwne", "expected": "请问", "note": "transposed letters"}
+{"id": "T005", "category": "typo", "input": "duibuqii", "expected": "对不起", "note": "duplicated letter"}
+{"id": "T006", "category": "typo", "input": "jintiantianqihenhoa", "expected": "今天天气很好", "note": "transposed letters"}
+{"id": "T007", "category": "typo", "input": "qingbangwodakaiwenjan", "expected": "请帮我打开文件", "note": "wrong final"}
+{"id": "T008", "category": "typo", "input": "woxiangxuexizhongwne", "expected": "我想学习中文", "note": "transposed letters"}
+{"id": "T009", "category": "typo", "input": "shujukubeifne", "expected": "数据库备份", "note": "transposed letters"}
+{"id": "T010", "category": "typo", "input": "wangluolianjje", "expected": "网络连接", "note": "wrong letter"}
+{"id": "T011", "category": "typo", "input": "peizhiiwenjian", "expected": "配置文件", "note": "extra letter"}
+{"id": "T012", "category": "typo", "input": "xitongqidnog", "expected": "系统启动", "note": "transposed letters"}
+{"id": "T013", "category": "typo", "input": "shurufaqiehuam", "expected": "输入法切换", "note": "wrong final"}
+{"id": "T014", "category": "typo", "input": "fuwuqqidong", "expected": "服务启动", "note": "extra letter"}
+{"id": "T015", "category": "typo", "input": "zhongwenshurufab", "expected": "中文输入法", "note": "extra final letter"}
+{"id": "T016", "category": "typo", "input": "mingtianjianmian", "expected": "明天见面", "note": "correct typing control"}
+{"id": "T017", "category": "typo", "input": "qingjianchawangluo", "expected": "请检查网络", "note": "correct typing control"}
+{"id": "T018", "category": "typo", "input": "woyaochifna", "expected": "我要吃饭", "note": "transposed letters"}
+{"id": "T019", "category": "typo", "input": "jintianxiaban", "expected": "今天下班", "note": "correct typing control"}
+{"id": "T020", "category": "typo", "input": "huijiaxiuxi", "expected": "回家休息", "note": "correct typing control"}
+{"id": "T021", "category": "typo", "input": "zhunbeikaishui", "expected": "准备开始", "note": "wrong final"}
+{"id": "T022", "category": "typo", "input": "wanchengrenwub", "expected": "完成任务", "note": "extra letter"}
+{"id": "T023", "category": "typo", "input": "qingfason", "expected": "请发送", "note": "missing letters"}
+{"id": "T024", "category": "typo", "input": "tashuomingtianhlai", "expected": "他说明天回来", "note": "wrong letter"}
+{"id": "T025", "category": "typo", "input": "womenyiqichifna", "expected": "我们一起吃饭", "note": "transposed letters"}

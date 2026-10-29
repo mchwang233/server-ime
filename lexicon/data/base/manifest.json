@@ -1,0 +1,78 @@
+{
+ "schema": "ime-lexicon-base/1",
+ "name": "server-ime base lexicon enhancement",
+ "lexicon_version": "base-v1",
+ "created_at": "2026-10-28T10:01:46Z",
+ "entry_count": 369,
+ "domains": {
+  "edu": 30,
+  "ime": 127,
+  "legal": 30,
+  "life": 30,
+  "medical": 35,
+  "office": 49,
+  "science": 68
+ },
+ "count_range": [
+  70,
+  160
+ ],
+ "license": "CC-BY-4.0",
+ "license_note": "The authored term selection and generated readings in this file are released under CC BY 4.0. The readings were generated with pypinyin 0.55.0 (MIT) and spot-checked against a CC-CEDICT snapshot (CC BY-SA 4.0) as a verification reference only; no CC-CEDICT definitions are copied. The engine's own model data stays under its upstream licence (libpinyin-data, GPL-3.0-or-later) and is not redistributed here.",
+ "sources": [
+  {
+   "id": "curated-terms-v1",
+   "kind": "authored term list",
+   "file": "data/base/terms-v1.tsv",
+   "sha256": "d46984391c9cc48b5d8823bf172128d1f05f16516274ba91ae3806cfb16e9d1b",
+   "license": "CC-BY-4.0"
+  },
+  {
+   "id": "readings-v1",
+   "kind": "generated pinyin readings",
+   "file": "data/base/readings-v1.json",
+   "sha256": "4c9c1796ff954b068da09c7a5f356c6c27df0cd4f22c35bcfb37554b1b4005a4",
+   "license": "CC-BY-4.0",
+   "generator": {
+    "name": "pypinyin",
+    "version": "0.55.0",
+    "license": "MIT",
+    "url": "https://files.pythonhosted.org/packages/b9/7b/4cabc76fcc21c3c7d5c671d8783984d30ac9d3bb387c4ba784fca3cdfa3a/pypinyin-0.55.0-py2.py3-none-any.whl",
+    "sha256": "d53b1e8ad2cdb815fb2cb604ed3123372f5a28c6f447571244aca36fc62a286f"
+   },
+   "overrides": {
+    "去重策略": "qu'chong'ce'lve",
+    "重试机制": "chong'shi'ji'zhi"
+   },
+   "verification": {
+    "cedict_snapshot": {
+     "sha256": "366f39049fbcc9ca0cc414f319bfc56a33f6f9aba73aec1f609c5cb6502d2000",
+     "url": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+     "date": "2026-10-28T00:15:09Z"
+    },
+    "cross_checked_entries": 40,
+    "mismatches": 0
+   }
+  }
+ ],
+ "build": {
+  "tool": "lexicon/tools/build_base.py",
+  "command": "python3 lexicon/tools/build_base.py",
+  "deterministic": true
+ },
+ "validation": {
+  "text": "CJK only, 1-16 characters",
+  "pinyin": "lowercase ASCII, v for ü, one syllable per character",
+  "duplicate_text": 0,
+  "corpus": {
+   "checked": true,
+   "overlap": 0
+  }
+ },
+ "files": {
+  "lexicon-v1.jsonl": {
+   "sha256": "8d4f53d5553055e7f206bc79b7630c7c70ba346f7bb97a170756a8fc202fac67",
+   "bytes": 84006
+  }
+ }
+}

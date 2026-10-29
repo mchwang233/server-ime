@@ -1,0 +1,1401 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:server-ime:engine:api:1.0",
+  "title": "Server IME conversion API 1.0",
+  "description": "employee_id=engine; source contract shipped with the runnable component",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/request"
+    },
+    {
+      "$ref": "#/$defs/response"
+    }
+  ],
+  "$defs": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "enum": [
+            "full_pinyin",
+            "double_pinyin"
+          ]
+        },
+        "page_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        },
+        "incomplete": {
+          "type": "boolean"
+        },
+        "learning": {
+          "type": "boolean"
+        },
+        "double_pinyin_scheme": {
+          "enum": [
+            "ziranma"
+          ]
+        },
+        "fuzzy": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "rules": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "c_ch",
+                  "s_sh",
+                  "z_zh",
+                  "f_h",
+                  "g_k",
+                  "l_n",
+                  "l_r",
+                  "an_ang",
+                  "en_eng",
+                  "in_ing"
+                ]
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "correction": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "rules": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "gn_ng",
+                  "mg_ng",
+                  "iou_iu",
+                  "uei_ui",
+                  "uen_un",
+                  "ue_ve",
+                  "v_u",
+                  "on_ong",
+                  "transpose",
+                  "delete",
+                  "insert",
+                  "substitute"
+                ]
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema",
+        "page_size",
+        "incomplete",
+        "learning"
+      ],
+      "additionalProperties": true
+    },
+    "candidate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "text": {
+          "type": "string"
+        },
+        "annotation": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "sentence",
+            "phrase"
+          ]
+        },
+        "input_end": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "literal": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "index",
+        "text",
+        "annotation",
+        "kind"
+      ],
+      "additionalProperties": true
+    },
+    "page": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "page_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "has_previous": {
+          "type": "boolean"
+        },
+        "has_next": {
+          "type": "boolean"
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 9,
+          "items": {
+            "$ref": "#/$defs/candidate"
+          }
+        }
+      },
+      "required": [
+        "page",
+        "page_size",
+        "total",
+        "has_previous",
+        "has_next",
+        "items"
+      ],
+      "additionalProperties": true
+    },
+    "commit": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "candidate",
+            "literal"
+          ]
+        },
+        "input": {
+          "type": "string"
+        },
+        "candidate_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "event_id": {
+          "type": "string"
+        },
+        "learning_eligible": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "text",
+        "source",
+        "input",
+        "candidate_id",
+        "event_id",
+        "learning_eligible"
+      ],
+      "additionalProperties": true
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "api_version": {
+          "const": "1.0"
+        },
+        "session_id": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "handled": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/$defs/config"
+        },
+        "input": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "cursor": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "parsed_length": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "selected_length": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "text",
+            "cursor",
+            "parsed_length",
+            "selected_length"
+          ],
+          "additionalProperties": true
+        },
+        "preedit": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "cursor": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "visible": {
+              "type": "boolean"
+            },
+            "segments": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "end": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "kind": {
+                    "enum": [
+                      "selected",
+                      "pinyin"
+                    ]
+                  }
+                },
+                "required": [
+                  "start",
+                  "end",
+                  "kind"
+                ],
+                "additionalProperties": true
+              }
+            },
+            "preview": {
+              "type": "string"
+            },
+            "unparsed": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "text",
+            "cursor",
+            "visible",
+            "segments",
+            "preview",
+            "unparsed"
+          ],
+          "additionalProperties": true
+        },
+        "candidates": {
+          "$ref": "#/$defs/page"
+        },
+        "commits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/commit"
+          }
+        },
+        "context": {
+          "type": "object",
+          "properties": {
+            "private": {
+              "type": "boolean"
+            },
+            "purpose": {
+              "type": [
+                "string",
+                "integer"
+              ]
+            },
+            "hints": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          },
+          "additionalProperties": false,
+          "required": []
+        },
+        "composition": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "enum": [
+                "pinyin",
+                "mixed"
+              ]
+            },
+            "literal_digits": {
+              "type": "boolean"
+            },
+            "spans": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "end": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "kind": {
+                    "enum": [
+                      "pinyin",
+                      "literal"
+                    ]
+                  },
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "start",
+                  "end",
+                  "kind",
+                  "text"
+                ]
+              }
+            }
+          },
+          "required": [
+            "mode",
+            "literal_digits",
+            "spans"
+          ]
+        }
+      },
+      "required": [
+        "api_version",
+        "session_id",
+        "revision",
+        "handled",
+        "config",
+        "input",
+        "preedit",
+        "candidates",
+        "commits"
+      ],
+      "additionalProperties": true
+    },
+    "request": {
+      "type": "object",
+      "properties": {
+        "api_version": {
+          "const": "1.0"
+        },
+        "id": {
+          "type": [
+            "string",
+            "integer",
+            "null"
+          ]
+        },
+        "op": {
+          "enum": [
+            "capabilities",
+            "create",
+            "destroy",
+            "state",
+            "input",
+            "set_input",
+            "edit",
+            "configure",
+            "key",
+            "candidates",
+            "select",
+            "commit",
+            "reset",
+            "set_context",
+            "add_phrase",
+            "remove_phrase",
+            "import_dictionary",
+            "reload_lexicon",
+            "learning_status",
+            "input_text",
+            "set_composition"
+          ]
+        },
+        "session_id": {
+          "type": "string"
+        },
+        "args": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "api_version",
+        "op"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "capabilities"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "create"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "config": {
+                    "type": "object",
+                    "properties": {
+                      "schema": {
+                        "enum": [
+                          "full_pinyin",
+                          "double_pinyin"
+                        ]
+                      },
+                      "page_size": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 9
+                      },
+                      "incomplete": {
+                        "type": "boolean"
+                      },
+                      "learning": {
+                        "type": "boolean"
+                      },
+                      "double_pinyin_scheme": {
+                        "enum": [
+                          "ziranma"
+                        ]
+                      },
+                      "fuzzy": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean"
+                          },
+                          "rules": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                              "enum": [
+                                "c_ch",
+                                "s_sh",
+                                "z_zh",
+                                "f_h",
+                                "g_k",
+                                "l_n",
+                                "l_r",
+                                "an_ang",
+                                "en_eng",
+                                "in_ing"
+                              ]
+                            }
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "correction": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean"
+                          },
+                          "rules": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                              "enum": [
+                                "gn_ng",
+                                "mg_ng",
+                                "iou_iu",
+                                "uei_ui",
+                                "uen_un",
+                                "ue_ve",
+                                "v_u",
+                                "on_ong",
+                                "transpose",
+                                "delete",
+                                "insert",
+                                "substitute"
+                              ]
+                            }
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [],
+                    "additionalProperties": true
+                  },
+                  "session_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "destroy"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "session_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "state"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "session_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "input"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "args",
+              "session_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "set_input"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "cursor": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "args",
+              "session_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "edit"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "end": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "start",
+                  "end"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "args",
+              "session_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "configure"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "patch": {
+                    "type": "object",
+                    "properties": {
+                      "schema": {
+                        "enum": [
+                          "full_pinyin",
+                          "double_pinyin"
+                        ]
+                      },
+                      "page_size": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 9
+                      },
+                      "incomplete": {
+                        "type": "boolean"
+                      },
+                      "learning": {
+                        "type": "boolean"
+                      },
+                      "double_pinyin_scheme": {
+                        "enum": [
+                          "ziranma"
+                        ]
+                      },
+                      "fuzzy": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean"
+                          },
+                          "rules": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                              "enum": [
+                                "c_ch",
+                                "s_sh",
+                                "z_zh",
+                                "f_h",
+                                "g_k",
+                                "l_n",
+                                "l_r",
+                                "an_ang",
+                                "en_eng",
+                                "in_ing"
+                              ]
+                            }
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "correction": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean"
+                          },
+                          "rules": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                              "enum": [
+                                "gn_ng",
+                                "mg_ng",
+                                "iou_iu",
+                                "uei_ui",
+                                "uen_un",
+                                "ue_ve",
+                                "v_u",
+                                "on_ong",
+                                "transpose",
+                                "delete",
+                                "insert",
+                                "substitute"
+                              ]
+                            }
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [],
+                    "additionalProperties": true
+                  }
+                },
+                "required": [
+                  "patch"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "args",
+              "session_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "key"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "key"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "args",
+              "session_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "candidates"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "minimum": 0
+                  }
+                },
+                "required": [],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "session_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "select"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "candidate_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "candidate_id"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "args",
+              "session_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "commit"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "enum": [
+                      "best",
+                      "literal"
+                    ]
+                  }
+                },
+                "required": [],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "session_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "reset"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "session_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "set_context"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "private": {
+                    "type": "boolean"
+                  },
+                  "purpose": {
+                    "type": [
+                      "string",
+                      "integer"
+                    ]
+                  },
+                  "hints": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4294967295
+                  }
+                },
+                "additionalProperties": false,
+                "required": []
+              }
+            },
+            "required": [
+              "session_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "add_phrase"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "pinyin": {
+                    "type": "string"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1000000
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "text",
+                  "pinyin"
+                ]
+              }
+            },
+            "required": [
+              "args"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "remove_phrase"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "pinyin": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "text"
+                ]
+              }
+            },
+            "required": [
+              "args"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "import_dictionary"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "entries": {
+                    "type": "array",
+                    "maxItems": 20000,
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "entries"
+                ]
+              }
+            },
+            "required": [
+              "args"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "reload_lexicon"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "maxProperties": 0,
+                "required": []
+              }
+            },
+            "required": []
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "learning_status"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "maxProperties": 0,
+                "required": []
+              }
+            },
+            "required": []
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "input_text"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "args",
+              "session_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "set_composition"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "cursor": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "args",
+              "session_id"
+            ]
+          }
+        }
+      ]
+    },
+    "response": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "api_version": {
+              "const": "1.0"
+            },
+            "id": {
+              "type": [
+                "string",
+                "integer",
+                "null"
+              ]
+            },
+            "ok": {
+              "const": true
+            },
+            "result": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/state"
+                },
+                {
+                  "$ref": "#/$defs/page"
+                },
+                {
+                  "$ref": "#/$defs/capabilities"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "api_version",
+            "id",
+            "ok",
+            "result"
+          ],
+          "additionalProperties": true
+        },
+        {
+          "type": "object",
+          "properties": {
+            "api_version": {
+              "const": "1.0"
+            },
+            "id": {
+              "type": [
+                "string",
+                "integer",
+                "null"
+              ]
+            },
+            "ok": {
+              "const": false
+            },
+            "error": {
+              "$ref": "#/$defs/error"
+            }
+          },
+          "required": [
+            "api_version",
+            "id",
+            "ok",
+            "error"
+          ],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "additionalProperties": true
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "api_version": {
+          "const": "1.0"
+        },
+        "component_version": {
+          "type": "string"
+        },
+        "employee_id": {
+          "const": "engine"
+        },
+        "backend": {
+          "const": "libpinyin"
+        },
+        "backend_version": {
+          "const": "2.6.0"
+        },
+        "license": {
+          "type": "string"
+        },
+        "schemas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "features": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          }
+        },
+        "config_defaults": {
+          "$ref": "#/$defs/config"
+        },
+        "max_input_length": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_sessions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "coordinate_unit": {
+          "const": "unicode_codepoint"
+        },
+        "network": {
+          "const": false
+        }
+      },
+      "required": [
+        "api_version",
+        "component_version",
+        "employee_id",
+        "backend",
+        "backend_version",
+        "license",
+        "schemas",
+        "features",
+        "config_defaults",
+        "max_input_length",
+        "max_sessions",
+        "coordinate_unit",
+        "network"
+      ],
+      "additionalProperties": true
+    }
+  }
+}

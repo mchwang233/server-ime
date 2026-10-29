@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+"""ime-diagnose：不泄露输入内容的安装诊断入口。"""
+
+import os
+import sys
+
+_HERE = os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, os.path.join(_HERE, os.pardir, "lib"))
+
+from ime_delivery.cli import main_diagnose  # noqa: E402
+
+if __name__ == "__main__":
+    sys.exit(main_diagnose(sys.argv[1:]))

@@ -1,0 +1,63 @@
+{
+  "employee_id": "platform",
+  "owner_employee_id": "interface",
+  "verifies": [],
+  "id": "interface-layout-after-allocation",
+  "status": "OPEN",
+  "blocking_product_assembly": true,
+  "interface_version": "0.1.4",
+  "product_candidate_version": "0.2.8",
+  "panel_sha256": "531ef14290c4f57f4fcc6120ac45d90daddf58fa1516f5b140f1bf73f99f24b9",
+  "runtime_unchanged": true,
+  "fixture": false,
+  "command": "SERVER_IME_FEEDBACK_PRODUCT_ROOT=\"$PWD/integration/build/product\" python3 -B integration/checks/test_feedback.py --narrow-only --route managed --output integration/evidence/viewport-budget-repro-NEW",
+  "evidence": "integration/evidence/viewport-budget-0.2.8-stable",
+  "observed": {
+    "revision": 28,
+    "selected_index": 3,
+    "selected_rows": [
+      {
+        "id": "1e69b5fd28f249ca91f124169d505ea9:15:3",
+        "index": 3,
+        "x": 313,
+        "y": 133,
+        "w": 95,
+        "h": 56,
+        "text_w": 42,
+        "text_needed": 42,
+        "ellipsized": false,
+        "selected": true,
+        "in_view": false
+      }
+    ],
+    "viewport": {
+      "x": 26,
+      "y": 133,
+      "w": 326,
+      "h": 56
+    },
+    "scroll": {
+      "value": 0,
+      "page_size": 326,
+      "upper": 856,
+      "scrollable": true,
+      "scrollbar_visible": true
+    }
+  },
+  "expected": "After real Up/Down input and settled GTK layout, the selected row must be wholly in view. Four-second bounded wait still observed selected index 3 outside the viewport.",
+  "suspected_areas": [
+    "CandidatePanel.render/_after_layout/_reveal_selected: idle callback can run before new widgets finish allocation; no subsequent reveal is scheduled.",
+    "CandidatePanel._fit_to_screen/_content_natural_width: prior rows_box width request is included in subsequent preferred-size measurement; shrinking pages may retain a stale scroll extent. These are hypotheses for the component owner, not verified root causes."
+  ],
+  "additional_observation": {
+    "evidence": "integration/evidence/viewport-budget-0.2.8",
+    "accepted_as_0_2_8_evidence": false,
+    "reason": "Initial run started before assembly copy completed; retained only as diagnostic clue. Both narrow routes reached hao last page with four rows and stale upper=871, scroll=545, in_view=[]."
+  },
+  "required_regressions": [
+    "Real GTK render/layout with rapid selected_index updates and automatic reveal.",
+    "Full nine-row page followed by hao partial final page; scroll extent shrinks and end is not blank.",
+    "Save product viewport combinations page_size/max_visible 9/3 and 5/1; retain every ID and digit mapping. Product selfcheck remains platform-owned."
+  ],
+  "scope": "Only interface-owned code/tests/metadata fix; preserve existing packages. Platform will rebuild and rerun product checks after handoff."
+}

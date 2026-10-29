@@ -1,0 +1,29 @@
+{
+  "components": [
+    {
+      "bundle": "packages/ime-demo-1.0.0.tar.gz",
+      "data_dirs": [
+        "personal",
+        "learning"
+      ],
+      "employee_id": "delivery",
+      "entrypoints": [
+        "demo-cli"
+      ],
+      "id": "ime-demo",
+      "notes": "自检 fixture",
+      "role": "样例组件",
+      "status": "ready",
+      "version": "1.1.0"
+    }
+  ],
+  "notes": "样例产品清单，不代表最终输入法。",
+  "product": {
+    "description": "只包含隔离样例组件的产品清单，用于验证打包汇总校验。",
+    "id": "ime-selfcheck",
+    "license": "MIT",
+    "name": "安装工具自检样例产品",
+    "version": "1.0.0"
+  },
+  "schema": "ime.product-manifest/1"
+}

@@ -1,0 +1,38 @@
+{
+ "schema": "ime-eval-corpus/1",
+ "name": "server-ime fixed quality corpus",
+ "version": "1.0",
+ "frozen": true,
+ "created_at": "2026-10-28T09:28:54Z",
+ "frozen_at": "2026-10-29T11:03:17Z",
+ "file": "cases-v1.jsonl",
+ "sha256": "0f8c1c371872e28ef2b1b39c28e092a21090d58144b81800276ae48527a69ae3",
+ "cases": 200,
+ "categories": {
+  "common": 60,
+  "sentence": 40,
+  "ambiguity": 25,
+  "long": 25,
+  "mixed": 25,
+  "typo": 25
+ },
+ "scoring": {
+  "id": "ime-eval-score/1",
+  "metrics": [
+   "top1_exact",
+   "top5_exact",
+   "mean_character_error_rate"
+  ],
+  "denominator": "all cases, including cases where the engine rejects the input",
+  "normalization": "none; candidate and reference strings are compared exactly",
+  "top5": "expected text appears among the first five candidates",
+  "cer": "Levenshtein(top1, expected) / max(len(top1), len(expected)); whole expected length when no candidate exists",
+  "unsupported": "category 'mixed' needs Latin/digit pass-through, and 'typo' needs correction; both are scored, never skipped"
+ },
+ "provenance": "Authored for this project as independent reference answers. They were not used to build data/base/lexicon-v1.jsonl.",
+ "license": "CC0-1.0",
+ "contamination": {
+  "ok": true,
+  "hits": []
+ }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://server-ime.local/schema/user-bundle-v1.json",
+  "title": "server-ime portable personal lexicon bundle",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["format", "compatibility", "entries", "entry_count", "checksum"],
+  "properties": {
+    "format": {"const": "ime-lexicon-user-bundle/1"},
+    "producer": {
+      "type": "object",
+      "properties": {
+        "component": {"const": "lexicon"},
+        "version": {"type": "string"},
+        "employee_id": {"const": "lexicon"}
+      }
+    },
+    "exported_at": {"type": "string"},
+    "source": {"type": "object"},
+    "compatibility": {
+      "type": "object",
+      "required": ["min_reader", "max_reader"],
+      "properties": {
+        "min_reader": {"type": "string"},
+        "max_reader": {"type": "string"}
+      }
+    },
+    "learning": {"type": "object"},
+    "entries": {
+      "type": "array",
+      "maxItems": 20000,
+      "items": {
+        "type": "object",
+        "required": ["text", "pinyin", "count", "kind"],
+        "properties": {
+          "text": {"type": "string", "minLength": 1, "maxLength": 16},
+          "pinyin": {"type": "string", "pattern": "^[a-zv]+(?:'[a-zv]+)*$"},
+          "count": {"type": "integer", "minimum": 1, "maximum": 1000000},
+          "kind": {"enum": ["learned", "custom"]},
+          "id": {"type": "string"},
+          "source": {"type": "string"},
+          "first_seen": {"type": "string"},
+          "last_seen": {"type": "string"}
+        }
+      }
+    },
+    "entry_count": {"type": "integer", "minimum": 0},
+    "checksum": {
+      "type": "object",
+      "required": ["algorithm", "value"],
+      "properties": {
+        "algorithm": {"const": "sha256"},
+        "value": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "scope": {"type": "string"}
+      }
+    }
+  }
+}

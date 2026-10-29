@@ -1,0 +1,10 @@
+#!/usr/bin/python3
+"""Single relocatable product entrypoint; employee_id=platform."""
+import sys
+from pathlib import Path
+root = Path(__file__).resolve().parents[2]
+sys.dont_write_bytecode = True
+sys.path[:0] = [str(root / p) for p in
+               ('integration/src', 'platform', 'interface/src', 'engine/src', 'lexicon/src')]
+from server_ime_product.cli import main
+raise SystemExit(main())

@@ -1,0 +1,87 @@
+{
+  "employee_id": "lexicon",
+  "version": 1,
+  "component_version": "0.1.0",
+  "code_license": "GPL-3.0-or-later",
+  "reason_for_code_license": "The package binds and drives the GPL-3.0-or-later libpinyin runtime at execution time.",
+  "python": "3.9 or newer; standard library only at runtime",
+  "network_required_at_runtime": false,
+  "backend": {
+    "project": "libpinyin/libpinyin",
+    "version": "2.6.0",
+    "commit": "19d8e9a1e577fb0d93dc9fb51ea982d677331755",
+    "package": "libpinyin-2.6.0-4.el9.x86_64",
+    "license": "GPL-3.0-or-later",
+    "source": "https://github.com/libpinyin/libpinyin/tree/19d8e9a1e577fb0d93dc9fb51ea982d677331755",
+    "owner": "engine",
+    "runtime_dir": "engine/vendor/runtime",
+    "system_data": "engine/vendor/runtime/data",
+    "system_data_read_only": true,
+    "fingerprints": {
+      "table.conf": "daac60034e2abb734a3bb15bb7765e3f67c0f13541ffa91943e0f3a5e293958e",
+      "bigram.db": "cf6fbb1406264e5b48e68ac33495f15895d5b257862162597226b6a1dc9029ed",
+      "pinyin_index.bin": "840a0eb3b64a779f4e6a15e902ed61c0fcc385947dcf20f4cd35b6baf3da7247",
+      "phrase_index.bin": "9e9200b6e8d173a54a7da7af66db7a1009d80163daa5b56208a8f497877e6796",
+      "libpinyin.so.13.0.0": "c4ba6208feaf5462eaa77a0a37b11f0c6ade76af909207fc9dfc80f4ff3b4845"
+    }
+  },
+  "sources": [
+    {
+      "id": "curated-terms-v1",
+      "file": "data/base/terms-v1.tsv",
+      "sha256": "d46984391c9cc48b5d8823bf172128d1f05f16516274ba91ae3806cfb16e9d1b",
+      "kind": "authored term list",
+      "license": "CC-BY-4.0",
+      "author": "server-ime lexicon"
+    },
+    {
+      "id": "pypinyin",
+      "version": "0.55.0",
+      "kind": "readings generator",
+      "license": "MIT",
+      "url": "https://files.pythonhosted.org/packages/b9/7b/4cabc76fcc21c3c7d5c671d8783984d30ac9d3bb387c4ba784fca3cdfa3a/pypinyin-0.55.0-py2.py3-none-any.whl",
+      "sha256": "d53b1e8ad2cdb815fb2cb604ed3123372f5a28c6f447571244aca36fc62a286f",
+      "license_file": "licenses/pypinyin-MIT.txt",
+      "output_file": "data/base/readings-v1.json",
+      "output_sha256": "4c9c1796ff954b068da09c7a5f356c6c27df0cd4f22c35bcfb37554b1b4005a4"
+    },
+    {
+      "id": "cc-cedict",
+      "version": "2026-10-28T00:15:09Z",
+      "kind": "verification reference",
+      "license": "CC-BY-SA-4.0",
+      "url": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+      "sha256": "366f39049fbcc9ca0cc414f319bfc56a33f6f9aba73aec1f609c5cb6502d2000",
+      "used": "cross-check of 40 terms with an existing CEDICT entry; no definitions or entries are copied"
+    }
+  ],
+  "artifacts": {
+    "base_lexicon": {
+      "version": "base-v1",
+      "file": "data/base/lexicon-v1.jsonl",
+      "sha256": "8d4f53d5553055e7f206bc79b7630c7c70ba346f7bb97a170756a8fc202fac67",
+      "manifest": "data/base/manifest.json",
+      "entries": 369,
+      "license": "CC-BY-4.0"
+    },
+    "eval_corpus": {
+      "version": "1.0",
+      "file": "corpus/eval/cases-v1.jsonl",
+      "sha256": "0f8c1c371872e28ef2b1b39c28e092a21090d58144b81800276ae48527a69ae3",
+      "manifest": "corpus/eval/manifest.json",
+      "cases": 200,
+      "license": "CC0-1.0"
+    }
+  },
+  "features": {
+    "base_lexicon": true,
+    "native_user_dictionary": true,
+    "user_word_frequency": true,
+    "custom_phrases": true,
+    "import_export": true,
+    "backup_restore": true,
+    "learning_switch": true,
+    "legacy_migration": true,
+    "fixed_eval_corpus": true
+  }
+}

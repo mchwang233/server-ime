@@ -1,0 +1,87 @@
+{
+  "employee_id": "platform",
+  "owner": "interface",
+  "cases": [
+    {
+      "case": "unsupported-double-scheme",
+      "interface_errors": [],
+      "patch": {
+        "schema": "double_pinyin",
+        "page_size": 5,
+        "incomplete": true,
+        "learning": false,
+        "double_pinyin_scheme": "mspy",
+        "fuzzy": {
+          "enabled": false,
+          "rules": []
+        },
+        "correction": {
+          "enabled": false,
+          "rules": []
+        }
+      },
+      "engine_accepted": false,
+      "engine_errors": [
+        {
+          "code": "engine-unsupported_config",
+          "path": "input",
+          "message": "引擎拒绝了配置：supported double_pinyin_scheme: ziranma (自然码)"
+        }
+      ]
+    },
+    {
+      "case": "unknown-fuzzy-rule",
+      "interface_errors": [],
+      "patch": {
+        "schema": "full_pinyin",
+        "page_size": 5,
+        "incomplete": true,
+        "learning": false,
+        "fuzzy": {
+          "enabled": true,
+          "rules": [
+            "not-a-rule"
+          ]
+        },
+        "correction": {
+          "enabled": false,
+          "rules": []
+        }
+      },
+      "engine_accepted": false,
+      "engine_errors": [
+        {
+          "code": "engine-unsupported_config",
+          "path": "input",
+          "message": "引擎拒绝了配置：unknown or duplicate fuzzy rule"
+        }
+      ]
+    },
+    {
+      "case": "learning-without-data-directory",
+      "interface_errors": [],
+      "patch": {
+        "schema": "full_pinyin",
+        "page_size": 5,
+        "incomplete": true,
+        "learning": true,
+        "fuzzy": {
+          "enabled": false,
+          "rules": []
+        },
+        "correction": {
+          "enabled": false,
+          "rules": []
+        }
+      },
+      "engine_accepted": false,
+      "engine_errors": [
+        {
+          "code": "engine-learning_unavailable",
+          "path": "input",
+          "message": "引擎拒绝了配置：learning requires explicit user_data_dir"
+        }
+      ]
+    }
+  ]
+}

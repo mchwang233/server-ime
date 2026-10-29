@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://superpartner.local/server-ime/settings-v1.schema.json",
+  "title": "服务器输入法 用户设置 v1",
+  "description": "employee_id=interface 拥有的设置格式。未知的附加键被忽略但原样保留，供后续引擎/界面增强使用（前向兼容）。引擎能力为 false 的选项不得置为非默认值。",
+  "type": "object",
+  "required": ["version", "input"],
+  "additionalProperties": true,
+  "properties": {
+    "version": {"const": 1, "description": "格式主版本；不等于 1 时拒绝加载，不做猜测式迁移。"},
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "schema": {"enum": ["full_pinyin", "double_pinyin"], "description": "转换方案。double_pinyin 需引擎 capabilities.features.double_pinyin=true。"},
+        "page_size": {"type": "integer", "minimum": 1, "maximum": 9, "description": "每页候选数，映射到引擎 configure(page_size) 与平台 Controller(page_size)。"},
+        "incomplete": {"type": "boolean", "description": "允许用未完整拼音取候选，映射到引擎 configure(incomplete)。"},
+        "learning": {"type": "boolean", "description": "个人学习开关，仅在引擎 capabilities.features.learning=true 时可改为 true。"},
+        "double_pinyin_scheme": {"enum": [null, "ziranma", "mspy", "abc", "ziguang", "pinyin_jiajia"], "description": "双拼方案；引擎未支持时必须为 null。"},
+        "fuzzy": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "enabled": {"type": "boolean"},
+            "rules": {"type": "array", "items": {"enum": ["z_zh", "c_ch", "s_sh", "l_n", "f_h", "r_l", "an_ang", "en_eng", "in_ing", "ian_iang", "uan_uang"]}}
+          }
+        },
+        "correction": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "enabled": {"type": "boolean"},
+            "rules": {"type": "array", "items": {"enum": ["gn_ng", "mg_mg", "iou_iu", "uei_ui", "uen_un"]}}
+          }
+        }
+      }
+    },
+    "punctuation": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "chinese": {"type": "boolean", "description": "中文标点模式：ASCII 标点映射为全角中文标点。"},
+        "use_full_width_pairs": {"type": "boolean", "description": "引号/括号使用成对中文标点。"}
+      }
+    },
+    "shortcuts": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "按键绑定，语法 MOD+Key（Control/Shift/Alt/Super）。select_digit 使用数字区间形式 1-9。平台当前只实现文档中列出的绑定，其他绑定保存时会被拒绝。",
+      "properties": {
+        "toggle_mode": {"type": "string"},
+        "select_digit": {"type": "string", "pattern": "^[1-9]-[1-9]$"},
+        "page_prev": {"type": "string"},
+        "page_next": {"type": "string"},
+        "move_prev": {"type": "string"},
+        "move_next": {"type": "string"},
+        "commit_raw": {"type": "string"},
+        "cancel": {"type": "string"},
+        "pass_focus": {"type": "string"}
+      }
+    },
+    "panel": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "layout": {"enum": ["horizontal", "vertical"], "description": "候选排列方向；缺省为 horizontal（从左到右同一行）。vertical 仅为旧式单列偏好保留，旧配置缺少该键时按 horizontal 生效。"},
+        "font_scale": {"type": "number", "minimum": 0.8, "maximum": 3.0},
+        "max_visible": {"type": "integer", "minimum": 1, "maximum": 9},
+        "show_page_info": {"type": "boolean"},
+        "show_hints": {"type": "boolean"},
+        "edge_margin": {"type": "integer", "minimum": 0, "maximum": 64}
+      }
+    },
+    "ui": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {"language": {"enum": ["zh_CN"]}}
+    }
+  }
+}

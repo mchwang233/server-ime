@@ -1,0 +1,17 @@
+#!/usr/bin/python3
+"""服务器输入法界面入口：把 interface/src、platform、engine/src 加入 PYTHONPATH 后转交 app.main。"""
+import os
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+WORKSPACE = ROOT.parent
+for path in (ROOT / "src", WORKSPACE / "platform", WORKSPACE / "engine" / "src"):
+    if path.exists():
+        sys.path.insert(0, str(path))
+
+from ime_interface.app import main  # noqa: E402
+
+if __name__ == "__main__":
+    os.environ.setdefault("PYTHONDONTWRITEBYTECODE", "1")
+    raise SystemExit(main())

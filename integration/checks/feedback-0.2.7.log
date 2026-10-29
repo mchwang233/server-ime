@@ -1,0 +1,6 @@
+Evidence: /projects/workspace/20261028-1621-server-ime/integration/evidence/narrow-assembled-0.2.7
+open  failed.open  failed.open  failed.open  failed.open  failed.open  failed.open  failed.open  failed.controller: 8 PASS
+managed PASS /projects/workspace/20261028-1621-server-ime/integration/evidence/narrow-assembled-0.2.7/managed
+managed PASS /projects/workspace/20261028-1621-server-ime/integration/evidence/narrow-assembled-0.2.7/managed-narrow
+existing PASS /projects/workspace/20261028-1621-server-ime/integration/evidence/narrow-assembled-0.2.7/existing
+existing PASS /projects/workspace/20261028-1621-server-ime/integration/evidence/narrow-assembled-0.2.7/existing-narrow

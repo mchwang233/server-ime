@@ -1,0 +1,160 @@
+{
+  "employee_id": "platform",
+  "title": "服务器环境与 IBus 框架适配器",
+  "status": "complete",
+  "scope": "平台基础接入和确定性后端链路自检；真实转换由后续集成任务接入",
+  "route": "Rocky Linux 9.8 / X11 / GTK3 IBus module / IBus 1.5.25 / Python GI",
+  "interfaces_version": 1,
+  "verifies": [],
+  "provides": [
+    {
+      "employee_id": "platform",
+      "artifact": "platform/server_ime/ibus_adapter.py",
+      "contract": "按键、焦点、预编辑、候选、提交、用途提示的 IBus 适配"
+    },
+    {
+      "employee_id": "platform",
+      "artifact": "platform/server_ime/port.py",
+      "contract": "可结构实现的同步转换端口，factory -> session"
+    },
+    {
+      "employee_id": "platform",
+      "artifact": "platform/server_ime/state_service.py",
+      "contract": "org.superpartner.ServerIME1 版本化候选/状态/选择接口"
+    },
+    {
+      "employee_id": "platform",
+      "artifact": "platform/server_ime/ui_client.py",
+      "contract": "界面侧 StateClient，含快照、订阅、选择、翻页和模式命令"
+    },
+    {
+      "employee_id": "platform",
+      "artifact": "platform/tools/run_checks.py",
+      "contract": "自行建立并回收独立显示、D-Bus 和 IBus，会话检查入口"
+    },
+    {
+      "employee_id": "platform",
+      "artifact": "platform/docs/environment.md",
+      "contract": "有命令原文支持的能力矩阵"
+    },
+    {
+      "employee_id": "platform",
+      "artifact": "platform/docs/interfaces.md",
+      "contract": "引擎、界面和构建交付接口说明"
+    }
+  ],
+  "checks": [
+    {
+      "employee_id": "platform",
+      "kind": "unit",
+      "passed": 16,
+      "evidence": "platform/evidence/run-20261028-165918/unit.log"
+    },
+    {
+      "employee_id": "platform",
+      "kind": "real-ibus-client",
+      "passed": 9,
+      "checks": [
+        "component-registered-and-selected",
+        "client-observed-preedit-candidates-commit-and-clear",
+        "page-relative-numeric-selection",
+        "release-shortcut-passthrough-and-stale-action-rejection",
+        "ui-dbus-candidate-selection-commits-to-client",
+        "two-client-focus-transfer-no-stale-commit",
+        "password-purpose-clears-and-passes-keys",
+        "mode-toggle-hints-and-reset",
+        "public-ui-client-page-select-mode-and-state-subscription"
+      ],
+      "commits": [
+        "你好",
+        "妮",
+        "呢",
+        "倪"
+      ],
+      "evidence": "platform/evidence/run-20261028-165918/ibus-client.json"
+    },
+    {
+      "employee_id": "platform",
+      "kind": "real-gtk3-xtest-client",
+      "passed": 5,
+      "checks": [
+        "xtest-key-events-through-gtk-ibus-preedit-and-chinese-commit",
+        "tab-passthrough-focus-transfer-and-no-preedit-leak",
+        "ctrl-a-passthrough-selects-application-text",
+        "gtk-password-entry-receives-literal-keys",
+        "password-exit-and-escape-recover-normal-composition"
+      ],
+      "final_text": {
+        "A": "中文",
+        "B": "好"
+      },
+      "evidence": "platform/evidence/run-20261028-165918/gtk-client.json"
+    }
+  ],
+  "latency": {
+    "scope": "确定性后端、同步 IBus 按键 IPC 往返；不代表真实引擎或视觉延迟",
+    "count": 69,
+    "median_ms": 2.311094998731278,
+    "p95_ms": 9.664562006946653,
+    "max_ms": 10.648481009411626
+  },
+  "evidence_paths": [
+    "platform/evidence/environment.json",
+    "platform/evidence/run-20261028-165918/summary.json",
+    "platform/evidence/run-20261028-165918/unit.log",
+    "platform/evidence/run-20261028-165918/ibus-client.json",
+    "platform/evidence/run-20261028-165918/gtk-client.json",
+    "platform/evidence/run-20261028-165918/gtk-client.png",
+    "platform/evidence/run-20261028-165918/source-sha256.json"
+  ],
+  "entrypoints": {
+    "checks": "/usr/bin/python3 platform/tools/run_checks.py",
+    "probe": "/usr/bin/python3 platform/tools/probe_environment.py --output platform/evidence/environment.json",
+    "adapter": "/usr/bin/python3 platform/launch.py --register --test-backend (requires explicit IBUS_ADDRESS)"
+  },
+  "isolation": {
+    "host_session_modified": false,
+    "host_config_modified": false,
+    "home_overridden": false,
+    "runtime_removed": true,
+    "test_backend_persistence": false
+  },
+  "consumers": [
+    {
+      "employee_id": "engine",
+      "consume": "platform/server_ime/port.py",
+      "note": "可返回引擎自己的同结构 dataclass；选择返回 commit/remaining/cursor；候选最多200；本任务不接入真实引擎"
+    },
+    {
+      "employee_id": "interface",
+      "consume": "platform/server_ime/ui_client.py + docs/interfaces.md",
+      "note": "同一 IBus bus，非桌面 session bus；动作必须携带当前 revision，失焦/过期返回false"
+    },
+    {
+      "employee_id": "delivery",
+      "consume": "platform/launch.py + docs/environment.md",
+      "note": "manifest 为可生成产物；不自动安装或启用；生产用明确 engine-name 和真实 backend"
+    },
+    {
+      "employee_id": "platform",
+      "consume": "全部平台接口",
+      "note": "后续 fa505f8c 接真实引擎及其它组件，扩大真实应用兼容范围"
+    }
+  ],
+  "not_executed": [
+    "宿主既有 VNC 桌面连接和启用（认证文件及 X11 socket 目录受限；本轮已用独立会话完成要求）",
+    "Wayland/Fcitx5（未发现可用工具/会话，未选为主路线）",
+    "Qt/GTK4/Electron/浏览器/EDA 应用、传统 XIM（本任务只验证 GTK3 主路线）",
+    "原生候选面板视觉/DPI/鼠标检查（归 interface）；manifest 自动拉起、安装和回滚（归 delivery/后续集成）",
+    "真实拼音转换、词库学习和 Windows 11 体验对标（不属于确定性测试后端）"
+  ],
+  "product_integration": {
+    "employee_id": "platform",
+    "entrypoint": "integration/bin/server-ime",
+    "handoff": "integration/handoff.json",
+    "backend": "libpinyin-2.6.0-api1",
+    "deterministic": false,
+    "real_application_evidence": "integration/evidence/run-20261028-201830",
+    "actual_user_session_deployed": false
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "employee_id": "platform",
+  "verifies": [],
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "full-file-inventory",
+      "result": "PASS",
+      "files": 115
+    },
+    {
+      "name": "licenses-and-production-only-runtime",
+      "result": "PASS"
+    },
+    {
+      "name": "source-runtime-and-metadata-consistent",
+      "result": "PASS",
+      "files": 44
+    },
+    {
+      "name": "same-runtime-as-successful-application-run",
+      "result": "PASS",
+      "files": 45,
+      "evidence": "integration/evidence/apps-assembled-0.2.9"
+    },
+    {
+      "name": "same-runtime-as-successful-horizontal-feedback",
+      "result": "PASS",
+      "files": 44,
+      "evidence": "integration/evidence/layout-assembled-0.2.9"
+    },
+    {
+      "name": "real-narrow-viewport-and-complete-logical-pages",
+      "result": "PASS",
+      "screen": [
+        360,
+        960
+      ],
+      "font_scale": 3.0,
+      "fixture": false,
+      "evidence": "integration/evidence/layout-assembled-0.2.9"
+    },
+    {
+      "name": "saved-viewport-budgets-preserve-full-page-and-selection",
+      "result": "PASS",
+      "combinations": [
+        [
+          9,
+          3
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "pages_per_combination": 2,
+      "routes": [
+        "managed",
+        "existing"
+      ],
+      "selection_methods": [
+        "mouse",
+        "digit"
+      ],
+      "fixture": false
+    },
+    {
+      "name": "layout-highlight-and-short-page-range",
+      "result": "PASS",
+      "routes": [
+        "managed",
+        "existing"
+      ],
+      "combinations": [
+        [
+          9,
+          9
+        ],
+        [
+          9,
+          3
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "fixture": false
+    },
+    {
+      "name": "final-archive-runtime-identical-to-fixed-assembly",
+      "result": "PASS",
+      "unchanged_files": 112,
+      "metadata_changes": [
+        "integration/README.md",
+        "integration/compatibility.json",
+        "integration/docs/application-compatibility.md"
+      ]
+    },
+    {
+      "name": "build-completed-before-fixed-runtime-checks",
+      "result": "PASS",
+      "product_root": "/projects/workspace/20261028-1621-server-ime/integration/.runtime/layout-0.2.9/product",
+      "audit": "integration/evidence/assembly-0.2.9-preparation/fixed-runtime-audit.json"
+    },
+    {
+      "name": "historical-packages-preserved",
+      "result": "PASS",
+      "files": 44
+    },
+    {
+      "name": "relocated-entry-and-real-engine",
+      "result": "PASS",
+      "scope": "programmatic smoke, not a GUI run",
+      "version": "0.4.0",
+      "product_version": "0.2.9",
+      "commits": [
+        "你好API2世界",
+        "你好",
+        "？"
+      ],
+      "mode": "zh"
+    },
+    {
+      "name": "archive-members-and-checksum",
+      "result": "PASS",
+      "archive": "integration/build/server-ime-product-0.2.9.tar.gz",
+      "sha256": "7256adc60cba9bea1c5c5b09f1cacc72b6ad6fcda23d46cfbc971b752025f1a7"
+    }
+  ],
+  "runtime_files": 45,
+  "files": 115,
+  "archive_sha256": "7256adc60cba9bea1c5c5b09f1cacc72b6ad6fcda23d46cfbc971b752025f1a7"
+}

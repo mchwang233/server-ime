@@ -1,0 +1,28 @@
+{
+  "_note": "夹具：把尚未实现的引擎增强声明为可用，仅用于检查设置界面在能力开启时的控件显示。不是真实引擎能力，不能作为功能已实现的证据。真实能力请用 server_ime_engine.Engine.capabilities()。",
+  "api_version": "1.0",
+  "component_version": "0.0.0-fixture",
+  "employee_id": "engine",
+  "backend": "capability-fixture",
+  "backend_version": "fixture",
+  "license": "n/a",
+  "schemas": ["full_pinyin", "double_pinyin"],
+  "features": {
+    "sentence": true,
+    "candidates": true,
+    "partial_selection": true,
+    "editing": true,
+    "session_isolation": true,
+    "pagination": true,
+    "double_pinyin": true,
+    "fuzzy_pinyin": true,
+    "correction": true,
+    "dictionary_import": false,
+    "learning": true
+  },
+  "config_defaults": {"schema": "full_pinyin", "page_size": 5, "incomplete": true, "learning": false},
+  "max_input_length": 128,
+  "max_sessions": 64,
+  "coordinate_unit": "unicode_codepoint",
+  "network": false
+}

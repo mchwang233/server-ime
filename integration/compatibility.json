@@ -1,0 +1,733 @@
+{
+  "schema": "server-ime.application-compatibility/1",
+  "employee_id": "platform",
+  "verifies": [],
+  "result": "PASS",
+  "actual_user_session": {
+    "id": "3",
+    "protocol": "TigerVNC/X11",
+    "display": ":2",
+    "tested": false,
+    "deployed": false,
+    "reason": "Existing Xauthority, X11 sockets and user config denied by permission profile.",
+    "status": "NOT_DEPLOYED",
+    "verification_basis": "Retained session facts; current permission profile still denies existing Xauthority, X11 sockets and user configuration. No user desktop access attempted.",
+    "current_observation": "integration/evidence/assembly-0.2.8-preparation/session-access.json"
+  },
+  "applications": [
+    {
+      "employee_id": "platform",
+      "name": "xfce4-terminal",
+      "type": "terminal",
+      "protocol": "X11/Xvnc",
+      "scope": "isolated",
+      "result": "PASS",
+      "evidence": "integration/evidence/apps-assembled-0.2.9/applications.json",
+      "reused_existing_evidence": false,
+      "mixed_input_mode": "zh; no Ctrl+Space within mixed-input sequences",
+      "observations": 12,
+      "window_manager": "xfwm4",
+      "direct_pinyin_punctuation": "PASS, Chinese and ASCII settings, no prior Space/digit selection"
+    },
+    {
+      "employee_id": "platform",
+      "name": "gedit",
+      "type": "editor",
+      "protocol": "X11/Xvnc",
+      "scope": "isolated",
+      "result": "PASS",
+      "evidence": "integration/evidence/apps-assembled-0.2.9/applications.json",
+      "reused_existing_evidence": false,
+      "mixed_input_mode": "zh; no Ctrl+Space within mixed-input sequences",
+      "observations": 10,
+      "window_manager": "xfwm4",
+      "direct_pinyin_punctuation": "PASS, Chinese and ASCII settings, no prior Space/digit selection"
+    },
+    {
+      "employee_id": "platform",
+      "name": "Chrome for Testing",
+      "version": "156.0.8078.73",
+      "type": "browser",
+      "protocol": "X11/Xvnc",
+      "scope": "isolated",
+      "result": "PASS",
+      "evidence": "integration/evidence/apps-assembled-0.2.9/applications.json",
+      "observations": 20,
+      "dom_events": 1898,
+      "injection": "XTest hardware key/mouse events only; no DOM writes",
+      "provenance": "integration/browser-runtime/source.json",
+      "reused_existing_evidence": false,
+      "mixed_input_mode": "zh; no Ctrl+Space within mixed-input sequences",
+      "window_manager": "xfwm4",
+      "direct_pinyin_punctuation": "PASS, Chinese and ASCII settings, no prior Space/digit selection"
+    },
+    {
+      "employee_id": "platform",
+      "name": "Firefox",
+      "version": "140.12.0esr",
+      "type": "browser",
+      "protocol": "X11/Xvnc",
+      "scope": "isolated",
+      "result": "UNVERIFIED",
+      "reason": "Profile service initialization mkdir EACCES before explicit profile selection; wrapper and ELF behave identically.",
+      "evidence": "integration/evidence/run-20261028-203124/browser-startup.json"
+    }
+  ],
+  "retained_checks": {
+    "employee_id": "platform",
+    "unit_checks": 21,
+    "product_contract_scenarios": 10,
+    "source": "integration/evidence/run-20261028-201440",
+    "assembled": "integration/evidence/run-20261028-201830",
+    "covered": [
+      "configuration propagation",
+      "learning rank across full product restart",
+      "owned service/panel/IBus recovery"
+    ],
+    "historical_only": true
+  },
+  "browser_observations": {
+    "employee_id": "platform",
+    "password_text": "AbC123@Example.org",
+    "password_composition_events": 0,
+    "password_learning_bytes_unchanged": true,
+    "ibus_password_purpose_reported": false,
+    "status_badge_can_retain_previous_anchor": true,
+    "compositionend_isTrusted": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "all_other_recorded_dom_events_trusted": true,
+    "password_words_sha256": "4cbaeaf60e0056f97a446a5a8c941ea5739b5dfc4f40b7c57edb1f61019ab8db",
+    "status_note": "IBus mode/caret may retain previous field; custom candidate popup was hidden."
+  },
+  "unverified": [
+    "actual user desktop",
+    "Wayland",
+    "native Qt applications",
+    "RDP",
+    "multiple monitors",
+    "fractional scaling",
+    "existing application reconnection after full IBus crash"
+  ],
+  "browser_tool": {
+    "employee_id": "platform",
+    "distribution": "official Chrome for Testing",
+    "version": "156.0.8078.73",
+    "archive_sha256": "c51c24f0126534aaf6d21d1f85b8e243934b3951989dbb59a1f8aab8e32b20c1",
+    "binary_sha256": "8ea0ecbfc1ac0dc0e957de722babf9b72f8e86cb8643308ff17a491d59bdaa80",
+    "product_dependency": false,
+    "security_flags_disabled": false
+  },
+  "reproduce": "SERVER_IME_PRODUCT_ROOT=\"$PWD/integration/.runtime/layout-0.2.9/product\" python3 -B integration/checks/run_checks.py --window-manager xfwm4 --output integration/evidence/apps-layout-NEW",
+  "product_version": "0.2.9",
+  "engine_version": "0.4.0",
+  "runtime_changed": true,
+  "evidence": "integration/evidence/apps-assembled-0.2.9",
+  "check_scope": "Fixed 0.2.9 runtime with interface 0.1.5; real narrow complete pages, automatic highlight and short-page ranges; retained input/configuration/learning/recovery",
+  "observations": 43,
+  "historical_evidence": "integration/evidence/assembly-0.2.9-preparation/integration/compatibility.json",
+  "current_checks": {
+    "employee_id": "platform",
+    "verifies": [],
+    "result": "PASS",
+    "scope": "Fixed 0.2.9 runtime with interface 0.1.5; real narrow complete pages, automatic highlight and short-page ranges; retained input/configuration/learning/recovery",
+    "assembly_regression": "20/20",
+    "unit_logs": [
+      "integration/checks/assembly-0.2.9.log"
+    ],
+    "feedback": {
+      "employee_id": "platform",
+      "verifies": [],
+      "path": "integration/evidence/layout-assembled-0.2.9",
+      "result": "PASS",
+      "controller_checks": 8,
+      "application_checks": {
+        "managed": 32,
+        "existing": 32
+      },
+      "horizontal_checks": {
+        "managed": 8,
+        "existing": 8
+      },
+      "narrow_checks": {
+        "managed": 38,
+        "existing": 38
+      },
+      "narrow_conditions": {
+        "real_screen": [
+          360,
+          960
+        ],
+        "font_scale": 3.0,
+        "fixture": false,
+        "complete_page_candidates": 9,
+        "ni_candidates": 126,
+        "ni_pages": 14,
+        "hao_final_page_candidates": 4,
+        "saved_page_size_max_visible": [
+          [
+            9,
+            3
+          ],
+          [
+            5,
+            1
+          ]
+        ],
+        "full_short_full_scroll_upper": {
+          "9/9": [
+            859,
+            384,
+            859
+          ],
+          "9/3": [
+            859,
+            384,
+            859
+          ],
+          "5/1": [
+            479,
+            384,
+            479
+          ]
+        }
+      },
+      "framework_signals": {
+        "managed": {
+          "UpdateLookupTable": {
+            "count": 1183,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1183,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 354,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "existing": {
+          "UpdateLookupTable": {
+            "count": 1174,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1174,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 354,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "managed-narrow": {
+          "UpdateLookupTable": {
+            "count": 1217,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1217,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 480,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "existing-narrow": {
+          "UpdateLookupTable": {
+            "count": 1208,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1208,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 480,
+          "scope": "Product engine signals only; application preedit is expected"
+        }
+      },
+      "assembly_hashes": "integration/evidence/layout-assembled-0.2.9/tested-runtime-hashes.json",
+      "after_hashes": "integration/evidence/layout-assembled-0.2.9/runtime-hashes-after.json",
+      "summary": "integration/evidence/layout-assembled-0.2.9/summary.json",
+      "viewport_summary": "integration/evidence/layout-assembled-0.2.9/viewport-summary.json",
+      "baseline_reused": "integration/evidence/feedback-0.2.3-serial/baseline",
+      "execution_order": [
+        "managed-narrow",
+        "existing-narrow",
+        "managed",
+        "existing"
+      ],
+      "runtime_unchanged_during_run": true
+    },
+    "assembled": "integration/evidence/apps-assembled-0.2.9",
+    "real_engine_contract_scenarios": 10,
+    "application_observations": 43,
+    "browser_dom_events": 1898,
+    "applications": {
+      "xfce4-terminal": "PASS",
+      "gedit": "PASS",
+      "Chrome for Testing": "PASS"
+    },
+    "runtime_inventory": "integration/checks/layout-inventory-0.2.9.json",
+    "runtime_match": "integration/evidence/assembly-0.2.9-preparation/fixed-runtime-audit.json",
+    "relocation": "Programmatic entry and real mixed/punctuation conversion, checked by check_delivery.py; not a GUI deployment.",
+    "runtime_unchanged_during_run": true
+  },
+  "resolved_platform_defects": [
+    {
+      "id": "lost-mixed-fragments",
+      "before": "integration/evidence/mixed-revision-before.json",
+      "fix": "Preserve ASCII input and engine literal_digits; keypad insertion; literal-only digit continuation"
+    },
+    {
+      "id": "caret-preedit-feedback",
+      "before": "integration/evidence/run-20261028-230851",
+      "after": "integration/evidence/run-20261028-231602",
+      "fix": "Caret reports publish geometry only; do not re-send preedit or lookup table to the client"
+    },
+    {
+      "id": "sentence-punctuation-regression",
+      "before": "integration/checks/assembly-punctuation-before.log",
+      "after": "integration/evidence/run-20261029-000050",
+      "fix": "Sentence stops at lowercase pinyin end select current candidate then unconsumed suffix, apply punctuation setting exactly once; keep mixed/address symbols literal"
+    }
+  ],
+  "failed_configurations": [
+    {
+      "employee_id": "platform",
+      "configuration": "Isolated Xvnc without window manager",
+      "result": "FAIL",
+      "evidence": "integration/evidence/run-20261028-235645",
+      "reason": "Mouse candidate interaction induced repeated focus-out/in before mixed/punctuation checks"
+    },
+    {
+      "employee_id": "platform",
+      "configuration": "Isolated Xvnc without window manager",
+      "result": "FAIL",
+      "evidence": "integration/evidence/run-20261028-235853",
+      "reason": "Mouse candidate interaction induced repeated focus-out/in before mixed/punctuation checks"
+    }
+  ],
+  "session_conditions": {
+    "protocol": "X11",
+    "server": "Xvnc",
+    "window_manager": "xfwm4",
+    "scope": "isolated",
+    "note": "Full successful run used installed xfwm4; no claim of stable mouse focus in window-manager-free X11 or deployment to the existing desktop"
+  },
+  "horizontal_feedback": {
+    "employee_id": "platform",
+    "verifies": [],
+    "path": "integration/evidence/layout-assembled-0.2.9",
+    "result": "PASS",
+    "controller_checks": 8,
+    "application_checks": {
+      "managed": 32,
+      "existing": 32
+    },
+    "horizontal_checks": {
+      "managed": 8,
+      "existing": 8
+    },
+    "narrow_checks": {
+      "managed": 38,
+      "existing": 38
+    },
+    "narrow_conditions": {
+      "real_screen": [
+        360,
+        960
+      ],
+      "font_scale": 3.0,
+      "fixture": false,
+      "complete_page_candidates": 9,
+      "ni_candidates": 126,
+      "ni_pages": 14,
+      "hao_final_page_candidates": 4,
+      "saved_page_size_max_visible": [
+        [
+          9,
+          3
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "full_short_full_scroll_upper": {
+        "9/9": [
+          859,
+          384,
+          859
+        ],
+        "9/3": [
+          859,
+          384,
+          859
+        ],
+        "5/1": [
+          479,
+          384,
+          479
+        ]
+      }
+    },
+    "framework_signals": {
+      "managed": {
+        "UpdateLookupTable": {
+          "count": 1183,
+          "visible_true": 0
+        },
+        "UpdateAuxiliaryText": {
+          "count": 1183,
+          "visible_true": 0
+        },
+        "visible_application_preedit": 354,
+        "scope": "Product engine signals only; application preedit is expected"
+      },
+      "existing": {
+        "UpdateLookupTable": {
+          "count": 1174,
+          "visible_true": 0
+        },
+        "UpdateAuxiliaryText": {
+          "count": 1174,
+          "visible_true": 0
+        },
+        "visible_application_preedit": 354,
+        "scope": "Product engine signals only; application preedit is expected"
+      },
+      "managed-narrow": {
+        "UpdateLookupTable": {
+          "count": 1217,
+          "visible_true": 0
+        },
+        "UpdateAuxiliaryText": {
+          "count": 1217,
+          "visible_true": 0
+        },
+        "visible_application_preedit": 480,
+        "scope": "Product engine signals only; application preedit is expected"
+      },
+      "existing-narrow": {
+        "UpdateLookupTable": {
+          "count": 1208,
+          "visible_true": 0
+        },
+        "UpdateAuxiliaryText": {
+          "count": 1208,
+          "visible_true": 0
+        },
+        "visible_application_preedit": 480,
+        "scope": "Product engine signals only; application preedit is expected"
+      }
+    },
+    "assembly_hashes": "integration/evidence/layout-assembled-0.2.9/tested-runtime-hashes.json",
+    "after_hashes": "integration/evidence/layout-assembled-0.2.9/runtime-hashes-after.json",
+    "summary": "integration/evidence/layout-assembled-0.2.9/summary.json",
+    "viewport_summary": "integration/evidence/layout-assembled-0.2.9/viewport-summary.json",
+    "baseline_reused": "integration/evidence/feedback-0.2.3-serial/baseline",
+    "execution_order": [
+      "managed-narrow",
+      "existing-narrow",
+      "managed",
+      "existing"
+    ],
+    "runtime_unchanged_during_run": true
+  },
+  "baseline_duplicate_reproduction": {
+    "reused": true,
+    "evidence": "integration/evidence/feedback-0.2.3-serial/baseline"
+  },
+  "release_scope": "保留单候选窗、正常预编辑与输入；修复布局后高亮可见、短页范围及 max_visible 预算下的完整候选页",
+  "cancelled_scope": [
+    "continuous next-word prediction",
+    "Windows 11 comparison"
+  ],
+  "version": "0.2.9",
+  "gaps": [
+    {
+      "employee_id": "platform",
+      "item": "System Firefox 140.12.0esr remains unverified: toolkit profile service mkdir EACCES before explicit --profile handling, identical in wrapper and both ELF entrypoints. Browser category is verified with official Chrome for Testing.",
+      "evidence": "integration/evidence/run-20261028-203124/browser-startup.json"
+    },
+    {
+      "employee_id": "platform",
+      "item": "Chrome password controls bypass composition without reporting IBus PASSWORD purpose. Diagnostic IBus mode/caret can retain the previous field; no visible candidate or learning leak observed. compositionend.isTrusted is false in this Chrome build; all key/input and other recorded events are trusted.",
+      "evidence": "integration/evidence/apps-assembled-0.2.9/applications.json"
+    },
+    {
+      "employee_id": "platform",
+      "item": "User desktop, Wayland, native Qt, RDP, multiple monitors and fractional scaling unverified; no user-session deployment."
+    },
+    {
+      "employee_id": "platform",
+      "item": "Existing application reconnect after a full IBus crash not established; tested new clients reconnect via exec with refreshed address."
+    },
+    {
+      "employee_id": "interface",
+      "item": "Shortcut catalog is restricted to declared bindings; freeform remapping not implemented. Convenience resolver mis-matches plain Space, excluded from product key path.",
+      "evidence": "integration/checks/interface-resolver-observation.json"
+    },
+    {
+      "employee_id": "engine",
+      "item": "Unseparated lowercase boundaries remain ambiguous; corpus top1/top5 129/152 out of 200, historical slow cohort 47/338 calls over 50 ms; selection cost and search scope gaps remain.",
+      "evidence": "engine/handoff.json"
+    },
+    {
+      "employee_id": "platform",
+      "item": "A lowercase address prefix and pinyin can be ambiguous at the first dot (ni.hao@example.org, www.example.org). Sentence stops default to Chinese selection at a pinyin end; use KP_Decimal or English mode for an explicit literal dot/address. Top-row digits still select at pinyin boundaries; keypad inserts."
+    },
+    {
+      "employee_id": "delivery",
+      "item": "Existing delivery task must consume the verified 0.2.9 assembly, generate installer and matching source archive, test upgrade/rollback and configuration/learning preservation; retain 0.2.8 failure artifacts, 0.2.7 and installer/source 0.1.5. No deployment/Windows 11 comparison/prediction work added."
+    },
+    {
+      "employee_id": "platform",
+      "item": "Mouse focus oscillated twice in bare Xvnc without a window manager. Full current run passed with installed xfwm4; window-manager-free X11 mouse stability is not established.",
+      "evidence": [
+        {
+          "employee_id": "platform",
+          "configuration": "Isolated Xvnc without window manager",
+          "result": "FAIL",
+          "evidence": "integration/evidence/run-20261028-235645",
+          "reason": "Mouse candidate interaction induced repeated focus-out/in before mixed/punctuation checks"
+        },
+        {
+          "employee_id": "platform",
+          "configuration": "Isolated Xvnc without window manager",
+          "result": "FAIL",
+          "evidence": "integration/evidence/run-20261028-235853",
+          "reason": "Mouse candidate interaction induced repeated focus-out/in before mixed/punctuation checks"
+        }
+      ]
+    }
+  ],
+  "diagnostic_attempts": [
+    {
+      "employee_id": "platform",
+      "path": "integration/evidence/narrow-assembled-0.2.6",
+      "result": "FAIL",
+      "scope": "Both normal-width routes passed; narrow assertions sampled before deferred GTK layout/reveal completed. Runtime unchanged."
+    },
+    {
+      "employee_id": "platform",
+      "path": "integration/evidence/narrow-layout-wait-0.2.6",
+      "result": "FAIL",
+      "scope": "Xvnc displayfd pipe was closed after digits before newline; test setup failed before applications. Reader corrected to consume complete line."
+    },
+    {
+      "employee_id": "platform",
+      "path": "integration/evidence/narrow-layout-wait-0.2.6-retry",
+      "result": "PASS",
+      "scope": "Bounded wait for selected candidate visibility; real 360px/300% managed IBus; complete and partial final page. No runtime change from failed attempt."
+    },
+    {
+      "employee_id": "platform",
+      "version": "0.2.8",
+      "path": "integration/evidence/viewport-budget-0.2.8-stable",
+      "result": "FAIL",
+      "runtime_unchanged": true,
+      "scope": "Selected index 3 remained clipped after real GTK allocation; preserved unchanged. Fixed by interface 0.1.5."
+    },
+    {
+      "employee_id": "platform",
+      "version": "0.2.8",
+      "path": "integration/evidence/viewport-budget-0.2.8",
+      "result": "NOT_ACCEPTED_AS_VERSION_EVIDENCE",
+      "scope": "Build overlapped the initial run; retained only as diagnostic evidence, never counted as a successful release check."
+    }
+  ],
+  "checks": {
+    "employee_id": "platform",
+    "verifies": [],
+    "result": "PASS",
+    "scope": "Fixed 0.2.9 runtime with interface 0.1.5; real narrow complete pages, automatic highlight and short-page ranges; retained input/configuration/learning/recovery",
+    "assembly_regression": "20/20",
+    "unit_logs": [
+      "integration/checks/assembly-0.2.9.log"
+    ],
+    "feedback": {
+      "employee_id": "platform",
+      "verifies": [],
+      "path": "integration/evidence/layout-assembled-0.2.9",
+      "result": "PASS",
+      "controller_checks": 8,
+      "application_checks": {
+        "managed": 32,
+        "existing": 32
+      },
+      "horizontal_checks": {
+        "managed": 8,
+        "existing": 8
+      },
+      "narrow_checks": {
+        "managed": 38,
+        "existing": 38
+      },
+      "narrow_conditions": {
+        "real_screen": [
+          360,
+          960
+        ],
+        "font_scale": 3.0,
+        "fixture": false,
+        "complete_page_candidates": 9,
+        "ni_candidates": 126,
+        "ni_pages": 14,
+        "hao_final_page_candidates": 4,
+        "saved_page_size_max_visible": [
+          [
+            9,
+            3
+          ],
+          [
+            5,
+            1
+          ]
+        ],
+        "full_short_full_scroll_upper": {
+          "9/9": [
+            859,
+            384,
+            859
+          ],
+          "9/3": [
+            859,
+            384,
+            859
+          ],
+          "5/1": [
+            479,
+            384,
+            479
+          ]
+        }
+      },
+      "framework_signals": {
+        "managed": {
+          "UpdateLookupTable": {
+            "count": 1183,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1183,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 354,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "existing": {
+          "UpdateLookupTable": {
+            "count": 1174,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1174,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 354,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "managed-narrow": {
+          "UpdateLookupTable": {
+            "count": 1217,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1217,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 480,
+          "scope": "Product engine signals only; application preedit is expected"
+        },
+        "existing-narrow": {
+          "UpdateLookupTable": {
+            "count": 1208,
+            "visible_true": 0
+          },
+          "UpdateAuxiliaryText": {
+            "count": 1208,
+            "visible_true": 0
+          },
+          "visible_application_preedit": 480,
+          "scope": "Product engine signals only; application preedit is expected"
+        }
+      },
+      "assembly_hashes": "integration/evidence/layout-assembled-0.2.9/tested-runtime-hashes.json",
+      "after_hashes": "integration/evidence/layout-assembled-0.2.9/runtime-hashes-after.json",
+      "summary": "integration/evidence/layout-assembled-0.2.9/summary.json",
+      "viewport_summary": "integration/evidence/layout-assembled-0.2.9/viewport-summary.json",
+      "baseline_reused": "integration/evidence/feedback-0.2.3-serial/baseline",
+      "execution_order": [
+        "managed-narrow",
+        "existing-narrow",
+        "managed",
+        "existing"
+      ],
+      "runtime_unchanged_during_run": true
+    },
+    "assembled": "integration/evidence/apps-assembled-0.2.9",
+    "real_engine_contract_scenarios": 10,
+    "application_observations": 43,
+    "browser_dom_events": 1898,
+    "applications": {
+      "xfce4-terminal": "PASS",
+      "gedit": "PASS",
+      "Chrome for Testing": "PASS"
+    },
+    "runtime_inventory": "integration/checks/layout-inventory-0.2.9.json",
+    "runtime_match": "integration/evidence/assembly-0.2.9-preparation/fixed-runtime-audit.json",
+    "relocation": "Programmatic entry and real mixed/punctuation conversion, checked by check_delivery.py; not a GUI deployment.",
+    "runtime_unchanged_during_run": true
+  },
+  "fixed_assembly": {
+    "product_root": "/projects/workspace/20261028-1621-server-ime/integration/.runtime/layout-0.2.9/product",
+    "before": "integration/evidence/assembly-0.2.9-preparation/pinned-before.json",
+    "after": "integration/evidence/assembly-0.2.9-preparation/pinned-after.json",
+    "audit": "integration/evidence/assembly-0.2.9-preparation/fixed-runtime-audit.json",
+    "assertions": "integration/evidence/assembly-0.2.9-preparation/assertion-preservation.json",
+    "tested_archive": "integration/evidence/assembly-0.2.9-preparation/tested-archive.json",
+    "final_metadata_changes": [
+      "integration/README.md",
+      "integration/docs/application-compatibility.md",
+      "integration/compatibility.json"
+    ]
+  },
+  "candidate_presentation": "custom-only; application preedit retained",
+  "candidate_layout": "horizontal; complete page; viewport budget never truncates; reveal after allocation; short-page range shrinks",
+  "resolved_component_defects": [
+    "integration/defects/interface-layout-after-allocation-resolution-0.2.9.json"
+  ]
+}

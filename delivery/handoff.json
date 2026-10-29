@@ -1,0 +1,148 @@
+{
+  "schema": "ime.handoff/1",
+  "employee_id": "delivery",
+  "task": "发布 0.1.6 / 装配 0.2.9：单一候选窗、完整候选页及布局后高亮滚动、短页宽度收缩",
+  "verifies": [],
+  "provides": {
+    "packages": [
+      {
+        "bytes": 23082269,
+        "files": 112,
+        "manifest_sha256": "99fe22eae45a9e0b6a584ce0468e96eb846721405432ba17605bcddab97c0af5",
+        "path": "/projects/workspace/20261028-1621-server-ime/delivery/dist/server-ime-0.1.6.tar.gz",
+        "payload_bytes": 56584186,
+        "sha256": "dec7329551914a55fd647086555b6638716ba224407640a60498c41567e2d69a",
+        "sidecar": "/projects/workspace/20261028-1621-server-ime/delivery/dist/server-ime-0.1.6.tar.gz.sha256"
+      },
+      {
+        "bytes": 86066772,
+        "path": "/projects/workspace/20261028-1621-server-ime/delivery/dist/server-ime-0.1.6-sources.tar.gz",
+        "sha256": "c3f8a5734ce224013dc6b11316ba8e1d0c9a9af0da9228d77afe79b46259ec59",
+        "sidecar": "/projects/workspace/20261028-1621-server-ime/delivery/dist/server-ime-0.1.6-sources.tar.gz.sha256"
+      }
+    ],
+    "tools": {
+      "delivery/bin/ime-build": "统一构建入口：装配产品 → 显式暂存许可/来源材料与中文说明（缺失即退出码 5）→ 生成 ime-bundle 清单/安装包/源码包/版本锁定/构建记录，并重新解包校验（--version/--note/--out/--work/--json）",
+      "delivery/bin/ime-install": "install/upgrade/rollback/uninstall/recover/list/verify（无 root，用户级前缀）",
+      "delivery/bin/ime-diagnose": "不含输入内容的安装诊断（依赖探测、逐文件校验、数据目录清单）",
+      "delivery/bin/ime-manifest": "组件清单 validate/inspect、产品清单 product 校验",
+      "delivery/bin/ime-selfcheck": "安装工具样例包自检（11 场景）",
+      "delivery/bin/ime-release-check": "真实发布包隔离生命周期检查（安装/重复安装/启动停止/升级/回滚/诊断/卸载）",
+      "delivery/tests/verify_release_content.py": "发布包内容校验：许可材料/中文说明/源码包/工具/校验和/版本锁/运行代码哈希（--baseline/--json，退出码 0/1）"
+    },
+    "contracts": {
+      "bundle": "ime-bundle/1：tar.gz，根含 component-manifest.json，载荷在 payload/",
+      "manifest": "ime.component-manifest/1（manifest/component-manifest.schema.json）",
+      "product_manifest": "ime.product-manifest/1 → delivery/manifest/product-manifest.json（packaging_ready=true）",
+      "version_lock": "ime.version-lock/1 → delivery/manifest/lock.json（含 license_material 逐项 sha256）",
+      "build_record": "ime.build-record/1 → delivery/build/<版本>/build.json（含 license_material、payload_docs）",
+      "release_metadata": "包内 share/ime/release.json（ime.release/1，含各组件 license/license_file 与 documentation）",
+      "install_layout": "<prefix>/ime/versions/<版本>、<prefix>/ime/current、<prefix>/bin/server-ime、<prefix>/ime/state/installed.json"
+    },
+    "docs": {
+      "使用指南": "delivery/docs/使用指南.md（安装/启动/切换/设置/词库路径/升级回滚卸载/诊断/故障排查）",
+      "功能矩阵与 Windows 11 对照": "delivery/docs/feature-matrix.md",
+      "许可与第三方组件": "delivery/docs/licenses.md",
+      "证据索引": "delivery/docs/evidence-index.md",
+      "安装事务与退出码": "delivery/docs/install-lifecycle.md",
+      "诊断隐私": "delivery/docs/diagnostics-privacy.md",
+      "包内中文快速说明": "share/ime/docs/README.zh_CN.md（随安装包分发，由 ime-build 生成）",
+      "实机验收": "delivery/docs/实机验收.md"
+    }
+  },
+  "checks": {
+    "content": "delivery/evidence/layout-release-0.1.6/content.json",
+    "lifecycle": "delivery/evidence/release-20261029T055730Z/summary.json",
+    "learning": "delivery/evidence/layout-release-0.1.6/learning-roundtrip.json",
+    "source_rebuild": "delivery/evidence/layout-release-0.1.6/source-rebuild-match.json",
+    "summary": "delivery/evidence/layout-release-0.1.6/summary.json"
+  },
+  "deployment": {
+    "user_session": "NOT_DEPLOYED",
+    "reason": "本步骤不访问用户桌面授权文件或共享套接字，仅做隔离安装检查",
+    "evidence": "delivery/evidence/release-20261029T055730Z/session-enablement.json",
+    "enable_steps": "delivery/docs/实机验收.md",
+    "isolated_session_verified": true
+  },
+  "limits": [
+    "未在真实用户桌面启用（NOT_DEPLOYED），隔离会话内启动/契约/停止已验证（沿用既有证据）",
+    "Wayland、系统级（/usr、root）安装、DEB/RPM、systemd 用户服务未实现或未验证",
+    "系统 Firefox 未验证（集成侧包装器初始化 EACCES）；Chrome 应用兼容证据沿用 integration/evidence",
+    "无 Windows 11 运行环境，无同机对照测评；所有对照结论为“未对照/待验收”，不声称达到 Windows 11 水平",
+    "通用拼音/原文混输已接入；连续小写边界仍有歧义（原混合语料首选 1/25、可完成 2/25）；双拼仅自然码；学习默认关闭",
+    "包内只带中文快速说明；完整中文文档（证据索引、功能矩阵、安装事务）在发布目录 delivery/docs/",
+    "隔离应用证据使用 Xvnc + xfwm4；无窗口管理器两轮焦点失败保留，裸 X11 稳定性未建立",
+    "全小写地址首个点号与拼音句号有歧义，使用英文模式或 KP_Decimal 明确输入原文点号"
+  ],
+  "reuse_policy": "反馈检查 44 个、全应用检查 45 个运行文件逐字节绑定 integration/evidence/layout-assembled-0.2.9 及 integration/evidence/apps-assembled-0.2.9；隔离通过不代表用户问题已解决。",
+  "additional_reads": [
+    "integration/handoff.json",
+    "engine/handoff.json",
+    "interface/handoff.json",
+    "integration/checks/run_checks.py",
+    "integration/checks/test_product.py",
+    "integration/checks/test_assembly.py",
+    "integration/src/server_ime_product/runtime.py",
+    "integration/checks/check_delivery.py",
+    "integration/checks/punctuation-inventory.json",
+    "integration/evidence/run-20261029-000050/tested-runtime-hashes.json",
+    "lexicon/src/lexicon/cli.py",
+    "platform/server_ime/product_controller.py"
+  ],
+  "archived_previous_release": "delivery/archive/pre-punctuation-closeout",
+  "additional_reads_reason": "任务未附实现正文；补读现有打包/检查实现和新装配证据，以复用工具和绑定运行文件。",
+  "additional_reads_this_revision": [
+    "delivery/bin/ime-build",
+    "delivery/bin/ime-release-check",
+    "delivery/tests/check_feedback_release.py",
+    "delivery/tests/check_learning_roundtrip.py",
+    "integration/handoff.json",
+    "integration/evidence/layout-assembled-0.2.9/tested-runtime-hashes.json",
+    "integration/checks/feedback-inventory.json",
+    "integration/evidence/layout-assembled-0.2.9/tested-runtime-hashes.json",
+    "integration/evidence/apps-assembled-0.2.9/tested-runtime-hashes.json",
+    "integration/tools/build_product.py",
+    "interface/config/defaults.json"
+  ],
+  "historical_packages": [
+    "server-ime-0.1.0.tar.gz",
+    "server-ime-0.1.0.tar.gz.sha256",
+    "server-ime-0.1.0.component-manifest.json",
+    "server-ime-0.1.0-sources.tar.gz",
+    "server-ime-0.1.0-sources.tar.gz.sha256",
+    "server-ime-0.1.1.tar.gz",
+    "server-ime-0.1.1.tar.gz.sha256",
+    "server-ime-0.1.1.component-manifest.json",
+    "server-ime-0.1.1-sources.tar.gz",
+    "server-ime-0.1.1-sources.tar.gz.sha256",
+    "server-ime-0.1.2.tar.gz",
+    "server-ime-0.1.2.tar.gz.sha256",
+    "server-ime-0.1.2.component-manifest.json",
+    "server-ime-0.1.2-sources.tar.gz",
+    "server-ime-0.1.2-sources.tar.gz.sha256",
+    "server-ime-0.1.3.tar.gz",
+    "server-ime-0.1.3.tar.gz.sha256",
+    "server-ime-0.1.3.component-manifest.json",
+    "server-ime-0.1.3-sources.tar.gz",
+    "server-ime-0.1.3-sources.tar.gz.sha256",
+    "server-ime-0.1.4.tar.gz",
+    "server-ime-0.1.4.tar.gz.sha256",
+    "server-ime-0.1.4.component-manifest.json",
+    "server-ime-0.1.4-sources.tar.gz",
+    "server-ime-0.1.4-sources.tar.gz.sha256",
+    "server-ime-0.1.5.tar.gz",
+    "server-ime-0.1.5.tar.gz.sha256",
+    "server-ime-0.1.5.component-manifest.json",
+    "server-ime-0.1.5-sources.tar.gz",
+    "server-ime-0.1.5-sources.tar.gz.sha256"
+  ],
+  "acceptance": {
+    "real_desktop": "PENDING_USER_FEEDBACK",
+    "windows11": "PENDING_USER_ENVIRONMENT",
+    "prediction": "CANCELLED_OUT_OF_SCOPE",
+    "feedback_request": "安装版本、双框应用及版本、启动方式、两框内容或去隐私截图、升级后是否复现、期望的联想示例、可用 Windows 11 环境"
+  },
+  "source_packaging_fix": "Added integration/handoff.json required by assembly 0.2.2; independent source rebuild passed.",
+  "source_distribution": "Standalone source handoff retains historical hashes as distribution_history_not_required; original archives retained unchanged.",
+  "gaps": []
+}

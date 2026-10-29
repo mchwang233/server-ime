@@ -1,0 +1,3670 @@
+{
+ "schema": "ime-eval-result/1",
+ "scoring": "ime-eval-score/1",
+ "generated_at": "2026-10-28T10:01:50Z",
+ "corpus": {
+  "file": "/projects/workspace/20261028-1621-server-ime/lexicon/corpus/eval/cases-v1.jsonl",
+  "sha256": "0f8c1c371872e28ef2b1b39c28e092a21090d58144b81800276ae48527a69ae3",
+  "cases": 200,
+  "categories": {
+   "common": 60,
+   "sentence": 40,
+   "ambiguity": 25,
+   "long": 25,
+   "mixed": 25,
+   "typo": 25
+  }
+ },
+ "configuration": {
+  "user_dir": null,
+  "data_dir": "/projects/workspace/20261028-1621-server-ime/engine/vendor/runtime/data",
+  "learning": false,
+  "training": false,
+  "page_size": 5
+ },
+ "engine": {},
+ "overall": {
+  "cases": 200,
+  "top1": 113,
+  "top5": 136,
+  "errors": 5,
+  "top1_rate": 0.565,
+  "top5_rate": 0.68,
+  "error_rate": 0.025,
+  "mean_cer": 0.1974
+ },
+ "categories": {
+  "common": {
+   "cases": 60,
+   "top1": 55,
+   "top5": 60,
+   "errors": 0,
+   "top1_rate": 0.9167,
+   "top5_rate": 1.0,
+   "error_rate": 0.0,
+   "mean_cer": 0.0583
+  },
+  "sentence": {
+   "cases": 40,
+   "top1": 24,
+   "top5": 27,
+   "errors": 0,
+   "top1_rate": 0.6,
+   "top5_rate": 0.675,
+   "error_rate": 0.0,
+   "mean_cer": 0.1111
+  },
+  "ambiguity": {
+   "cases": 25,
+   "top1": 20,
+   "top5": 24,
+   "errors": 0,
+   "top1_rate": 0.8,
+   "top5_rate": 0.96,
+   "error_rate": 0.0,
+   "mean_cer": 0.18
+  },
+  "long": {
+   "cases": 25,
+   "top1": 10,
+   "top5": 13,
+   "errors": 0,
+   "top1_rate": 0.4,
+   "top5_rate": 0.52,
+   "error_rate": 0.0,
+   "mean_cer": 0.0961
+  },
+  "mixed": {
+   "cases": 25,
+   "top1": 0,
+   "top5": 0,
+   "errors": 5,
+   "top1_rate": 0.0,
+   "top5_rate": 0.0,
+   "error_rate": 0.2,
+   "mean_cer": 0.6706
+  },
+  "typo": {
+   "cases": 25,
+   "top1": 4,
+   "top5": 12,
+   "errors": 0,
+   "top1_rate": 0.16,
+   "top5_rate": 0.48,
+   "error_rate": 0.0,
+   "mean_cer": 0.3147
+  }
+ },
+ "rows": [
+  {
+   "id": "C001",
+   "category": "common",
+   "input": "nihao",
+   "expected": "你好",
+   "top": [
+    "你好",
+    "你",
+    "尼",
+    "呢",
+    "泥"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C002",
+   "category": "common",
+   "input": "xiexie",
+   "expected": "谢谢",
+   "top": [
+    "谢谢",
+    "泄泻",
+    "写写",
+    "歇歇",
+    "写些"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C003",
+   "category": "common",
+   "input": "zaijian",
+   "expected": "再见",
+   "top": [
+    "再见",
+    "在建",
+    "在即",
+    "载籍",
+    "再建"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C004",
+   "category": "common",
+   "input": "qingwen",
+   "expected": "请问",
+   "top": [
+    "请问",
+    "晴雯",
+    "清",
+    "请",
+    "青"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C005",
+   "category": "common",
+   "input": "duibuqi",
+   "expected": "对不起",
+   "top": [
+    "对不起",
+    "队部",
+    "对簿",
+    "对不",
+    "对"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C006",
+   "category": "common",
+   "input": "meiguanxi",
+   "expected": "没关系",
+   "top": [
+    "没关系",
+    "美关系",
+    "美观",
+    "没关",
+    "美"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C007",
+   "category": "common",
+   "input": "zaoshanghao",
+   "expected": "早上好",
+   "top": [
+    "早上好",
+    "早上号",
+    "早上",
+    "早",
+    "造"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C008",
+   "category": "common",
+   "input": "wanshanghao",
+   "expected": "晚上好",
+   "top": [
+    "晚上好",
+    "晚上号",
+    "晚上",
+    "玩赏",
+    "万"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C009",
+   "category": "common",
+   "input": "shengrikuaile",
+   "expected": "生日快乐",
+   "top": [
+    "生日快乐",
+    "生日",
+    "生",
+    "省",
+    "声"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C010",
+   "category": "common",
+   "input": "xinniankuaile",
+   "expected": "新年快乐",
+   "top": [
+    "新年快乐",
+    "信念",
+    "新年",
+    "新",
+    "心"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C011",
+   "category": "common",
+   "input": "yilupingan",
+   "expected": "一路平安",
+   "top": [
+    "一路平安",
+    "一路",
+    "夷戮",
+    "一",
+    "以"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C012",
+   "category": "common",
+   "input": "gongzuoshunli",
+   "expected": "工作顺利",
+   "top": [
+    "工作顺利",
+    "工作",
+    "红",
+    "共",
+    "公"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C013",
+   "category": "common",
+   "input": "shentijiankang",
+   "expected": "身体健康",
+   "top": [
+    "身体健康",
+    "身体",
+    "神体",
+    "神",
+    "身"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C014",
+   "category": "common",
+   "input": "wanshiruyi",
+   "expected": "万事如意",
+   "top": [
+    "万事如意",
+    "万饰如意",
+    "万事",
+    "万世",
+    "晚世"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C015",
+   "category": "common",
+   "input": "xinku",
+   "expected": "辛苦",
+   "top": [
+    "辛苦",
+    "心苦",
+    "新",
+    "心",
+    "信"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C016",
+   "category": "common",
+   "input": "mafan",
+   "expected": "麻烦",
+   "top": [
+    "麻烦",
+    "马贩",
+    "马",
+    "玛",
+    "麻"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C017",
+   "category": "common",
+   "input": "bangmang",
+   "expected": "帮忙",
+   "top": [
+    "帮忙",
+    "邦忙",
+    "邦",
+    "帮",
+    "榜"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C018",
+   "category": "common",
+   "input": "keyi",
+   "expected": "可以",
+   "top": [
+    "可以",
+    "可一",
+    "刻意",
+    "可疑",
+    "可依"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C019",
+   "category": "common",
+   "input": "bukeyi",
+   "expected": "不可以",
+   "top": [
+    "不可以",
+    "不可一",
+    "不可",
+    "补课",
+    "不克"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C020",
+   "category": "common",
+   "input": "mingbai",
+   "expected": "明白",
+   "top": [
+    "明白",
+    "名白",
+    "名",
+    "明",
+    "命"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C021",
+   "category": "common",
+   "input": "zhidao",
+   "expected": "知道",
+   "top": [
+    "指导",
+    "直到",
+    "知道",
+    "执导",
+    "制导"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 1.0
+  },
+  {
+   "id": "C022",
+   "category": "common",
+   "input": "xihuan",
+   "expected": "喜欢",
+   "top": [
+    "喜欢",
+    "西环",
+    "西",
+    "系",
+    "戏"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C023",
+   "category": "common",
+   "input": "aihao",
+   "expected": "爱好",
+   "top": [
+    "爱好",
+    "哀号",
+    "哀嚎",
+    "爱",
+    "艾"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C024",
+   "category": "common",
+   "input": "pengyou",
+   "expected": "朋友",
+   "top": [
+    "朋友",
+    "彭有",
+    "彭",
+    "棚",
+    "鹏"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C025",
+   "category": "common",
+   "input": "tongxue",
+   "expected": "同学",
+   "top": [
+    "同学",
+    "同",
+    "通",
+    "洞",
+    "铜"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C026",
+   "category": "common",
+   "input": "laoshi",
+   "expected": "老师",
+   "top": [
+    "老师",
+    "老实",
+    "老式",
+    "老是",
+    "老"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C027",
+   "category": "common",
+   "input": "xuesheng",
+   "expected": "学生",
+   "top": [
+    "学生",
+    "学",
+    "雪",
+    "血",
+    "薛"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C028",
+   "category": "common",
+   "input": "jiaoshi",
+   "expected": "教室",
+   "top": [
+    "教师",
+    "教室",
+    "教士",
+    "礁石",
+    "较"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.5
+  },
+  {
+   "id": "C029",
+   "category": "common",
+   "input": "tushuguan",
+   "expected": "图书馆",
+   "top": [
+    "图书馆",
+    "図书馆",
+    "图书",
+    "图",
+    "土"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C030",
+   "category": "common",
+   "input": "shitang",
+   "expected": "食堂",
+   "top": [
+    "食堂",
+    "是唐",
+    "食糖",
+    "是",
+    "时"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C031",
+   "category": "common",
+   "input": "sushe",
+   "expected": "宿舍",
+   "top": [
+    "宿舍",
+    "速射",
+    "苏",
+    "素",
+    "俗"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C032",
+   "category": "common",
+   "input": "bangongshi",
+   "expected": "办公室",
+   "top": [
+    "办公室",
+    "办公是",
+    "办公",
+    "版",
+    "半"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C033",
+   "category": "common",
+   "input": "huiyi",
+   "expected": "会议",
+   "top": [
+    "会议",
+    "回忆",
+    "会意",
+    "会以",
+    "会"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C034",
+   "category": "common",
+   "input": "gongsi",
+   "expected": "公司",
+   "top": [
+    "公司",
+    "公私",
+    "红",
+    "共",
+    "公"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C035",
+   "category": "common",
+   "input": "jingli",
+   "expected": "经理",
+   "top": [
+    "经历",
+    "经理",
+    "精力",
+    "敬礼",
+    "警力"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.5
+  },
+  {
+   "id": "C036",
+   "category": "common",
+   "input": "tongshi",
+   "expected": "同事",
+   "top": [
+    "同时",
+    "同事",
+    "通史",
+    "通什",
+    "痛失"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.5
+  },
+  {
+   "id": "C037",
+   "category": "common",
+   "input": "kehu",
+   "expected": "客户",
+   "top": [
+    "客户",
+    "可户",
+    "可",
+    "克",
+    "科"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C038",
+   "category": "common",
+   "input": "chanpin",
+   "expected": "产品",
+   "top": [
+    "产品",
+    "产",
+    "单",
+    "禅",
+    "蝉"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C039",
+   "category": "common",
+   "input": "xiangmu",
+   "expected": "项目",
+   "top": [
+    "项目",
+    "橡木",
+    "香木",
+    "向",
+    "乡"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C040",
+   "category": "common",
+   "input": "jihua",
+   "expected": "计划",
+   "top": [
+    "计划",
+    "激化",
+    "极化",
+    "计画",
+    "其"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C041",
+   "category": "common",
+   "input": "renwu",
+   "expected": "任务",
+   "top": [
+    "人物",
+    "任务",
+    "壬午",
+    "人无",
+    "人"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 1.0
+  },
+  {
+   "id": "C042",
+   "category": "common",
+   "input": "jindu",
+   "expected": "进度",
+   "top": [
+    "进度",
+    "禁毒",
+    "襟度",
+    "金",
+    "今"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C043",
+   "category": "common",
+   "input": "jieguo",
+   "expected": "结果",
+   "top": [
+    "结果",
+    "接过",
+    "饥饿",
+    "借过",
+    "其"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C044",
+   "category": "common",
+   "input": "yuanyin",
+   "expected": "原因",
+   "top": [
+    "原因",
+    "元音",
+    "预案",
+    "援引",
+    "远因"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C045",
+   "category": "common",
+   "input": "wenti",
+   "expected": "问题",
+   "top": [
+    "问题",
+    "文体",
+    "文",
+    "问",
+    "温"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C046",
+   "category": "common",
+   "input": "fangfa",
+   "expected": "方法",
+   "top": [
+    "方法",
+    "方",
+    "放",
+    "房",
+    "防"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C047",
+   "category": "common",
+   "input": "jingyan",
+   "expected": "经验",
+   "top": [
+    "经验",
+    "精盐",
+    "惊艳",
+    "井研",
+    "竞艳"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C048",
+   "category": "common",
+   "input": "jianyi",
+   "expected": "建议",
+   "top": [
+    "建议",
+    "简易",
+    "检疫",
+    "吉安",
+    "集安"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C049",
+   "category": "common",
+   "input": "yijian",
+   "expected": "意见",
+   "top": [
+    "意见",
+    "一件",
+    "以及",
+    "一级",
+    "遗迹"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C050",
+   "category": "common",
+   "input": "taolun",
+   "expected": "讨论",
+   "top": [
+    "讨论",
+    "陶轮",
+    "绦纶",
+    "套",
+    "陶"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C051",
+   "category": "common",
+   "input": "jueding",
+   "expected": "决定",
+   "top": [
+    "决定",
+    "绝顶",
+    "巨额",
+    "据",
+    "局"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C052",
+   "category": "common",
+   "input": "anpai",
+   "expected": "安排",
+   "top": [
+    "安排",
+    "按牌",
+    "安",
+    "按",
+    "广"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C053",
+   "category": "common",
+   "input": "zhunbei",
+   "expected": "准备",
+   "top": [
+    "准备",
+    "准被",
+    "准",
+    "屯",
+    "谆"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C054",
+   "category": "common",
+   "input": "kaishi",
+   "expected": "开始",
+   "top": [
+    "开始",
+    "开是",
+    "开市",
+    "开",
+    "凯"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C055",
+   "category": "common",
+   "input": "jieshu",
+   "expected": "结束",
+   "top": [
+    "结束",
+    "皆属",
+    "饥饿",
+    "劫数",
+    "借书"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C056",
+   "category": "common",
+   "input": "wancheng",
+   "expected": "完成",
+   "top": [
+    "完成",
+    "万成",
+    "婉称",
+    "万",
+    "晚"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C057",
+   "category": "common",
+   "input": "jiancha",
+   "expected": "检查",
+   "top": [
+    "检查",
+    "监察",
+    "检察",
+    "吉安",
+    "集安"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C058",
+   "category": "common",
+   "input": "ceshi",
+   "expected": "测试",
+   "top": [
+    "测试",
+    "册是",
+    "册",
+    "侧",
+    "测"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C059",
+   "category": "common",
+   "input": "xiufu",
+   "expected": "修复",
+   "top": [
+    "修复",
+    "修福",
+    "修",
+    "秀",
+    "休"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "C060",
+   "category": "common",
+   "input": "gengxin",
+   "expected": "更新",
+   "top": [
+    "更新",
+    "更",
+    "耕",
+    "颈",
+    "耿"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S001",
+   "category": "sentence",
+   "input": "woxiangheniyiqichifan",
+   "expected": "我想和你一起吃饭",
+   "top": [
+    "我想和你一起吃饭",
+    "我想和你一起吃反",
+    "我想",
+    "我",
+    "沃"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S002",
+   "category": "sentence",
+   "input": "jintiantianqihenhao",
+   "expected": "今天天气很好",
+   "top": [
+    "今天天气很好",
+    "今天天气很号",
+    "今天天起很好",
+    "今天天气",
+    "今天"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S003",
+   "category": "sentence",
+   "input": "mingtianshangwukaihui",
+   "expected": "明天上午开会",
+   "top": [
+    "明天商务开会",
+    "明天晌午开会",
+    "明天晌午开回",
+    "明天",
+    "命题"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.3333
+  },
+  {
+   "id": "S004",
+   "category": "sentence",
+   "input": "xiawusandianjian",
+   "expected": "下午三点见",
+   "top": [
+    "下午三殿建",
+    "下午三点检",
+    "下午",
+    "下",
+    "夏"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.4
+  },
+  {
+   "id": "S005",
+   "category": "sentence",
+   "input": "qingbangwobaocunwendang",
+   "expected": "请帮我保存文档",
+   "top": [
+    "青帮我保存文档",
+    "青帮我保存文当",
+    "青帮我保存纹党",
+    "清",
+    "请"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1429
+  },
+  {
+   "id": "S006",
+   "category": "sentence",
+   "input": "woxuyaoyigebeifen",
+   "expected": "我需要一个备份",
+   "top": [
+    "我需要一个被分",
+    "我需要一个悲愤",
+    "我需要一个备份",
+    "我",
+    "沃"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.2857
+  },
+  {
+   "id": "S007",
+   "category": "sentence",
+   "input": "zheduanwenbenyoucuowu",
+   "expected": "这段文本有错误",
+   "top": [
+    "这段文本有错误",
+    "这段文本有错五",
+    "折断",
+    "遮断",
+    "这段"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S008",
+   "category": "sentence",
+   "input": "qingjianchawangluolianjie",
+   "expected": "请检查网络连接",
+   "top": [
+    "请检查网络连接",
+    "请检查网络链接",
+    "情急",
+    "请柬",
+    "氢键"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S009",
+   "category": "sentence",
+   "input": "fuwuqiyijingqidongle",
+   "expected": "服务器已经启动了",
+   "top": [
+    "服务器已经启动了",
+    "服务器已经其动了",
+    "服务器已经启动乐",
+    "服务器",
+    "服务"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S010",
+   "category": "sentence",
+   "input": "shujukumeitianwanchengbeifen",
+   "expected": "数据库每天完成备份",
+   "top": [
+    "数据库每天完成悲愤",
+    "数据库每天完成备份",
+    "数据库每天完成被分",
+    "数据库",
+    "数据"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.2222
+  },
+  {
+   "id": "S011",
+   "category": "sentence",
+   "input": "anzhuangxindebanben",
+   "expected": "安装新版本",
+   "top": [
+    "安装新的版本",
+    "安装心的版本",
+    "安装新的坂本",
+    "安装",
+    "安"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1667
+  },
+  {
+   "id": "S012",
+   "category": "sentence",
+   "input": "womingtianxuyaoqingjia",
+   "expected": "我明天需要请假",
+   "top": [
+    "我明天需要请假",
+    "我明天需要亲家",
+    "我明天需要请家",
+    "我",
+    "沃"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S013",
+   "category": "sentence",
+   "input": "jintianxiawuliudianxiaban",
+   "expected": "今天下午六点下班",
+   "top": [
+    "今天下午六点下班",
+    "今天下午留点下班",
+    "今天下午六典下半",
+    "今天",
+    "金"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S014",
+   "category": "sentence",
+   "input": "qingtijiaoxiangguanwenjian",
+   "expected": "请提交相关文件",
+   "top": [
+    "清提交相关文件",
+    "清提交相关稳健",
+    "清",
+    "请",
+    "青"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1429
+  },
+  {
+   "id": "S015",
+   "category": "sentence",
+   "input": "zhegongnengshangzaiceshi",
+   "expected": "这个功能尚在测试",
+   "top": [
+    "这功能上在测试",
+    "这功能商在测试",
+    "这功能上在册是",
+    "这",
+    "着"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.25
+  },
+  {
+   "id": "S016",
+   "category": "sentence",
+   "input": "qinglianxiwomendekehu",
+   "expected": "请联系我们的客户",
+   "top": [
+    "请联系我们的客户",
+    "清联系我们的客户",
+    "请联系我们的可户",
+    "请联系",
+    "清理"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S017",
+   "category": "sentence",
+   "input": "jihuayijingtijiaoshenpi",
+   "expected": "计划已经提交审批",
+   "top": [
+    "计划已经提交审批",
+    "计划一经提交审批",
+    "计划已经提交身披",
+    "计划",
+    "激化"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S018",
+   "category": "sentence",
+   "input": "wozaijialibangong",
+   "expected": "我在家里办公",
+   "top": [
+    "我在家里办公",
+    "我在家里版共",
+    "我在家里班共",
+    "我在",
+    "我再"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S019",
+   "category": "sentence",
+   "input": "womenyaokaihui",
+   "expected": "我们要开会",
+   "top": [
+    "我们要开会",
+    "我们要开回",
+    "我们",
+    "我",
+    "沃"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S020",
+   "category": "sentence",
+   "input": "qingquerenxiangmujindu",
+   "expected": "请确认项目进度",
+   "top": [
+    "请确认项目进度",
+    "清却任项目进度",
+    "请确认项目禁毒",
+    "请确认",
+    "清"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S021",
+   "category": "sentence",
+   "input": "zhecihuiyifeichangzhongyao",
+   "expected": "这次会议非常重要",
+   "top": [
+    "这次会议非常重要",
+    "这次会议非常中药",
+    "这次",
+    "这",
+    "着"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S022",
+   "category": "sentence",
+   "input": "qingtigongyigeshijian",
+   "expected": "请提供一个时间",
+   "top": [
+    "请提供一个时间",
+    "请提供一个事件",
+    "清",
+    "请",
+    "青"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S023",
+   "category": "sentence",
+   "input": "wojintianyoudianmang",
+   "expected": "我今天有点忙",
+   "top": [
+    "我今天优点忙",
+    "我今天优点芒",
+    "我今天优点盲",
+    "握紧",
+    "我"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1667
+  },
+  {
+   "id": "S024",
+   "category": "sentence",
+   "input": "wanchenghouqinggaozhiwo",
+   "expected": "完成后请告知我",
+   "top": [
+    "完成后请告知我",
+    "完成后清高至我",
+    "完成后请告知沃",
+    "完成",
+    "婉称"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S025",
+   "category": "sentence",
+   "input": "qingbaocunzhefenwenjian",
+   "expected": "请保存这份文件",
+   "top": [
+    "情报村这份文件",
+    "清保存着份文件",
+    "清保存着分稳健",
+    "情报",
+    "清"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.4286
+  },
+  {
+   "id": "S026",
+   "category": "sentence",
+   "input": "tashuomingtianhuilaile",
+   "expected": "他说明天回来了",
+   "top": [
+    "他说明天回来了",
+    "他说明天会来了",
+    "他说明天会来乐",
+    "她说",
+    "他说"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S027",
+   "category": "sentence",
+   "input": "womenyiqitaolunyixia",
+   "expected": "我们一起讨论一下",
+   "top": [
+    "我们一起讨论一下",
+    "我们一起讨论以下",
+    "我们",
+    "我",
+    "沃"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S028",
+   "category": "sentence",
+   "input": "zhegetaozhuanghenhaoyong",
+   "expected": "这个套装很好用",
+   "top": [
+    "这个套装很好用",
+    "这个套装很好勇",
+    "这个套装很好永",
+    "这个",
+    "这歌"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S029",
+   "category": "sentence",
+   "input": "qingtianxiexiangxixinxi",
+   "expected": "请填写详细信息",
+   "top": [
+    "清填写详细信息",
+    "清填写详细心系",
+    "晴天",
+    "青天",
+    "青田"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1429
+  },
+  {
+   "id": "S030",
+   "category": "sentence",
+   "input": "wohuijinkuaichulihaode",
+   "expected": "我会尽快处理好的",
+   "top": [
+    "我会尽快处理好的",
+    "我会尽快处理好地",
+    "我会尽快处理号的",
+    "我",
+    "沃"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S031",
+   "category": "sentence",
+   "input": "mingtianzaoshangjiudianjian",
+   "expected": "明天早上九点见",
+   "top": [
+    "名天早上酒店间",
+    "名天早上酒店建",
+    "名天早上酒店见",
+    "明天",
+    "命题"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.5714
+  },
+  {
+   "id": "S032",
+   "category": "sentence",
+   "input": "qingxianxiewanwenjian",
+   "expected": "请先写完文件",
+   "top": [
+    "请先写完文件",
+    "请先写完稳健",
+    "请先写完闻见",
+    "清晰",
+    "清洗"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S033",
+   "category": "sentence",
+   "input": "zhegeguzhangyijingpaichule",
+   "expected": "这个故障已经排除了",
+   "top": [
+    "这个故障已经排除了",
+    "这个故障已经派出了",
+    "这个故障已经派除了",
+    "这个",
+    "这歌"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S034",
+   "category": "sentence",
+   "input": "fuwuqidezhanyonghengao",
+   "expected": "服务器的占用很高",
+   "top": [
+    "服务器的占用很高",
+    "服务器的站用很高",
+    "服务器的占用痕膏",
+    "服务器",
+    "服务"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S035",
+   "category": "sentence",
+   "input": "qingjiangrizhifageiwo",
+   "expected": "请将日志发给我",
+   "top": [
+    "清江日执法给我",
+    "清江日之法给我",
+    "清江日执法给沃",
+    "清江",
+    "情急"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.5714
+  },
+  {
+   "id": "S036",
+   "category": "sentence",
+   "input": "womenmingtianzaiyue",
+   "expected": "我们明天再约",
+   "top": [
+    "我们明天在月",
+    "我们明天在约",
+    "我们明天再约",
+    "我们",
+    "我"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.3333
+  },
+  {
+   "id": "S037",
+   "category": "sentence",
+   "input": "qingzaiwudianqianwancheng",
+   "expected": "请在五点前完成",
+   "top": [
+    "请在五殿前完成",
+    "请在无点前完成",
+    "请在五点千万成",
+    "请在",
+    "清"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1429
+  },
+  {
+   "id": "S038",
+   "category": "sentence",
+   "input": "zheshiyigexinxiangmu",
+   "expected": "这是一个新项目",
+   "top": [
+    "这是一个新项目",
+    "这是一个新橡木",
+    "这是一个",
+    "这时",
+    "这是"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S039",
+   "category": "sentence",
+   "input": "woyijingfasongle",
+   "expected": "我已经发送了",
+   "top": [
+    "我已经发送了",
+    "我已经法松了",
+    "我已经发送乐",
+    "我一",
+    "我已"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "S040",
+   "category": "sentence",
+   "input": "qinganquancunchuwenjian",
+   "expected": "请安全存储文件",
+   "top": [
+    "清安全存储文件",
+    "清安全存储稳健",
+    "清安全存储闻见",
+    "庆安",
+    "请按"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1429
+  },
+  {
+   "id": "A001",
+   "category": "ambiguity",
+   "input": "xian",
+   "expected": "先",
+   "top": [
+    "县",
+    "现",
+    "西安",
+    "西岸",
+    "锡安"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 1.0
+  },
+  {
+   "id": "A002",
+   "category": "ambiguity",
+   "input": "xi'an",
+   "expected": "西安",
+   "top": [
+    "西安",
+    "西岸",
+    "锡安",
+    "西",
+    "系"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A003",
+   "category": "ambiguity",
+   "input": "changan",
+   "expected": "长安",
+   "top": [
+    "长安",
+    "长",
+    "场",
+    "常",
+    "厂"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A004",
+   "category": "ambiguity",
+   "input": "chang'an",
+   "expected": "长安",
+   "top": [
+    "长安",
+    "长",
+    "场",
+    "常",
+    "厂"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A005",
+   "category": "ambiguity",
+   "input": "fangan",
+   "expected": "方案",
+   "top": [
+    "方案",
+    "反感",
+    "方",
+    "反",
+    "放"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A006",
+   "category": "ambiguity",
+   "input": "fang'an",
+   "expected": "方案",
+   "top": [
+    "方案",
+    "方安",
+    "方",
+    "放",
+    "房"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A007",
+   "category": "ambiguity",
+   "input": "tiananmen",
+   "expected": "天安门",
+   "top": [
+    "天安门",
+    "提案",
+    "天安",
+    "天",
+    "体"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A008",
+   "category": "ambiguity",
+   "input": "tian'anmen",
+   "expected": "天安门",
+   "top": [
+    "天安门",
+    "提案",
+    "天安",
+    "天",
+    "体"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A009",
+   "category": "ambiguity",
+   "input": "haerbin",
+   "expected": "哈尔滨",
+   "top": [
+    "哈尔滨",
+    "哈尔宾",
+    "哈尔",
+    "哈",
+    "虾"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A010",
+   "category": "ambiguity",
+   "input": "ha'erbin",
+   "expected": "哈尔滨",
+   "top": [
+    "哈尔滨",
+    "哈尔宾",
+    "哈尔",
+    "哈",
+    "虾"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A011",
+   "category": "ambiguity",
+   "input": "xianzai",
+   "expected": "现在",
+   "top": [
+    "现在",
+    "县在",
+    "西安",
+    "西岸",
+    "锡安"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A012",
+   "category": "ambiguity",
+   "input": "xi'an'zai'xian",
+   "expected": "西安在线",
+   "top": [
+    "西安在线",
+    "西安再现",
+    "西安",
+    "西岸",
+    "锡安"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A013",
+   "category": "ambiguity",
+   "input": "shijian",
+   "expected": "时间",
+   "top": [
+    "时间",
+    "事件",
+    "世纪",
+    "实际",
+    "实践"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A014",
+   "category": "ambiguity",
+   "input": "shijie",
+   "expected": "世界",
+   "top": [
+    "世界",
+    "是届",
+    "世纪",
+    "实际",
+    "事迹"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A015",
+   "category": "ambiguity",
+   "input": "yiyuan",
+   "expected": "医院",
+   "top": [
+    "亿元",
+    "医院",
+    "议员",
+    "意愿",
+    "易于"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 1.0
+  },
+  {
+   "id": "A016",
+   "category": "ambiguity",
+   "input": "yuanqu",
+   "expected": "园区",
+   "top": [
+    "园区",
+    "元曲",
+    "预案",
+    "远去",
+    "冤屈"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A017",
+   "category": "ambiguity",
+   "input": "jiqi",
+   "expected": "机器",
+   "top": [
+    "及其",
+    "机器",
+    "极其",
+    "激起",
+    "祭器"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 1.0
+  },
+  {
+   "id": "A018",
+   "category": "ambiguity",
+   "input": "jinqi",
+   "expected": "近期",
+   "top": [
+    "近期",
+    "进气",
+    "今起",
+    "金",
+    "今"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A019",
+   "category": "ambiguity",
+   "input": "gongshi",
+   "expected": "公示",
+   "top": [
+    "公式",
+    "公示",
+    "攻势",
+    "工事",
+    "共识"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.5
+  },
+  {
+   "id": "A020",
+   "category": "ambiguity",
+   "input": "gongsi",
+   "expected": "公司",
+   "top": [
+    "公司",
+    "公私",
+    "红",
+    "共",
+    "公"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A021",
+   "category": "ambiguity",
+   "input": "shishi",
+   "expected": "事实",
+   "top": [
+    "实施",
+    "逝世",
+    "事实",
+    "史诗",
+    "实时"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 1.0
+  },
+  {
+   "id": "A022",
+   "category": "ambiguity",
+   "input": "shishiqiushi",
+   "expected": "实事求是",
+   "top": [
+    "实事求是",
+    "实施求实",
+    "实施",
+    "逝世",
+    "事实"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A023",
+   "category": "ambiguity",
+   "input": "womende",
+   "expected": "我们的",
+   "top": [
+    "我们的",
+    "我们得",
+    "我们",
+    "我",
+    "沃"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A024",
+   "category": "ambiguity",
+   "input": "nihaoma",
+   "expected": "你好吗",
+   "top": [
+    "你好吗",
+    "你号码",
+    "你好",
+    "你",
+    "尼"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "A025",
+   "category": "ambiguity",
+   "input": "shurufa",
+   "expected": "输入法",
+   "top": [
+    "输入法",
+    "输入",
+    "书",
+    "数",
+    "属"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "L001",
+   "category": "long",
+   "input": "jintiantianqihenhaowomenyiqiqugongyuanba",
+   "expected": "今天天气很好我们一起去公园吧",
+   "top": [
+    "今天天气很好我们一起去公元八",
+    "今天天气很好我们一起去公园把",
+    "今天天气很好我们一起去公园巴",
+    "今天天气",
+    "今天"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1429
+  },
+  {
+   "id": "L002",
+   "category": "long",
+   "input": "qingnizaishangwushidianqianwanchengrenwu",
+   "expected": "请你在上午十点前完成任务",
+   "top": [
+    "请你在上午十殿前完成任务",
+    "请你在上午十殿前完成人物",
+    "请你",
+    "清",
+    "请"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.0833
+  },
+  {
+   "id": "L003",
+   "category": "long",
+   "input": "wozaifuwuqishangbushuleyigexinjiaoben",
+   "expected": "我在服务器上部署了一个新脚本",
+   "top": [
+    "我在服务器上部署了一个新脚本",
+    "我在服务器上部署了一个新校本",
+    "我在服务器上部署了一个新较本",
+    "我在",
+    "我再"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "L004",
+   "category": "long",
+   "input": "zhegewentixuyaojinyibudingweibingxiufu",
+   "expected": "这个问题需要进一步定位并修复",
+   "top": [
+    "这个问题需要进一步定位并修复",
+    "这个问题需要进一步定位并修福",
+    "这个问题需要进一步定位并秀夫",
+    "这个问题",
+    "这个"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "L005",
+   "category": "long",
+   "input": "qingjiangsuoyourizhihebeifenbaocunqilai",
+   "expected": "请将所有日志和备份保存起来",
+   "top": [
+    "请将所有日至河北分保存起来",
+    "请将所有日至河北分保存期来",
+    "清江",
+    "情急",
+    "请将"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.3077
+  },
+  {
+   "id": "L006",
+   "category": "long",
+   "input": "womenxuyaozaiyuedizhiqianwanchengshangxian",
+   "expected": "我们需要在月底之前完成上线",
+   "top": [
+    "我们需要在月底之前完成上限",
+    "我们需要在月底之前完成上线",
+    "我们",
+    "我",
+    "沃"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.0769
+  },
+  {
+   "id": "L007",
+   "category": "long",
+   "input": "mingtianxiawuwomenzaihuiyishitaolunxijie",
+   "expected": "明天下午我们在会议室讨论细节",
+   "top": [
+    "名天下无我们在会议室讨论细节",
+    "名天下无我们在会议室讨论西接",
+    "名天下无我们在会议室讨论西街",
+    "明天",
+    "命题"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1429
+  },
+  {
+   "id": "L008",
+   "category": "long",
+   "input": "qingjishitongzhiwomenzuixindejindu",
+   "expected": "请及时通知我们最新的进度",
+   "top": [
+    "请及时通知我们最新的进度",
+    "请及时通知我们最新的禁毒",
+    "请及时",
+    "情急",
+    "清"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "L009",
+   "category": "long",
+   "input": "zhegefanganhaixuyaojingguoyanjiuhoujueding",
+   "expected": "这个方案还需要经过研究后决定",
+   "top": [
+    "这个方案还需要经过研究后决定",
+    "这个方案还需要经过研究后绝顶",
+    "这个方案还须要经过研究后决定",
+    "这个",
+    "这歌"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "L010",
+   "category": "long",
+   "input": "fuwuqimeitianwanshanghuizidongchongqiyici",
+   "expected": "服务器每天晚上会自动重启一次",
+   "top": [
+    "服务器每天晚上会自动充气一次",
+    "服务器每天晚上会自动充气以此",
+    "服务器每天晚上会自动充气依次",
+    "服务器",
+    "服务"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1429
+  },
+  {
+   "id": "L011",
+   "category": "long",
+   "input": "qingdakaiwangyebingdengluwodezhanghao",
+   "expected": "请打开网页并登录我的账号",
+   "top": [
+    "清打开网页并登陆我的账号",
+    "清打开网页并登陆我的帐号",
+    "轻打",
+    "清",
+    "请"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1667
+  },
+  {
+   "id": "L012",
+   "category": "long",
+   "input": "wozaijiaxiangxuexihanyu",
+   "expected": "我在家乡学习汉语",
+   "top": [
+    "我在家乡学习汉语",
+    "我在家乡学习韩语",
+    "我在",
+    "我再",
+    "我"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "L013",
+   "category": "long",
+   "input": "zhecihuodongdeyusuanzaijihuazhinei",
+   "expected": "这次活动的预算在计划之内",
+   "top": [
+    "这次活动的预算在计划之内",
+    "这次活动的预算在计划知内",
+    "这次",
+    "这",
+    "着"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "L014",
+   "category": "long",
+   "input": "qingjiangzheduangushigaixiechengyingwen",
+   "expected": "请将这段故事改写成英文",
+   "top": [
+    "清江这段故事改写成英文",
+    "清江这段故事该写成英文",
+    "清江",
+    "情急",
+    "请将"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1818
+  },
+  {
+   "id": "L015",
+   "category": "long",
+   "input": "wanchengshoucehouqingjiaogeizhuli",
+   "expected": "完成手册后请交给助理",
+   "top": [
+    "完成手册后清交给主力",
+    "完成手册后清交给助理",
+    "完成手册后清交给助力",
+    "完成",
+    "婉称"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.3
+  },
+  {
+   "id": "L016",
+   "category": "long",
+   "input": "tamenjihuazaifaguokaishexindegongsi",
+   "expected": "他们计划在法国开设新的公司",
+   "top": [
+    "他们计划在法国开设新的公司",
+    "他们计划在法国开设心的公司",
+    "他们计划在法国开设新的公私",
+    "他们",
+    "它们"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "L017",
+   "category": "long",
+   "input": "qingzaixiabanqianbazhejianshiqingwancheng",
+   "expected": "请在下班前把这件事情完成",
+   "top": [
+    "请在下半前八这件事情完成",
+    "请在下半前八这件事情万成",
+    "请在下半前八这件事情万城",
+    "请在",
+    "清"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1667
+  },
+  {
+   "id": "L018",
+   "category": "long",
+   "input": "zhegewangluowentiyijingyingxianglezhongduan",
+   "expected": "这个网络问题已经影响了终端",
+   "top": [
+    "这个网络问题已经影响了中断",
+    "这个网络问题已经影响了终端",
+    "这个网络问题已经影响了中段",
+    "这个",
+    "这歌"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.1538
+  },
+  {
+   "id": "L019",
+   "category": "long",
+   "input": "womenjiangzaishangwushidianzuzhishipinjiaoliu",
+   "expected": "我们将在上午十点组织视频交流",
+   "top": [
+    "我们将在上午十殿组织视频交流",
+    "我们将在上午十殿组织食品交流",
+    "我们将在上午十殿组织食品叫刘",
+    "我们",
+    "我"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.0714
+  },
+  {
+   "id": "L020",
+   "category": "long",
+   "input": "qingjishifankuizhegebanbendeshijiqingkuang",
+   "expected": "请及时反馈这个版本的实际状况",
+   "top": [
+    "请及时反馈这个版本的实际情况",
+    "请及时",
+    "情急",
+    "清",
+    "请"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.0714
+  },
+  {
+   "id": "L021",
+   "category": "long",
+   "input": "suoyouwenjiandouyinggaidingqijianchahebeifen",
+   "expected": "所有文件都应该定期检查和备份",
+   "top": [
+    "所有文件都应该定期检查和悲愤",
+    "所有文件都应该定期检查和备份",
+    "所有文件都应该定期检查和被分",
+    "所有文件",
+    "所有"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.1429
+  },
+  {
+   "id": "L022",
+   "category": "long",
+   "input": "zhegeminglingkeyichakansuoyouyonghudexinxi",
+   "expected": "这个命令可以查看所有用户的信息",
+   "top": [
+    "这个命令可以查看所有用户的信息",
+    "这个命令可以查看所有用户的欣喜",
+    "这个命令可以查看所有用户的心系",
+    "这个",
+    "这歌"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "L023",
+   "category": "long",
+   "input": "ruoguoyudaoqingkuangqingjilianxiwomendezongbu",
+   "expected": "如果遇到情况请立即联系我们的总部",
+   "top": [
+    "若果遇到情况情急联系我们的总部",
+    "若果遇到情况庆及联系我们的总部",
+    "若果遇到情况情急联系我们的总不",
+    "弱国",
+    "若"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.25
+  },
+  {
+   "id": "L024",
+   "category": "long",
+   "input": "womenyiqibazhegewentitaolunqingchu",
+   "expected": "我们一起把这个问题讨论清楚",
+   "top": [
+    "我们一起把这个问题讨论清楚",
+    "我们一起把这个问题讨论清除",
+    "我们一起把这个问题讨论清初",
+    "我们",
+    "我"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "L025",
+   "category": "long",
+   "input": "qingzaizhuyaodeliulanqishangfangwenzhegewangzhan",
+   "expected": "请在主要的浏览器上访问这个网站",
+   "top": [
+    "请在主要的浏览器上访问这个网站",
+    "请在主要的浏览器上访问者各网站",
+    "请在",
+    "清",
+    "请"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "M001",
+   "category": "mixed",
+   "input": "woyongdockerbushuxiangmu",
+   "expected": "我用Docker部署项目",
+   "top": [
+    "我用的哦参考而部署项目",
+    "我用的哦参考而部署橡木",
+    "我用的哦参考而部署香木",
+    "我用",
+    "我"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.5
+  },
+  {
+   "id": "M002",
+   "category": "mixed",
+   "input": "qingdakaigithubchakandaima",
+   "expected": "请打开GitHub查看代码",
+   "top": [
+    "请打开个",
+    "请打开更",
+    "请打开高",
+    "轻打",
+    "清"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.7692
+  },
+  {
+   "id": "M003",
+   "category": "mixed",
+   "input": "woshiyongvimxiugaiwenjian",
+   "expected": "我使用Vim修改文件",
+   "top": [
+    "我使用",
+    "我适用",
+    "我市",
+    "卧室",
+    "卧式"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.7
+  },
+  {
+   "id": "M004",
+   "category": "mixed",
+   "input": "qingshuruyamlgeshi",
+   "expected": "请输入YAML格式",
+   "top": [
+    "情书儒雅摩洛哥是",
+    "请输入衙门里格式",
+    "请输入衙门里格是",
+    "请输入",
+    "情书"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 1.0
+  },
+  {
+   "id": "M005",
+   "category": "mixed",
+   "input": "jiangjsonzhuanhuanchengxml",
+   "expected": "将JSON转换成XML",
+   "top": [
+    "将角色哦那转换成项目了",
+    "将角色哦那转换成消灭了",
+    "将角色哦那转换成项目来",
+    "将军",
+    "讲究"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.6364
+  },
+  {
+   "id": "M006",
+   "category": "mixed",
+   "input": "qingyunxingpythinjiaoben",
+   "expected": "请运行Python脚本",
+   "top": [
+    "清运行培养他和",
+    "清运行片研讨会",
+    "青云",
+    "庆云",
+    "清"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.8182
+  },
+  {
+   "id": "M007",
+   "category": "mixed",
+   "input": "cpuzhanyonglvtaigao",
+   "expected": "CPU占用率太高",
+   "top": [
+    "菜谱占用率太高",
+    "菜谱占用率抬高",
+    "菜谱占用率台高",
+    "菜谱",
+    "菜圃"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.375
+  },
+  {
+   "id": "M008",
+   "category": "mixed",
+   "input": "neicunzhanyongchaoguo8gb",
+   "expected": "内存占用超过8GB",
+   "top": [],
+   "status": "error",
+   "error": "invalid_input",
+   "top1": false,
+   "top5": false,
+   "cer": 1.0
+  },
+  {
+   "id": "M009",
+   "category": "mixed",
+   "input": "qingxiazaipdfwenjian",
+   "expected": "请下载PDF文件",
+   "top": [
+    "请下栽培地方文件",
+    "请下栽培的法文件",
+    "请下栽培的访问间",
+    "清",
+    "请"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.5
+  },
+  {
+   "id": "M010",
+   "category": "mixed",
+   "input": "woxuyaoyigeusbjiekou",
+   "expected": "我需要一个USB接口",
+   "top": [
+    "我需要一个",
+    "我",
+    "沃",
+    "卧",
+    "窝"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.5
+  },
+  {
+   "id": "M011",
+   "category": "mixed",
+   "input": "zhegeshujukuyongmysql",
+   "expected": "这个数据库用MySQL",
+   "top": [
+    "这个数据库用没有宋庆龄",
+    "这个数据库用没有死去了",
+    "这个",
+    "这歌",
+    "这"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.4545
+  },
+  {
+   "id": "M012",
+   "category": "mixed",
+   "input": "qingfasongyoujianzhidemoexamplecom",
+   "expected": "请发送邮件至demo@example.com",
+   "top": [
+    "清发送邮件之的莫恶心阿玛派了从噢买",
+    "清发送邮件之的莫恶心阿玛派了从哦名",
+    "清发送邮件之的莫恶心阿玛派了从哦米",
+    "请发",
+    "清"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.8182
+  },
+  {
+   "id": "M013",
+   "category": "mixed",
+   "input": "jintianriqi2026nian10yue28ri",
+   "expected": "今天日期2026年10月28日",
+   "top": [],
+   "status": "error",
+   "error": "invalid_input",
+   "top1": false,
+   "top5": false,
+   "cer": 1.0
+  },
+  {
+   "id": "M014",
+   "category": "mixed",
+   "input": "wodeidhaoshi9527",
+   "expected": "我的ID号是9527",
+   "top": [],
+   "status": "error",
+   "error": "invalid_input",
+   "top1": false,
+   "top5": false,
+   "cer": 1.0
+  },
+  {
+   "id": "M015",
+   "category": "mixed",
+   "input": "qingjiangappgengxindaozuixinbanben",
+   "expected": "请将APP更新到最新版本",
+   "top": [
+    "请柬嘎品牌更新到最新版本",
+    "情急",
+    "请柬",
+    "氢键",
+    "清涧"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.3333
+  },
+  {
+   "id": "M016",
+   "category": "mixed",
+   "input": "zhegewangzhanshihttps",
+   "expected": "这个网站是HTTPS",
+   "top": [
+    "这个网站时候他汤普森",
+    "这个网站时候偷偷菩萨",
+    "这个网站是合同谈判三",
+    "这个网站",
+    "这个"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.6
+  },
+  {
+   "id": "M017",
+   "category": "mixed",
+   "input": "windows11zhichizhongwenshurufa",
+   "expected": "Windows 11支持中文输入法",
+   "top": [],
+   "status": "error",
+   "error": "invalid_input",
+   "top1": false,
+   "top5": false,
+   "cer": 1.0
+  },
+  {
+   "id": "M018",
+   "category": "mixed",
+   "input": "qingyongwpsdakaiwenjian",
+   "expected": "请用WPS打开文件",
+   "top": [
+    "请用为菩萨打开文件",
+    "请用为菩萨打开稳健",
+    "请用",
+    "清",
+    "请"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.3333
+  },
+  {
+   "id": "M019",
+   "category": "mixed",
+   "input": "jiangcsvdaoruexcel",
+   "expected": "将CSV导入Excel",
+   "top": [
+    "将彩色",
+    "将参赛",
+    "将此三",
+    "激昂",
+    "讲辞"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.9091
+  },
+  {
+   "id": "M020",
+   "category": "mixed",
+   "input": "qingchakanserverrizhi",
+   "expected": "请查看server日志",
+   "top": [
+    "请查看塞尔",
+    "请查看萨尔",
+    "请查看索尔",
+    "清查",
+    "清茶"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.7273
+  },
+  {
+   "id": "M021",
+   "category": "mixed",
+   "input": "xitonganzhuangzailinuxfuwuqishang",
+   "expected": "系统安装在Linux服务器上",
+   "top": [
+    "系统安装在里努西服务器上",
+    "系统安装在里怒向服务器上",
+    "系统安装在里怒向服务器商",
+    "系统",
+    "西"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.3571
+  },
+  {
+   "id": "M022",
+   "category": "mixed",
+   "input": "dengqi10fenzhong",
+   "expected": "等待10分钟",
+   "top": [],
+   "status": "error",
+   "error": "invalid_input",
+   "top1": false,
+   "top5": false,
+   "cer": 1.0
+  },
+  {
+   "id": "M023",
+   "category": "mixed",
+   "input": "qingfasongpdfhewordliangzhonggeshi",
+   "expected": "请发送PDF和Word两种格式",
+   "top": [
+    "清发送频道符合我人的两种格式",
+    "清发送频道符合我人的两种个是",
+    "请发",
+    "清",
+    "请"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.6
+  },
+  {
+   "id": "M024",
+   "category": "mixed",
+   "input": "wozaibrowserzhongdakaiguanwang",
+   "expected": "我在browser中打开官网",
+   "top": [
+    "我在别人哦威塞尔中打开官网",
+    "我在别人哦威塞尔重大开关王",
+    "我在别人哦威塞尔中打开管网",
+    "我在",
+    "我再"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.5
+  },
+  {
+   "id": "M025",
+   "category": "mixed",
+   "input": "qingyongapiqingqiushuju",
+   "expected": "请用API请求数据",
+   "top": [
+    "请用阿毗请求数据",
+    "请用阿毗请求书局",
+    "请用阿毗请求书据",
+    "请用",
+    "清"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.3333
+  },
+  {
+   "id": "T001",
+   "category": "typo",
+   "input": "nihap",
+   "expected": "你好",
+   "top": [
+    "你哈珀",
+    "你哈普",
+    "你哈泼",
+    "你",
+    "尼"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.6667
+  },
+  {
+   "id": "T002",
+   "category": "typo",
+   "input": "xiexei",
+   "expected": "谢谢",
+   "top": [
+    "谢谢诶",
+    "谢谢欸",
+    "谢谢誒",
+    "写下",
+    "谢谢"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.3333
+  },
+  {
+   "id": "T003",
+   "category": "typo",
+   "input": "zaijain",
+   "expected": "再见",
+   "top": [
+    "在就爱你",
+    "在将爱你",
+    "在就爱年",
+    "再见",
+    "在家"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 1.0
+  },
+  {
+   "id": "T004",
+   "category": "typo",
+   "input": "qingwne",
+   "expected": "请问",
+   "top": [
+    "请我呢",
+    "请为呢",
+    "青瓦讷",
+    "轻微",
+    "青蛙"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.6667
+  },
+  {
+   "id": "T005",
+   "category": "typo",
+   "input": "duibuqii",
+   "expected": "对不起",
+   "top": [
+    "对不起",
+    "队部",
+    "对簿",
+    "对不",
+    "对"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "T006",
+   "category": "typo",
+   "input": "jintiantianqihenhoa",
+   "expected": "今天天气很好",
+   "top": [
+    "今天天气很好哦阿",
+    "今天天气很好哦啊",
+    "今天天气很好哦腌",
+    "今天天气",
+    "今天"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.25
+  },
+  {
+   "id": "T007",
+   "category": "typo",
+   "input": "qingbangwodakaiwenjan",
+   "expected": "请帮我打开文件",
+   "top": [
+    "青帮我打开文件安",
+    "青帮我打开文件按",
+    "青帮我打开文件案",
+    "清",
+    "请"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.25
+  },
+  {
+   "id": "T008",
+   "category": "typo",
+   "input": "woxiangxuexizhongwne",
+   "expected": "我想学习中文",
+   "top": [
+    "我想学习中文呢",
+    "我想学习中文呐",
+    "我想学习中文讷",
+    "我想",
+    "我"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1429
+  },
+  {
+   "id": "T009",
+   "category": "typo",
+   "input": "shujukubeifne",
+   "expected": "数据库备份",
+   "top": [
+    "数据库北方呢",
+    "数据库被佛呢",
+    "数据库北方呐",
+    "数据库",
+    "数据"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.5
+  },
+  {
+   "id": "T010",
+   "category": "typo",
+   "input": "wangluolianjje",
+   "expected": "网络连接",
+   "top": [
+    "网络连接金额",
+    "网络连接巨额",
+    "网络连接饥饿",
+    "网络连接",
+    "网络"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.3333
+  },
+  {
+   "id": "T011",
+   "category": "typo",
+   "input": "peizhiiwenjian",
+   "expected": "配置文件",
+   "top": [
+    "配置",
+    "培植",
+    "配制",
+    "配",
+    "佩"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.5
+  },
+  {
+   "id": "T012",
+   "category": "typo",
+   "input": "xitongqidnog",
+   "expected": "系统启动",
+   "top": [
+    "系统其的年哦个",
+    "系统其的年哦高",
+    "系统其的年哦该",
+    "系统启动",
+    "系统"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.7143
+  },
+  {
+   "id": "T013",
+   "category": "typo",
+   "input": "shurufaqiehuam",
+   "expected": "输入法切换",
+   "top": [
+    "输入法切画面",
+    "输入法切花名",
+    "输入法",
+    "输入",
+    "书"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.3333
+  },
+  {
+   "id": "T014",
+   "category": "typo",
+   "input": "fuwuqqidong",
+   "expected": "服务启动",
+   "top": [
+    "服务器启动",
+    "服务区启动",
+    "服务器气动",
+    "服务器",
+    "服务区"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.2
+  },
+  {
+   "id": "T015",
+   "category": "typo",
+   "input": "zhongwenshurufab",
+   "expected": "中文输入法",
+   "top": [
+    "中文输入法不",
+    "中文输入法被",
+    "中文输入法并",
+    "中文输入法",
+    "中文"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.1667
+  },
+  {
+   "id": "T016",
+   "category": "typo",
+   "input": "mingtianjianmian",
+   "expected": "明天见面",
+   "top": [
+    "明天见面",
+    "明天减免",
+    "明天见",
+    "明天",
+    "命题"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "T017",
+   "category": "typo",
+   "input": "qingjianchawangluo",
+   "expected": "请检查网络",
+   "top": [
+    "请检查网络",
+    "请检查网罗",
+    "请检查王罗",
+    "情急",
+    "请柬"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "T018",
+   "category": "typo",
+   "input": "woyaochifna",
+   "expected": "我要吃饭",
+   "top": [
+    "我要吃饭那",
+    "我要吃饭纳",
+    "我要吃饭拿",
+    "我要",
+    "我"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.2
+  },
+  {
+   "id": "T019",
+   "category": "typo",
+   "input": "jintianxiaban",
+   "expected": "今天下班",
+   "top": [
+    "今天下半",
+    "今天下班",
+    "今天",
+    "金",
+    "今"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.25
+  },
+  {
+   "id": "T020",
+   "category": "typo",
+   "input": "huijiaxiuxi",
+   "expected": "回家休息",
+   "top": [
+    "回家休息",
+    "会家休息",
+    "回家修习",
+    "回家",
+    "汇价"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": true,
+   "top5": true,
+   "cer": 0.0
+  },
+  {
+   "id": "T021",
+   "category": "typo",
+   "input": "zhunbeikaishui",
+   "expected": "准备开始",
+   "top": [
+    "准备开水",
+    "准备开谁",
+    "准备",
+    "准",
+    "屯"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.25
+  },
+  {
+   "id": "T022",
+   "category": "typo",
+   "input": "wanchengrenwub",
+   "expected": "完成任务",
+   "top": [
+    "完成任务不",
+    "完成任务并",
+    "完成任务",
+    "完成",
+    "婉称"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.2
+  },
+  {
+   "id": "T023",
+   "category": "typo",
+   "input": "qingfason",
+   "expected": "请发送",
+   "top": [
+    "清发送哦那",
+    "清发送哦年",
+    "请发",
+    "清",
+    "请"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.6
+  },
+  {
+   "id": "T024",
+   "category": "typo",
+   "input": "tashuomingtianhlai",
+   "expected": "他说明天回来",
+   "top": [
+    "他说明天后来",
+    "他说明天会来",
+    "他说明天回来",
+    "她说",
+    "他说"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": true,
+   "cer": 0.1667
+  },
+  {
+   "id": "T025",
+   "category": "typo",
+   "input": "womenyiqichifna",
+   "expected": "我们一起吃饭",
+   "top": [
+    "我们一起吃饭那",
+    "我们一起吃饭纳",
+    "我们一起吃饭拿",
+    "我们",
+    "我"
+   ],
+   "status": "ok",
+   "error": null,
+   "top1": false,
+   "top5": false,
+   "cer": 0.1429
+  }
+ ]
+}

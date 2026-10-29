@@ -1,0 +1,16 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+pkgdatadir=@libdir@/libpinyin
+database_format=@DATABASE_FORMAT@
+
+libpinyinincludedir=${includedir}/libpinyin-@VERSION@
+libpinyin_binary_version=@LIBPINYIN_BINARY_VERSION@
+
+Name: libpinyin
+Description: Library to deal with pinyin
+Version: @VERSION@
+Requires: glib-2.0
+Libs: -L${libdir} -lpinyin
+Cflags: -I${libpinyinincludedir}

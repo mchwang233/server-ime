@@ -1,0 +1,429 @@
+#!/usr/bin/env python3
+"""ime-release-check：对真实发布包执行无 root 的隔离生命周期检查。
+
+约定（与负责人要求一致）：
+
+* 全部写入位于 ``delivery/.check/release-<时间戳>/``（HOME/XDG/TMPDIR 也重定向到该目录）；
+* 安装/重复安装/升级/回滚/卸载全部走 ``delivery/bin/ime-install``，逐条记录真实退出码；
+* 启动/停止与产品契约**复用** ``integration/checks/run_checks.py``（动态显示号、独立
+  Xauthority、私有 D-Bus、子进程自管理），只用 ``SERVER_IME_PRODUCT_ROOT`` 指向
+  ``<prefix>/ime/current``，薄包装不复制其逻辑；
+* 不按进程名批量终止任何进程；本工具不启动后台进程，子进程全部由 subprocess 同步回收；
+* 只读取/恢复 ``integration/evidence/latest.json``，并把 run_checks 新产生的证据目录
+  复制到本次证据目录后删除该次新建目录（属于本工具发起的运行）。
+"""
+
+from __future__ import annotations
+
+import argparse
+import tarfile
+import hashlib
+import json
+import os
+import shutil
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+DELIVERY = ROOT / "delivery"
+INSTALL = DELIVERY / "bin" / "ime-install"
+DIAGNOSE = DELIVERY / "bin" / "ime-diagnose"
+RUN_CHECKS = ROOT / "integration" / "checks" / "run_checks.py"
+
+SIGNAL_KEYS = (
+    "DISPLAY",
+    "WAYLAND_DISPLAY",
+    "XAUTHORITY",
+    "DBUS_SESSION_BUS_ADDRESS",
+    "DBUS_STARTER_ADDRESS",
+    "IBUS_ADDRESS",
+    "IBUS_ADDRESS_FILE",
+    "SERVER_IME_CONFIG",
+    "SERVER_IME_DATA",
+    "SERVER_IME_PRODUCT_ROOT",
+)
+
+
+def sha256_file(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def tree_hashes(base):
+    out = {}
+    base = Path(base)
+    if not base.is_dir():
+        return out
+    for path in sorted(base.rglob("*")):
+        if path.is_file() and not path.is_symlink():
+            out[str(path.relative_to(base))] = sha256_file(path)
+    return out
+
+
+class Runner(object):
+    def __init__(self, run_dir):
+        self.run_dir = run_dir
+        self.env = {}
+        self.log = (run_dir / "lifecycle.log").open("w", encoding="utf-8")
+        self.steps = []
+
+    def base_env(self):
+        env = {k: v for k, v in os.environ.items() if k not in SIGNAL_KEYS}
+        env.update(
+            HOME=str(self.run_dir / "home"),
+            TMPDIR=str(self.run_dir / "tmp"),
+            XDG_CONFIG_HOME=str(self.run_dir / "xdg" / "config"),
+            XDG_DATA_HOME=str(self.run_dir / "xdg" / "data"),
+            XDG_CACHE_HOME=str(self.run_dir / "xdg" / "cache"),
+            XDG_STATE_HOME=str(self.run_dir / "xdg" / "state"),
+            XDG_RUNTIME_DIR=str(self.run_dir / "xdg" / "run"),
+            PYTHONDONTWRITEBYTECODE="1",
+            GSETTINGS_BACKEND="memory",
+            LC_ALL="C.UTF-8",
+            LANG="C.UTF-8",
+        )
+        for key in ("home", "tmp", "xdg/config", "xdg/data", "xdg/cache", "xdg/state", "xdg/run"):
+            target = self.run_dir / key
+            target.mkdir(parents=True, exist_ok=True)
+            target.chmod(0o700)
+        return env
+
+    def run(self, name, argv, *, expect=0, timeout=900, env_extra=None, note=""):
+        env = dict(self.env)
+        if env_extra:
+            env.update(env_extra)
+        started = time.time()
+        proc = subprocess.run(
+            [str(x) for x in argv],
+            cwd=str(ROOT),
+            env=env,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
+        out = proc.stdout.decode("utf-8", "replace")
+        elapsed = round(time.time() - started, 2)
+        ok = proc.returncode == expect
+        step = {
+            "name": name,
+            "argv": [str(x) for x in argv],
+            "exit_code": proc.returncode,
+            "expected": expect,
+            "ok": ok,
+            "elapsed_s": elapsed,
+            "note": note,
+            "output": out,
+        }
+        self.steps.append(step)
+        self.log.write(
+            "$ %s\n[rc=%d expect=%d %s %.2fs] %s\n%s\n\n"
+            % (" ".join(step["argv"]), proc.returncode, expect, "OK" if ok else "FAIL", elapsed, note, out[-4000:])
+        )
+        self.log.flush()
+        sys.stdout.write("%-28s rc=%d %s (%.2fs)\n" % (name, proc.returncode, "OK" if ok else "FAIL", elapsed))
+        return step
+
+    def close(self):
+        self.log.close()
+
+
+def record_session(evidence):
+    """记录实际用户会话是否可用、是否已启用（不改动用户桌面）。"""
+    keys = ("DISPLAY", "WAYLAND_DISPLAY", "DBUS_SESSION_BUS_ADDRESS", "XDG_SESSION_TYPE",
+            "XDG_CURRENT_DESKTOP", "DESKTOP_SESSION", "XDG_RUNTIME_DIR")
+    observed = {key: os.environ.get(key) for key in keys}
+    loginctl = {}
+    try:
+        proc = subprocess.run(["loginctl", "list-sessions", "--no-legend"], stdout=subprocess.PIPE,
+                              stderr=subprocess.STDOUT, timeout=10)
+        loginctl = {"exit_code": proc.returncode, "output": proc.stdout.decode("utf-8", "replace")[:2000]}
+    except (OSError, subprocess.SubprocessError) as exc:
+        loginctl = {"error": str(exc)}
+    available = bool(observed.get("DISPLAY") or observed.get("WAYLAND_DISPLAY")) and bool(
+        observed.get("DBUS_SESSION_BUS_ADDRESS")
+    )
+    record = {
+        "schema": "ime.session-enablement/1",
+        "checked_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "observed_environment": observed,
+        "loginctl": loginctl,
+        "graphical_session_available": None,
+        "session_variables_present": available,
+        "status": "NOT_DEPLOYED",
+        "reason": (
+            "本进程的会话变量不能用于断言服务器没有桌面；"
+            "且不得改动用户桌面、共享配置或共享套接字；因此只验证隔离会话内的启动，未在真实桌面启用。"
+        ),
+        "enable_commands": [
+            "delivery/bin/ime-install install delivery/dist/server-ime-0.1.0.tar.gz "
+            "--prefix ~/.local/opt/server-ime --data-dir ~/.local/share/server-ime",
+            "~/.local/opt/server-ime/bin/server-ime --state-dir ~/.cache/server-ime/run start --managed-ibus",
+            "~/.local/opt/server-ime/bin/server-ime --state-dir ~/.cache/server-ime/run exec -- xfce4-terminal",
+            "已有 IBus 会话：export IBUS_ADDRESS=$(ibus address) 后 start（产品不终止既有 daemon）",
+            "~/.local/opt/server-ime/bin/server-ime --state-dir ~/.cache/server-ime/run stop",
+        ],
+        "location_when_enabled": "前缀内 bin/server-ime（入口）与 ~/.config/server-ime/settings.json（配置）、"
+                                 "--data-dir/learning（个人词库与学习数据）",
+    }
+    (evidence / "session-enablement.json").write_text(
+        json.dumps(record, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    return record
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(prog="ime-release-check", description="真实发布包隔离生命周期检查")
+    parser.add_argument("--release", default=None, help="发布包（默认取 manifest/lock.json 记录的包）")
+    parser.add_argument("--upgrade", default=None, help="升级测试包（默认 dist/server-ime-0.1.1.tar.gz）")
+    parser.add_argument("--skip-product-checks", action="store_true", help="跳过 run_checks（仅生命周期）")
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args(argv)
+
+    lock = json.loads((DELIVERY / "manifest" / "lock.json").read_text(encoding="utf-8"))
+    release = Path(args.release) if args.release else DELIVERY / lock["package"]["path"]
+    upgrade = Path(args.upgrade) if args.upgrade else DELIVERY / "dist" / "server-ime-0.1.1.tar.gz"
+    def bundle_version(path):
+        with tarfile.open(path) as archive:
+            return json.load(archive.extractfile('component-manifest.json'))['component']['version']
+    release_version = bundle_version(release)
+    upgrade_version = bundle_version(upgrade)
+    stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    run_dir = DELIVERY / ".check" / ("release-" + stamp)
+    evidence = DELIVERY / "evidence" / ("release-" + stamp)
+    for path in (run_dir, evidence):
+        path.mkdir(parents=True, exist_ok=False)
+    prefix = run_dir / "prefix"
+    data = run_dir / "data"
+    (run_dir / "home").mkdir(parents=True, exist_ok=True)
+
+    runner = Runner(run_dir)
+    runner.env = runner.base_env()
+    summary = {
+        "schema": "ime.release-check/1",
+        "employee_id": "delivery",
+        "verifies": [],
+        "started_at": stamp,
+        "root": str(ROOT),
+        "isolated_run_dir": str(run_dir),
+        "release": {"path": str(release), "sha256": sha256_file(release)},
+        "upgrade_package": {"path": str(upgrade), "sha256": sha256_file(upgrade) if upgrade.exists() else None},
+        "prefix": str(prefix),
+        "data_dir": str(data),
+        "steps": runner.steps,
+        "assertions": [],
+        "result": "FAIL",
+        "limits": [
+            "启动/契约检查使用 integration/checks/run_checks.py（隔离 Xvnc + 私有 D-Bus + XTest），不绑定用户桌面",
+            "真实用户会话未启用：见 evidence/session-enablement.json（NOT_DEPLOYED）",
+            "应用兼容证据沿用 integration/evidence（Chrome 已验证；系统 Firefox 未验证）",
+        ],
+    }
+
+    def assert_true(name, condition, detail=None):
+        entry = {"assertion": name, "ok": bool(condition), "detail": detail}
+        summary["assertions"].append(entry)
+        sys.stdout.write("%-28s %s\n" % ("assert " + name, "OK" if entry["ok"] else "FAIL"))
+        return entry["ok"]
+
+    try:
+        # 0. 环境事实 + 用户会话启用状态
+        summary["session_enablement"] = record_session(evidence)
+
+        # 0b. 环境事实
+        (evidence / "environment.json").write_text(
+            json.dumps(
+                {
+                    "python": sys.version.split()[0],
+                    "platform": os.uname().sysname + " " + os.uname().release,
+                    "machine": os.uname().machine,
+                    "release_sha256": summary["release"]["sha256"],
+                    "upgrade_sha256": summary["upgrade_package"]["sha256"],
+                    "run_dir": str(run_dir),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+
+        allowed = ["--allowed-root", str(run_dir)]
+
+        # 1. 首次安装
+        runner.run("install-release", [INSTALL, "install", release, "--prefix", prefix, "--data-dir", data, "--json"] + allowed)
+        listed = json.loads(
+            runner.run("list-after-install", [INSTALL, "list", "--prefix", prefix, "--json"] + allowed)["output"]
+        )
+        assert_true("install_active_version", listed["current"] == release_version, listed["current"])
+        assert_true("install_entrypoint", (prefix / "bin" / "server-ime").exists())
+
+        # 2. 重复安装（幂等）
+        repeat = runner.run(
+            "install-again", [INSTALL, "install", release, "--prefix", prefix, "--data-dir", data, "--json"] + allowed
+        )
+        assert_true("repeat_install_idempotent", repeat["exit_code"] == 0, repeat["output"][:200])
+
+        # 3. 安装文件校验
+        runner.run("verify-files", [INSTALL, "verify", "--prefix", prefix, "--json"] + allowed)
+
+        # 4. 准备保留性检查：无关文件、合成个人数据
+        (prefix / "notes.txt").write_text("无关文件，卸载后必须保留\n", encoding="utf-8")
+        (prefix / "tools").mkdir(exist_ok=True)
+        (prefix / "tools" / "other.sh").write_text("#!/bin/sh\necho unrelated\n", encoding="utf-8")
+        learning = data / "learning"
+        learning.mkdir(parents=True, exist_ok=True)
+        (learning / "words.jsonl").write_text(
+            '{"schema":"ime-lexicon-user/1","word":"金丝雀测试词","count":3}\n', encoding="utf-8"
+        )
+        (learning / "meta.json").write_text('{"schema":"ime-lexicon-user/1","version":1}\n', encoding="utf-8")
+        config = run_dir / 'config' / 'settings.json'
+        config.parent.mkdir()
+        config.write_text('{"version":1,"test":"preserve-custom-settings"}\n')
+        baseline_config = config.read_bytes()
+        baseline_data = tree_hashes(data)
+        summary["data_baseline"] = baseline_data
+
+        # 5. 安装目录内的入口与引擎（确认模块来自前缀而不是工作区）
+        runner.run("entry-help", [prefix / "bin" / "server-ime", "--help"])
+        caps_step = runner.run(
+            "entry-capabilities",
+            [prefix / "bin" / "server-ime", "--data-dir", data, "--state-dir", run_dir / "state", "capabilities"],
+        )
+        try:
+            caps = json.loads(caps_step["output"])
+        except ValueError:
+            caps = {}
+        assert_true("engine_backend_libpinyin", caps.get("backend") == "libpinyin" and caps.get("backend_version") == "2.6.0", caps.get("backend_version"))
+        origin = runner.run(
+            "module-origin",
+            [
+                sys.executable,
+                "-c",
+                "import sys, pathlib\n"
+                "root = pathlib.Path(%r)\n"
+                "sys.path[:0] = [str(root / p) for p in ('engine/src', 'lexicon/src', 'interface/src', 'platform')]\n"
+                "import server_ime_engine, ime_interface\n"
+                "print(server_ime_engine.__file__)\n"
+                "print(ime_interface.__file__)\n" % str(prefix / "ime" / "current"),
+            ],
+        )
+        assert_true("modules_loaded_from_prefix", str(prefix) in origin["output"], origin["output"].strip())
+
+        # 6. 启动/停止 + 产品契约：复用 platform 的 run_checks.py，指向安装目录
+        product_root = prefix / "ime" / "current"
+        if not args.skip_product_checks:
+            latest = ROOT / "integration" / "evidence" / "latest.json"
+            backup = latest.read_bytes() if latest.exists() else None
+            before = {p.name for p in (ROOT / "integration" / "evidence").glob("run-*")}
+            rc = runner.run(
+                "product-checks",
+                [sys.executable, RUN_CHECKS],
+                expect=0,
+                timeout=1200,
+                env_extra={"SERVER_IME_PRODUCT_ROOT": str(product_root), "SERVER_IME_SKIP_APPS": "1"},
+                note="run_checks.py：隔离显示号+独立认证+私有 D-Bus，PRODUCT_ROOT=安装目录",
+            )
+            created = sorted({p.name for p in (ROOT / "integration" / "evidence").glob("run-*")} - before)
+            target = evidence / "product-checks"
+            for name in created:
+                shutil.copytree(ROOT / "integration" / "evidence" / name, target / name)
+            summary["product_checks"] = {"exit_code": rc["exit_code"], "created": created}
+            if created:
+                check_summary = json.loads((target / created[-1] / "summary.json").read_text(encoding="utf-8"))
+                summary["product_checks"]["result"] = check_summary.get("result")
+                summary["product_checks"]["checks"] = [
+                    {"name": c["name"], "exit_code": c["exit_code"]} for c in check_summary.get("checks", [])
+                ]
+                summary["product_checks"]["product_root"] = check_summary.get("product_root")
+                assert_true("product_checks_pass", check_summary.get("result") == "PASS", check_summary.get("result"))
+                assert_true(
+                    "product_checks_used_prefix",
+                    str(prefix) in str(check_summary.get("product_root")),
+                    check_summary.get("product_root"),
+                )
+                for name in created:
+                    shutil.rmtree(ROOT / "integration" / "evidence" / name)
+            if backup is None:
+                if latest.exists():
+                    latest.unlink()
+            else:
+                latest.write_bytes(backup)
+
+        # 7. 升级（0.1.1 为升级测试构建，组件与 0.1.0 相同）
+        if upgrade.exists():
+            runner.run("upgrade-to-test-build", [INSTALL, "upgrade", upgrade, "--prefix", prefix, "--data-dir", data, "--json"] + allowed)
+            after = json.loads(
+                runner.run("list-after-upgrade", [INSTALL, "list", "--prefix", prefix, "--json"] + allowed)["output"]
+            )
+            assert_true("upgrade_current", after["current"] == upgrade_version, after["current"])
+            assert_true("upgrade_previous", after.get("previous") == release_version, after.get("previous"))
+            assert_true("upgrade_kept_data", tree_hashes(data) == baseline_data)
+            assert_true("upgrade_kept_unrelated", (prefix / "notes.txt").exists())
+            release_json = json.loads((product_root / "share" / "ime" / "release.json").read_text(encoding="utf-8"))
+            assert_true("upgrade_entrypoint_new_version", release_json.get("version") == upgrade_version, release_json.get("version"))
+            runner.run("verify-after-upgrade", [INSTALL, "verify", "--prefix", prefix, "--json"] + allowed)
+
+            # 8. 回滚
+            runner.run("rollback", [INSTALL, "rollback", "--prefix", prefix, "--json"] + allowed)
+            back = json.loads(
+                runner.run("list-after-rollback", [INSTALL, "list", "--prefix", prefix, "--json"] + allowed)["output"]
+            )
+            assert_true("rollback_current", back["current"] == release_version, back["current"])
+            assert_true("rollback_kept_data", tree_hashes(data) == baseline_data)
+            rollout = json.loads((product_root / "share" / "ime" / "release.json").read_text(encoding="utf-8"))
+            assert_true("rollback_entrypoint_old_version", rollout.get("version") == release_version, rollout.get("version"))
+            runner.run("verify-after-rollback", [INSTALL, "verify", "--prefix", prefix, "--json"] + allowed)
+
+        assert_true("upgrade_rollback_kept_external_config", config.read_bytes() == baseline_config)
+        # 9. 诊断
+        diag = runner.run(
+            "diagnose", [DIAGNOSE, "--prefix", prefix, "--data-dir", data, "--json"] + allowed
+        )
+        try:
+            report = json.loads(diag["output"])
+        except ValueError:
+            report = {}
+        summary["diagnose"] = {
+            "schema": report.get("schema"),
+            "runtime_probes": [
+                {"id": d.get("id"), "status": d.get("status"), "detail": (d.get("detail") or "")[:120]}
+                for d in report.get("runtime", [])
+            ],
+            "files_ok": (report.get("files") or {}).get("ok"),
+            "files_checked": (report.get("files") or {}).get("checked"),
+            "data_files": (report.get("data") or {}).get("count"),
+            "entrypoints": [e.get("link") for e in report.get("entrypoints", [])],
+        }
+        (evidence / "diagnose.json").write_text(diag["output"], encoding="utf-8")
+        assert_true("diagnose_ok", diag["exit_code"] == 0)
+
+        # 10. 卸载
+        runner.run("uninstall", [INSTALL, "uninstall", "--prefix", prefix, "--data-dir", data, "--json"] + allowed)
+        assert_true("uninstall_removed_entrypoint", not (prefix / "bin" / "server-ime").exists())
+        assert_true("uninstall_removed_versions", not (prefix / "ime" / "versions").exists())
+        assert_true("uninstall_kept_data", tree_hashes(data) == baseline_data)
+        assert_true("uninstall_kept_unrelated", (prefix / "notes.txt").exists() and (prefix / "tools" / "other.sh").exists())
+        runner.run("list-after-uninstall", [INSTALL, "list", "--prefix", prefix, "--json"] + allowed)
+
+        summary["result"] = "PASS" if all(item["ok"] for item in summary["assertions"]) else "FAIL"
+    finally:
+        runner.close()
+        summary["finished_at"] = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+        summary["steps"] = runner.steps
+        (evidence / "summary.json").write_text(
+            json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        shutil.move(str(run_dir / "lifecycle.log"), str(evidence / "lifecycle.log"))
+
+    sys.stdout.write("evidence: %s\nresult: %s\n" % (evidence, summary["result"]))
+    if args.json:
+        sys.stdout.write(json.dumps({"evidence": str(evidence), "result": summary["result"]}, ensure_ascii=False) + "\n")
+    return 0 if summary["result"] == "PASS" else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

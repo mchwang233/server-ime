@@ -1,0 +1,66 @@
+{
+  "employee_id": "platform",
+  "verifies": [],
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "full-file-inventory",
+      "result": "PASS",
+      "files": 115
+    },
+    {
+      "name": "licenses-and-production-only-runtime",
+      "result": "PASS"
+    },
+    {
+      "name": "same-runtime-as-successful-application-run",
+      "result": "PASS",
+      "files": 45,
+      "evidence": "integration/evidence/run-20261029-113836"
+    },
+    {
+      "name": "same-runtime-as-successful-horizontal-feedback",
+      "result": "PASS",
+      "files": 44,
+      "evidence": "integration/evidence/narrow-assembled-0.2.6-final"
+    },
+    {
+      "name": "real-narrow-viewport-and-complete-logical-pages",
+      "result": "PASS",
+      "screen": [
+        360,
+        960
+      ],
+      "font_scale": 3.0,
+      "fixture": false,
+      "evidence": "integration/evidence/narrow-assembled-0.2.6-final"
+    },
+    {
+      "name": "historical-packages-preserved",
+      "result": "PASS",
+      "files": 14
+    },
+    {
+      "name": "relocated-entry-and-real-engine",
+      "result": "PASS",
+      "scope": "programmatic smoke, not a GUI run",
+      "version": "0.4.0",
+      "product_version": "0.2.6",
+      "commits": [
+        "你好API2世界",
+        "你好",
+        "？"
+      ],
+      "mode": "zh"
+    },
+    {
+      "name": "archive-members-and-checksum",
+      "result": "PASS",
+      "archive": "integration/build/server-ime-product-0.2.6.tar.gz",
+      "sha256": "065911c27a838a05a95b92652d1863f3da767a0ba39701c3c361b3d84be3516e"
+    }
+  ],
+  "runtime_files": 45,
+  "files": 115,
+  "archive_sha256": "065911c27a838a05a95b92652d1863f3da767a0ba39701c3c361b3d84be3516e"
+}

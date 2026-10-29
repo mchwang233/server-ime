@@ -1,0 +1,7 @@
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright 2026 Server IME contributors
+
+The integration source is free software under the GNU General Public License,
+version 3 or (at your option) any later version. The full license is included
+in engine/LICENSE and lexicon/licenses/GPL-3.0.txt. It is provided without warranty.
+Component and bundled dependency licenses remain in their respective directories.

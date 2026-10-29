@@ -1,0 +1,16 @@
+{
+  "employee_id": "platform",
+  "verifies": [],
+  "result": "PASS",
+  "from_version": "0.2.5",
+  "to_version": "0.2.6",
+  "runtime_changes": [
+    "integration/src/server_ime_product/__init__.py",
+    "integration/src/server_ime_product/panel.py",
+    "interface/src/ime_interface/panel.py"
+  ],
+  "engine_lexicon_platform_runtime_unchanged": true,
+  "added": [],
+  "removed": [],
+  "scope": "Runtime bytes before application checks; final docs/inventory are checked separately"
+}

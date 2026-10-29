@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+"""ime-install：用户级安装/升级/回滚/卸载/恢复/校验入口（无需 root）。"""
+
+import os
+import sys
+
+_HERE = os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, os.path.join(_HERE, os.pardir, "lib"))
+
+from ime_delivery.cli import main_install  # noqa: E402
+
+if __name__ == "__main__":
+    sys.exit(main_install(sys.argv[1:]))

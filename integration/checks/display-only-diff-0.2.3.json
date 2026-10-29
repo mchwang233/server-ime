@@ -1,0 +1,11 @@
+{
+  "employee_id": "platform",
+  "changed_runtime_files": [
+    "integration/src/server_ime_product/__init__.py",
+    "integration/src/server_ime_product/panel.py",
+    "integration/src/server_ime_product/runtime.py",
+    "platform/server_ime/ibus_adapter.py",
+    "platform/server_ime/product_controller.py"
+  ],
+  "engine_python_identical": true
+}

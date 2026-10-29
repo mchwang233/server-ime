@@ -1,0 +1,6 @@
+#!/bin/sh
+# ime-selfcheck：构建隔离样例安装包并跑完整安装生命周期检查。
+# 所有测试前缀与产物都位于 delivery/ 内，不使用 root、系统服务或受限用户目录。
+set -eu
+here=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+exec python3 "$here/tests/run_lifecycle_check.py" "$@"

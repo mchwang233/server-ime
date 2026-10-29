@@ -1,0 +1,84 @@
+{
+  "schema": "ime.product-manifest/1",
+  "product": {
+    "id": "server-ime",
+    "name": "服务器中文输入法",
+    "version": "0.1.6",
+    "license": "GPL-3.0-or-later（engine/lexicon/interface/integration 代码）、MIT（platform）、词库数据 CC-BY-4.0；逐组件许可与包内许可文件见 delivery/docs/licenses.md",
+    "description": "面向该服务器 X11 + IBus 会话的中文输入法统一安装包：拼音引擎（libpinyin 2.6.0）、平台适配、个人词库学习、候选与设置界面、产品入口，含用户级安装/升级/回滚/卸载工具，随包提供全部组件许可、来源声明与中文快速说明。"
+  },
+  "components": [
+    {
+      "id": "server-ime",
+      "employee_id": "delivery",
+      "role": "统一安装包（含 engine / platform / lexicon / interface / integration）",
+      "status": "ready",
+      "version": "0.1.6",
+      "bundle": "../dist/server-ime-0.1.6.tar.gz",
+      "sha256": "dec7329551914a55fd647086555b6638716ba224407640a60498c41567e2d69a",
+      "entrypoints": [
+        "bin/server-ime"
+      ],
+      "data_dirs": [
+        "learning"
+      ],
+      "notes": "装配 0.2.9：单一候选窗、完整候选页及布局后高亮滚动、短页宽度收缩；用户桌面未部署",
+      "included_components": [
+        {
+          "id": "engine",
+          "employee_id": "engine",
+          "version": "0.4.0",
+          "path": "engine",
+          "license": "GPL-3.0-or-later",
+          "license_file": "engine/LICENSE"
+        },
+        {
+          "id": "lexicon",
+          "employee_id": "lexicon",
+          "format": "ime-lexicon-user/1",
+          "path": "lexicon",
+          "license": "代码 GPL-3.0-or-later / 数据 CC-BY-4.0",
+          "license_file": "lexicon/SOURCES.md"
+        },
+        {
+          "id": "interface",
+          "employee_id": "interface",
+          "settings_version": 1,
+          "path": "interface",
+          "license": "GPL-3.0-or-later",
+          "license_file": "interface/LICENSE",
+          "sources_file": "interface/SOURCES.md",
+          "version": "0.1.5"
+        },
+        {
+          "id": "platform",
+          "employee_id": "platform",
+          "path": "platform",
+          "license": "MIT",
+          "license_file": "platform/LICENSE"
+        },
+        {
+          "id": "integration",
+          "employee_id": "platform",
+          "path": "integration",
+          "license": "GPL-3.0-or-later",
+          "license_file": "integration/LICENSE",
+          "version": "0.2.9"
+        }
+      ],
+      "artifacts": {
+        "manifest": "../dist/server-ime-0.1.6.component-manifest.json",
+        "manifest_file_sha256": "99fe22eae45a9e0b6a584ce0468e96eb846721405432ba17605bcddab97c0af5",
+        "sources": "../dist/server-ime-0.1.6-sources.tar.gz",
+        "sources_sha256": "c3f8a5734ce224013dc6b11316ba8e1d0c9a9af0da9228d77afe79b46259ec59",
+        "sources_bytes": 86066772,
+        "sha256sums": "../dist/SHA256SUMS",
+        "version_lock": "lock.json",
+        "build_record": "../build/0.1.6/build.json",
+        "content_check": "../evidence/layout-release-0.1.6/content.json"
+      }
+    }
+  ],
+  "notes": "本清单只描述可安装产物；功能/体验/部署验收见 delivery/docs/feature-matrix.md。用户真实桌面为 NOT_DEPLOYED（按约定不改动用户桌面与共享套接字，未以 DISPLAY 为空断言无桌面），未据此声称达到 Windows 11 水平。",
+  "path_base": "manifest-directory"
+}

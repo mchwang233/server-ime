@@ -1,0 +1,18 @@
+{
+  "employee_id": "engine",
+  "purpose": "Independent actual key behavior cases; never imported as lexical data. Explicit symbols are typed, never reconstructed.",
+  "cases": [
+    {"id": "K01", "input": "nihaoLinux6.1", "expected": "你好Linux6.1"},
+    {"id": "K02", "input": "nihaoAPI2shijie", "expected": "你好API2世界"},
+    {"id": "K03", "input": "nihao User+Tag@Example.org", "expected": "你好 User+Tag@Example.org"},
+    {"id": "K04", "input": "dakai https://Example.org/A?x=2#Part", "expected": "打开 https://Example.org/A?x=2#Part"},
+    {"id": "K05", "input": "nihao2026-10-28", "expected": "你好2026-10-28"},
+    {"id": "K06", "input": "nihao世界!", "expected": "你好世界!"},
+    {"id": "K07", "input": "nihaohello", "expected": "你好hello", "selection": "explicit mixed candidate"},
+    {"id": "K08", "input": "pythonnihao", "expected": "python你好", "selection": "explicit mixed candidate"},
+    {"id": "K09", "input": "xian", "expected": "xian", "selection": "literal ambiguity"},
+    {"id": "K10", "input": "nihkV2.8", "expected": "你好V2.8", "schema": "double_pinyin"},
+    {"id": "K11", "input": "nihao example.org/Path?q=3", "expected": "你好 example.org/Path?q=3"},
+    {"id": "K12", "input": "nihao /opt/App-v2/bin", "expected": "你好 /opt/App-v2/bin"}
+  ]
+}
