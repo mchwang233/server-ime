@@ -70,8 +70,11 @@ def main():
         check([sys.executable, "-m", "unittest", "discover", "-s", str(ROOT / "tests"), "-p", "test_*.py", "-v"], "unit")
         read_fd, write_fd = os.pipe()
         try:
+            # TigerVNC 1.8 (EL7) has no VNC unix socket; with -rfbport -1 it then serves no VNC at all.
+            usage = subprocess.run(["/usr/bin/Xvnc", "-help"], capture_output=True, text=True)
+            unix_vnc = ["-rfbunixpath", str(runtime / "vnc")] if "rfbunixpath" in usage.stdout + usage.stderr else []
             start(["/usr/bin/Xvnc", "-displayfd", str(write_fd), "-geometry", "1024x768", "-depth", "24",
-                   "-rfbport", "-1", "-rfbunixpath", str(runtime / "vnc"), "-localhost", "-nolisten", "unix",
+                   "-rfbport", "-1", *unix_vnc, "-localhost", "-nolisten", "unix",
                    "-nolisten", "local", "-listen", "tcp", "-auth", str(authority), "-noreset"], "xserver", (write_fd,))
         finally:
             os.close(write_fd)
@@ -110,7 +113,10 @@ def main():
         # IBus 1.5.25 mkdirs the entire unix:path value and 1.5.19 (EL8) knows no
         # unix:dir, so use unix:tmpdir and read its generated client address from
         # our explicit private address file.
-        start(["ibus-daemon", "--single", "--panel=disable", "--config=disable", "--emoji-extension=disable",
+        # 1.5.17 (EL7) has no emoji extension to turn off.
+        usage = subprocess.run(["ibus-daemon", "--help"], capture_output=True, text=True).stdout
+        emoji = ["--emoji-extension=disable"] if "--emoji-extension" in usage else []
+        start(["ibus-daemon", "--single", "--panel=disable", "--config=disable", *emoji,
                "--cache=none", "--address=unix:tmpdir=" + str(runtime)], "ibus-daemon")
         for _ in range(100):
             address_file = Path(env["IBUS_ADDRESS_FILE"])
