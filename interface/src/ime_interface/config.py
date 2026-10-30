@@ -325,7 +325,7 @@ def _merge_input(target, key, value, path, errors, caps):
             target[key] = value
     elif key == "page_size":
         target[key] = _check_int(value, path, 1, 9, errors)
-    elif key in ("incomplete", "prediction"):
+    elif key in ("incomplete", "prediction", "shift_toggle"):
         target[key] = _check_bool(value, path, errors)
     elif key == "learning":
         enabled = _check_bool(value, path, errors)

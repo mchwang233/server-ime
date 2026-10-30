@@ -107,10 +107,11 @@ def main():
                 break
             time.sleep(.03)
         env["DBUS_SESSION_BUS_ADDRESS"] = dbus_address
-        # IBus 1.5.25 mkdirs the entire unix:path value, so use unix:dir and read
-        # its generated client address from our explicit private address file.
+        # IBus 1.5.25 mkdirs the entire unix:path value and 1.5.19 (EL8) knows no
+        # unix:dir, so use unix:tmpdir and read its generated client address from
+        # our explicit private address file.
         start(["ibus-daemon", "--single", "--panel=disable", "--config=disable", "--emoji-extension=disable",
-               "--cache=none", "--address=unix:dir=" + str(runtime)], "ibus-daemon")
+               "--cache=none", "--address=unix:tmpdir=" + str(runtime)], "ibus-daemon")
         for _ in range(100):
             address_file = Path(env["IBUS_ADDRESS_FILE"])
             if address_file.exists():

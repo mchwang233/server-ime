@@ -56,6 +56,7 @@ UI_TEXT = {
     "scheme_default": "默认（{name}）",
     "learning": "个人输入学习（保存在本机个人词库）",
     "prediction": "上屏后联想下一个词（数字键选择，其它键继续输入）",
+    "shift_toggle": "单按 Shift 切换中英文（输入中按下时，已打的字母原样上屏）",
     "fuzzy_enabled": "启用模糊音",
     "fuzzy_rules": "生效的模糊音规则",
     "correction_enabled": "启用拼音纠错",
@@ -272,6 +273,10 @@ class SettingsWindow:
         self.prediction_switch.set_active(bool(self.settings["input"].get("prediction", False)))
         box.pack_start(self._row(self.prediction_switch, UI_TEXT["prediction"], UI_TEXT["status_live"]),
                        False, False, 0)
+        self.shift_switch = Gtk.Switch()
+        self.shift_switch.set_active(bool(self.settings["input"].get("shift_toggle", True)))
+        box.pack_start(self._row(self.shift_switch, UI_TEXT["shift_toggle"], UI_TEXT["status_live"]),
+                       False, False, 0)
         if self.caps.supports("learning"):
             self.learning_switch = Gtk.Switch()
             self.learning_switch.set_active(bool(self.settings["input"].get("learning", False)))
@@ -438,6 +443,7 @@ class SettingsWindow:
         settings["input"]["page_size"] = int(self.page_spin.get_value())
         settings["input"]["incomplete"] = bool(self.incomplete_switch.get_active())
         settings["input"]["prediction"] = bool(self.prediction_switch.get_active())
+        settings["input"]["shift_toggle"] = bool(self.shift_switch.get_active())
         if hasattr(self, "learning_switch"):
             settings["input"]["learning"] = bool(self.learning_switch.get_active())
         for kind, switch_name, checks in (
@@ -468,6 +474,7 @@ class SettingsWindow:
         self.page_spin.set_value(int(in_value.get("page_size", 5)))
         self.incomplete_switch.set_active(bool(in_value.get("incomplete", True)))
         self.prediction_switch.set_active(bool(in_value.get("prediction", False)))
+        self.shift_switch.set_active(bool(in_value.get("shift_toggle", True)))
         if hasattr(self, "learning_switch"):
             self.learning_switch.set_active(bool(in_value.get("learning", False)))
         for kind, switch_name, checks in (

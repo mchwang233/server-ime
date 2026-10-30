@@ -1,7 +1,7 @@
 {
   "assembly_version": "0.2.9",
-  "build_record": "build/0.1.12/build.json",
-  "build_record_sha256": "8b1ceb63ce3aa46784ff3ff98c841e6195ea247189493ab4b37554d545b91ee2",
+  "build_record": "build/0.1.13/build.json",
+  "build_record_sha256": "e7c3a5a862223902a5690204ac510b7676bf458de6d821213d017bb9467b5e76",
   "built_at": "2026-10-28T00:00:00Z",
   "components": {
     "engine": {
@@ -10,13 +10,13 @@
       "files": 302
     },
     "integration": {
-      "bytes": 162873,
-      "digest": "f2a3b92b9c5638529b7c67ff29ee80eb37a66f500ecbf22c2dd4b5008c25b6cb",
+      "bytes": 162876,
+      "digest": "c4ee1707b4e60230003e48e47c6e97dbe22e871640184a37bffa092c7e5c91bc",
       "files": 21
     },
     "interface": {
-      "bytes": 361737,
-      "digest": "33ec19376e469a3c9204ee7fb31dfda04dd3b04169607544cc033d9eda041cd7",
+      "bytes": 362321,
+      "digest": "f352900f6190876ec42eff4bea845022814ecbab3b356eb573ed335d37cc48c3",
       "files": 28
     },
     "lexicon": {
@@ -25,9 +25,9 @@
       "files": 38
     },
     "platform": {
-      "bytes": 104458,
-      "digest": "3eb758a4ee88b0f0a80a0db332dc30ffe14495676d141715e49c9fd2a3b92dc3",
-      "files": 22
+      "bytes": 108012,
+      "digest": "dae2c2988ab57f0059207f4ce2baf4051f4e46499005a82c50b54a4ecd5c90fe",
+      "files": 23
     }
   },
   "installer_tool_version": "0.1.0",
@@ -283,16 +283,16 @@
   },
   "package": {
     "files": 134,
-    "path": "dist/server-ime-0.1.12.tar.gz",
-    "sha256": "1690d3d1fc126f0866bbeff5dae9377842a9a79e863f5740a58caa254205be3b"
+    "path": "dist/server-ime-0.1.13.tar.gz",
+    "sha256": "920dc5d2d2f091aeadc3f95c7cca729f1512b0b86a18693c6a0880d1341dff56"
   },
   "path_base": "delivery",
   "product": "server-ime",
-  "release_note": "候选框拼音行显示光标，左右键编辑时可见；联想测试导入路径修复",
+  "release_note": "单按 Shift 切换中英文（Windows 11 方式）；受管 IBus 兼容 1.5.19",
   "schema": "ime.version-lock/1",
   "sources": {
-    "path": "dist/server-ime-0.1.12-sources.tar.gz",
-    "sha256": "f5afcfbecfb0a8930389b89c8239e5749dc29d6bf82d1e8cf5ad138130580faa"
+    "path": "dist/server-ime-0.1.13-sources.tar.gz",
+    "sha256": "3a5b087e5b9d56eee58138714ce71ef278c6aadc6e8dbcfc6b90759ae9e13f7f"
   },
-  "version": "0.1.12"
+  "version": "0.1.13"
 }

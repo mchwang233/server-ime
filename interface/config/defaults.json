@@ -6,6 +6,7 @@
     "incomplete": true,
     "learning": false,
     "prediction": false,
+    "shift_toggle": true,
     "double_pinyin_scheme": null,
     "fuzzy": {"enabled": false, "rules": []},
     "correction": {"enabled": false, "rules": []}

@@ -8,6 +8,7 @@ from ime_interface.punctuation import Punctuation, ASCII_SAFE
 # Only sentence stops terminate pinyin. Address/path operators (including :,
 # / and @) and the pinyin apostrophe must reach the mixed-input engine intact.
 SENTENCE_STOPS = frozenset(',.?!')
+SHIFT_KEYS = frozenset((0xFFE1, 0xFFE2))  # Shift_L, Shift_R
 PREDICTIONS = 10  # next words offered after a commit (two pages of five)
 
 
@@ -21,6 +22,8 @@ class ProductController(Controller):
         # While a commit and its suggestions are worked out, snapshots wait and go
         # out once, so the window does not empty and refill in between.
         self._holding, self._pending = False, False
+        # Shift pressed with nothing else since: its release switches Chinese/English.
+        self._shift_tap = False
         send = self.commit
 
         def commit(text):
@@ -37,6 +40,7 @@ class ProductController(Controller):
         if errors:
             raise ValueError(errors)
         self.prediction = bool(settings['input'].get('prediction', False))
+        self.shift_toggle = bool(settings['input'].get('shift_toggle', True))
         p = settings['punctuation']
         self.punctuation = Punctuation(p['chinese'], p['use_full_width_pairs'])
         if emit:
@@ -176,7 +180,28 @@ class ProductController(Controller):
         self.history = []
         return True  # We submitted the symbol, including in ASCII mode.
 
+    def shift_key(self, keyval, state):
+        """Shift pressed and released alone switches Chinese/English (as in Windows 11).
+
+        Typed letters are committed as they are first. Returns True when it switched.
+        """
+        tap = keyval in SHIFT_KEYS and not state & (SHORTCUT | (SHIFT if not state & RELEASE else 0))
+        if not state & RELEASE:
+            self._shift_tap = tap
+            return False
+        if not (tap and self._shift_tap):
+            self._shift_tap = False
+            return False
+        self._shift_tap = False
+        if self.composition:
+            self.commit_raw()
+        self.dismiss()
+        self.set_mode('en' if self.mode == 'zh' else 'zh')
+        return True
+
     def key(self, keyval, keycode, state):
+        if self.shift_toggle and self.active and not self.blocked:
+            self.shift_key(keyval, state)  # the Shift events still reach the application
         if state & RELEASE or not self.active or self.blocked:
             return False
         if self.predicting and not self.composition:

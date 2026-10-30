@@ -117,7 +117,7 @@ def run(args, launcher):
         components.mkdir(exist_ok=True)
         env['IBUS_COMPONENT_PATH'] = str(components)
         start_child('ibus', ['ibus-daemon', '--single', '--panel=disable', '--config=disable',
-            '--emoji-extension=disable', '--cache=none', '--address=unix:dir=' + str(state_dir)])
+            '--emoji-extension=disable', '--cache=none', '--address=unix:tmpdir=' + str(state_dir)])
         def address(p):
             for line in p.read_text().splitlines():
                 if line.startswith('IBUS_ADDRESS='):
