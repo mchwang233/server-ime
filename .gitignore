@@ -20,3 +20,4 @@ engine/vendor/libpinyin-srpm/
 .cache/
 .dbus/
 .review/
+dist-el8/

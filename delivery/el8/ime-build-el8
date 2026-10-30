@@ -1,0 +1,123 @@
+#!/usr/bin/python3
+"""Build the separate Rocky/Alma/RHEL 8 release (see delivery/el8/README.md).
+
+It runs delivery/bin/ime-build with three changes to the payload: the native
+libraries built on EL8 (build-native.sh), a bundled Python 3.11 with PyGObject,
+and a bin/server-ime that starts that Python. The result is one archive in
+delivery/dist-el8 holding the bundle, the installer and install.sh.
+"""
+import argparse
+import os
+from pathlib import Path
+import runpy
+import shutil
+import subprocess
+import sys
+import tarfile
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parents[1]
+DELIVERY = ROOT / "delivery"
+NATIVE = Path(os.environ.get("SERVER_IME_EL8_NATIVE", "/projects/workspace/ime-deps/el8/out"))
+PYTHON = "python/bin/python3.11"
+LAUNCHER = """#!/bin/sh
+# server-ime for EL8: runs with the Python 3.11 in this installation.
+here=$(dirname "$(readlink -f "$0")")
+# The installation stays exactly as installed: no bytecode caches.
+export PYTHONDONTWRITEBYTECODE=1
+exec "$here/../python/bin/python3.11" -s "$here/../integration/bin/server-ime" "$@"
+"""
+RUNTIME_LIBS = ("libpinyin.so.13.0.0", "libglib-2.0.so.0", "libdb-5.3.so", "libpcre.so.1")
+LIBIME_LIBS = ("libFcitx5Utils.so.2", "libIMECore.so.0", "libIMEPinyin.so.0", "libsime_libime.so")
+
+
+def overlay(payload):
+    """Swap in the EL8 libraries, the bundled Python and its launcher."""
+    for name in RUNTIME_LIBS:
+        shutil.copyfile(NATIVE / "lib" / name, payload / "engine/vendor/runtime/lib" / name)
+    libime = payload / "engine/vendor/libime/lib"
+    shutil.rmtree(libime)
+    libime.mkdir()
+    for name in LIBIME_LIBS:
+        shutil.copyfile(NATIVE / "lib" / name, libime / name)
+    # Regular files only: the bundle format allows no links.
+    for source in sorted((NATIVE / "python").rglob("*")):
+        if source.is_symlink() or not source.is_file() or source.suffix == ".pyc":
+            continue
+        target = payload / "python" / source.relative_to(NATIVE / "python")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, target)
+    (payload / "bin/server-ime").write_text(LAUNCHER)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="build the EL8 release of server-ime")
+    parser.add_argument("--version", required=True)
+    parser.add_argument("--note", default="")
+    args = parser.parse_args()
+    for name in RUNTIME_LIBS + LIBIME_LIBS:
+        if not (NATIVE / "lib" / name).is_file():
+            sys.exit("missing %s: run delivery/el8/build-native.sh first" % (NATIVE / "lib" / name))
+    build = runpy.run_path(str(DELIVERY / "bin/ime-build"), run_name="ime_build")
+    g = build["main"].__globals__
+    stage, classify, manifest = g["stage_payload"], g["classify"], g["build_manifest"]
+
+    def stage_el8(product, payload):
+        skipped = stage(product, payload)
+        overlay(payload)
+        return skipped
+
+    def classify_el8(rel):
+        if rel == PYTHON:
+            return "executable", "0755"
+        if rel.startswith("python/"):
+            return "library", "0644"
+        return classify(rel)
+
+    def manifest_el8(payload, version, built_at):
+        data = manifest(payload, version, built_at)
+        data["component"]["description"] += "（Rocky/Alma/RHEL 8 版，自带 Python 3.11）"
+        data["compatibility"]["python"] = "bundled 3.11"
+        data["compatibility"]["notes"] = ("EL8 (glibc 2.28) 与更新的系统；X11 + 桌面自带的 IBus 1.5.19+、GTK 3.22+；"
+                                          "自带 Python 3.11 与 PyGObject 3.42，无需 root")
+        data["runtime"]["requires"] = [r for r in data["runtime"]["requires"]
+                                       if r["id"] not in ("python3", "gi")] + [
+            {"id": "bundled-python", "kind": "file", "path": "{prefix}/ime/current/" + PYTHON,
+             "description": "随包的 Python 3.11（python-build-standalone）与 PyGObject 3.42.2"}]
+        for item in data["runtime"]["requires"]:
+            if item["id"] == "ibus-daemon":
+                item["minimum"] = "1.5.19"
+        return data
+
+    g.update(stage_payload=stage_el8, classify=classify_el8, build_manifest=manifest_el8)
+    work = DELIVERY / "build" / ("el8-" + args.version)
+    inner = work / "dist"
+    code = build["main"](["--version", args.version, "--out", str(inner), "--work", str(work / "work"),
+                          "--note", args.note or "Rocky/Alma/RHEL 8 版"])
+    if code:
+        sys.exit(code)
+    # One archive: install.sh, the installer and the bundle.
+    name = "server-ime-el8-%s" % args.version
+    stage = work / name
+    if stage.exists():
+        shutil.rmtree(stage)
+    shutil.copytree(DELIVERY / "lib", stage / "lib", ignore=shutil.ignore_patterns("__pycache__"))
+    (stage / "bin").mkdir()
+    shutil.copyfile(DELIVERY / "bin/ime-install", stage / "bin/ime-install")
+    shutil.copyfile(inner / ("server-ime-%s.tar.gz" % args.version), stage / ("server-ime-%s.tar.gz" % args.version))
+    install = (HERE / "install.sh").read_text().replace("@VERSION@", args.version)
+    (stage / "install.sh").write_text(install)
+    (stage / "install.sh").chmod(0o755)
+    shutil.copyfile(HERE / "README.md", stage / "README.md")
+    out = DELIVERY / "dist-el8"
+    out.mkdir(exist_ok=True)
+    archive = out / (name + ".tar.gz")
+    with tarfile.open(archive, "w:gz") as tar:
+        tar.add(stage, arcname=name)
+    digest = subprocess.check_output(["sha256sum", archive.name], cwd=out, text=True)
+    (out / (archive.name + ".sha256")).write_text(digest)
+    print(archive, archive.stat().st_size // 1048576, "MB")
+
+
+if __name__ == "__main__":
+    main()
