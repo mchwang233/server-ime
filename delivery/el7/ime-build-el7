@@ -18,7 +18,7 @@ import tarfile
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 DELIVERY = ROOT / "delivery"
-NATIVE = Path(os.environ.get("SERVER_IME_EL7_NATIVE", "/projects/workspace/ime-deps/el7/out"))
+NATIVE = Path(os.environ.get("SERVER_IME_EL7_NATIVE", ROOT / "delivery/build/el7-native"))
 PYTHON = "python/bin/python3.11"
 LAUNCHER = """#!/bin/sh
 # server-ime for EL7: runs with the Python 3.11 in this installation.
