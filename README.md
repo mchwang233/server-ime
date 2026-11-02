@@ -29,25 +29,24 @@ network, no cloud, no root needed to install.
 
 从 [Releases](https://github.com/mchwang233/server-ime/releases) 下载对应系统的安装包。
 
-EL7 / EL8 版：
+解压后运行 `install.sh`，三个版本的方法一样：
 
 ```sh
-tar xzf server-ime-el7-<版本>.tar.gz      # 或 server-ime-el8-<版本>.tar.gz
-cd server-ime-el7-<版本>
+tar xzf server-ime-el9-<版本>.tar.gz      # 或 server-ime-el8-…、server-ime-el7-…
+cd server-ime-el9-<版本>
 ./install.sh
 ```
 
-主版本（需要系统的 `python3`、`python3-gobject`、`ibus`）：安装工具在本仓库里。
+`install.sh` 安装到 `~/.local/opt/server-ime`（个人数据在 `~/.local/share/server-ime`），
+已装过的会就地升级，在图形桌面的终端里运行时会直接启动。
 
-```sh
-git clone https://github.com/mchwang233/server-ime.git
-python3 server-ime/delivery/bin/ime-install install server-ime-<版本>.tar.gz \
-    --prefix ~/.local/opt/server-ime --data-dir ~/.local/share/server-ime
-```
+主版本（el9 包）用系统的 Python、PyGObject、IBus 和 GTK 3，装了 GNOME 桌面的系统都已自带；
+缺少时 `install.sh` 会列出缺什么，由管理员装一次：
+`sudo dnf install python3-gobject gtk3 ibus ibus-gtk3 dbus-daemon`。EL7 / EL8 版自带 Python，不需要这一步。
 
 主版本的完整安装、升级、回滚和卸载步骤见 [delivery/docs/使用指南.md](delivery/docs/使用指南.md)。
 
-安装后，在图形桌面的终端里启动（以后每次登录后都要启动一次）：
+以后每次登录后，在图形桌面的终端里启动：
 
 ```sh
 IBUS_ADDRESS=$(ibus address) ~/.local/opt/server-ime/bin/server-ime \
@@ -67,7 +66,7 @@ IBUS_ADDRESS=$(ibus address) ~/.local/opt/server-ime/bin/server-ime \
 
 每个 Release 都附有对应源码包 `*-sources.tar.gz`，内含该版本的项目源码和全部第三方上游源码。
 
-- 主版本：`python3 delivery/bin/ime-build --version <版本>`，详见 [delivery/docs/SOURCE-BUILD.md](delivery/docs/SOURCE-BUILD.md)。
+- 主版本：`python3 delivery/bin/ime-build --version <版本>`，再用 `delivery/el9/ime-package-el9 --version <版本>` 打成带 `install.sh` 的包；详见 [delivery/docs/SOURCE-BUILD.md](delivery/docs/SOURCE-BUILD.md)。
   第三方源码与运行库的下载地址和校验和在 `engine/dependencies.json`、`engine/vendor.lock.json`。
 - EL8 / EL7 版：在 `el8` / `el7` 分支的 `delivery/el8/README.md`、`delivery/el7/README.md`，用容器构建。
 
