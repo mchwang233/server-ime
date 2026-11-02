@@ -1,0 +1,52 @@
+#!/usr/bin/python3
+"""Wrap a main-release bundle into one archive with install.sh (see delivery/el9/README.md).
+
+    python3 delivery/el9/ime-package-el9 --version 0.1.13
+
+It takes delivery/dist/server-ime-<version>.tar.gz as built by delivery/bin/ime-build,
+unchanged, and writes delivery/dist-el9/server-ime-el9-<version>.tar.gz holding that
+bundle, the installer and install.sh, the same layout as the EL7 and EL8 releases.
+"""
+import argparse
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tarfile
+import tempfile
+
+HERE = Path(__file__).resolve().parent
+DELIVERY = HERE.parent
+
+
+def main():
+    parser = argparse.ArgumentParser(description="wrap the main bundle with install.sh")
+    parser.add_argument("--version", required=True)
+    parser.add_argument("--bundle", type=Path, help="default delivery/dist/server-ime-<version>.tar.gz")
+    parser.add_argument("--out", type=Path, default=DELIVERY / "dist-el9")
+    args = parser.parse_args()
+    bundle = args.bundle or DELIVERY / "dist" / ("server-ime-%s.tar.gz" % args.version)
+    if not bundle.is_file():
+        sys.exit("missing %s: build it first with delivery/bin/ime-build --version %s" % (bundle, args.version))
+    name = "server-ime-el9-%s" % args.version
+    with tempfile.TemporaryDirectory() as work:
+        stage = Path(work) / name
+        shutil.copytree(DELIVERY / "lib", stage / "lib", ignore=shutil.ignore_patterns("__pycache__"))
+        (stage / "bin").mkdir()
+        shutil.copyfile(DELIVERY / "bin/ime-install", stage / "bin/ime-install")
+        shutil.copyfile(bundle, stage / ("server-ime-%s.tar.gz" % args.version))
+        install = (HERE / "install.sh").read_text().replace("@VERSION@", args.version)
+        (stage / "install.sh").write_text(install)
+        (stage / "install.sh").chmod(0o755)
+        shutil.copyfile(HERE / "README.md", stage / "README.md")
+        args.out.mkdir(parents=True, exist_ok=True)
+        archive = args.out / (name + ".tar.gz")
+        with tarfile.open(archive, "w:gz") as tar:
+            tar.add(stage, arcname=name)
+    digest = subprocess.check_output(["sha256sum", archive.name], cwd=args.out, text=True)
+    (args.out / (archive.name + ".sha256")).write_text(digest)
+    print(archive, archive.stat().st_size // 1048576, "MB")
+
+
+if __name__ == "__main__":
+    main()
