@@ -54,12 +54,10 @@ def main():
     with tempfile.TemporaryDirectory() as work:
         stage = Path(work) / args.name
         (stage / "project").mkdir(parents=True)
-        archive = subprocess.run(["git", "-C", str(ROOT), "archive", "--format=tar", commit],
-                                 stdout=subprocess.PIPE, check=True).stdout
-        tar = Path(work) / "project.tar"
-        tar.write_bytes(archive)
-        with tarfile.open(tar) as source:
-            source.extractall(stage / "project")
+        # Release packages once kept in git are binaries, not source.
+        archive = subprocess.run(["git", "-C", str(ROOT), "archive", "--format=tar", commit,
+                                  "--", ".", ":(exclude)releases/*.tar.gz"], stdout=subprocess.PIPE, check=True).stdout
+        subprocess.run(["tar", "-x", "-C", str(stage / "project")], input=archive, check=True)
         third = stage / "third-party"
         third.mkdir()
         sums = []
