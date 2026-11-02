@@ -1,4 +1,0 @@
-$ /usr/bin/python3 lexicon/tools/build_base.py --check
-{"ok": true, "entries": 369, "committed_sha256": "8d4f53d5553055e7f206bc79b7630c7c70ba346f7bb97a170756a8fc202fac67", "rebuilt_sha256": "8d4f53d5553055e7f206bc79b7630c7c70ba346f7bb97a170756a8fc202fac67", "corpus": {"checked": true, "overlap": 0}}
-
---- stderr ---

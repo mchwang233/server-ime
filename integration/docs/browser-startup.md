@@ -22,7 +22,7 @@ employee_id: platform；`verifies: []`。本记录只涉及新建隔离 Xvnc/X11
 三个专用 profile 均没有初始化出任何文件。它们共同失败的调用为：
 
 ```text
-mkdir("/home/vncer/.mozilla/firefox", 0700) = -1 EACCES (Permission denied)
+mkdir("$HOME/.mozilla/firefox", 0700) = -1 EACCES (Permission denied)
 ```
 
 这不是 `--profile` 参数被包装器吞掉。Mozilla ESR140 的

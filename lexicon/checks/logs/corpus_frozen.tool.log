@@ -1,4 +1,0 @@
-$ /usr/bin/python3 lexicon/tools/freeze_corpus.py
-{"ok": true, "corpus": "/projects/workspace/20261028-1621-server-ime/lexicon/corpus/eval/cases-v1.jsonl", "manifest": "/projects/workspace/20261028-1621-server-ime/lexicon/corpus/eval/manifest.json", "sha256": "0f8c1c371872e28ef2b1b39c28e092a21090d58144b81800276ae48527a69ae3", "cases": 200, "categories": {"common": 60, "sentence": 40, "ambiguity": 25, "long": 25, "mixed": 25, "typo": 25}, "contamination": {"ok": true, "hits": []}}
-
---- stderr ---
