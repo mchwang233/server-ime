@@ -1,4 +1,0 @@
-$ /usr/bin/python3 lexicon/tools/build_base.py
-{"ok": true, "lexicon": "/projects/workspace/20261028-1621-server-ime/lexicon/data/base/lexicon-v1.jsonl", "manifest": "/projects/workspace/20261028-1621-server-ime/lexicon/data/base/manifest.json", "entries": 369, "sha256": "8d4f53d5553055e7f206bc79b7630c7c70ba346f7bb97a170756a8fc202fac67", "domains": {"edu": 30, "ime": 127, "legal": 30, "life": 30, "medical": 35, "office": 49, "science": 68}, "corpus": {"checked": true, "overlap": 0}}
-
---- stderr ---

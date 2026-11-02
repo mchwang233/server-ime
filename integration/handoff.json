@@ -889,7 +889,7 @@
     "runtime_inventory": "PENDING after interface fix"
   },
   "fixed_assembly": {
-    "product_root": "/projects/workspace/20261028-1621-server-ime/integration/.runtime/layout-0.2.9/product",
+    "product_root": "integration/.runtime/layout-0.2.9/product",
     "before": "integration/evidence/assembly-0.2.9-preparation/pinned-before.json",
     "after": "integration/evidence/assembly-0.2.9-preparation/pinned-after.json",
     "audit": "integration/evidence/assembly-0.2.9-preparation/fixed-runtime-audit.json",

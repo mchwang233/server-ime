@@ -1,46 +1,67 @@
-# 许可与第三方组件清单（server-ime 0.1.0）
+# 许可与第三方组件清单（server-ime 0.1.13 起）
 
-发布包 `delivery/dist/server-ime-0.1.0.tar.gz` 内含全部运行所需组件及其许可证副本；
-`delivery/dist/server-ime-0.1.0-sources.tar.gz` 含对应源码、必要构建材料与同一批许可原文。
-本文件由构建交付汇总，**不替代各组件目录内的原始许可证文本**。
+server-ime 整体以 **GPL-3.0-or-later** 发布（根目录 `LICENSE`）：它链接 libpinyin（GPL-3.0-or-later），
+所以只能用 GPL-3 或兼容的许可。各组件目录另有自己的许可文件，`platform/`（IBus 适配层）是 MIT，可单独按 MIT 使用。
 
-许可材料由构建入口 `delivery/bin/ime-build` 在暂存阶段显式纳入安装载荷（`REQUIRED_LICENSE_MEMBERS`），
-任一缺失即以退出码 5 拒绝出包（实测见 `delivery/evidence/punctuation-closeout-20261029/missing-LICENSE.log`、`missing-SOURCES.md.log`）。
-包内路径清单同时写在 `share/ime/release.json` 的 `license_material` 字段。
+每个 GitHub Release 都附有对应源码包 `*-sources.tar.gz`：其中 `project/` 是该版本标签处的完整项目源码，
+`third-party/` 是下表“随包二进制”各项的上游源码原件（未修改，附 SHA256SUMS）。源码包由
+`delivery/bin/ime-sources` 生成。
 
-| 组件 / 范围 | 版本 | 许可 | 包内许可文件 | 说明 |
+## 项目自身
+
+| 组件 | 许可 | 许可文件 |
+| --- | --- | --- |
+| engine（拼音转换引擎、`engine/native/sime_libime.cpp`） | GPL-3.0-or-later | `engine/LICENSE` |
+| lexicon（词库代码） | GPL-3.0-or-later | `lexicon/LICENSE`、`lexicon/licenses/GPL-3.0.txt` |
+| lexicon 增强词库数据（369 条） | CC-BY-4.0 | `lexicon/SOURCES.md`（拼音由 pypinyin 生成，MIT：`lexicon/licenses/pypinyin-MIT.txt`） |
+| interface（候选面板、设置界面） | GPL-3.0-or-later | `interface/LICENSE`、`interface/SOURCES.md` |
+| integration（产品装配与入口） | GPL-3.0-or-later | `integration/LICENSE` |
+| platform（IBus 适配层） | MIT | `platform/LICENSE` |
+| delivery（构建、安装工具） | GPL-3.0-or-later | 根目录 `LICENSE` |
+
+## 随包数据
+
+| 数据 | 来源 | 许可 | 说明 |
+| --- | --- | --- | --- |
+| libpinyin 词库表与模型（`engine/vendor/runtime/data`） | libpinyin 2.6.0 | GPL-3.0-or-later | 上游数据包原样复制 |
+| libime 词典与语言模型（`engine/vendor/libime/data`：sc.dict、extb.dict、zh_CN.lm、zh_CN.lm.predict） | libime 1.1.17 发布的 `dict-20260907`、`lm_sc.arpa-20260629` | LGPL-2.1-or-later（随 libime 发布，上游未另行声明） | 用 libime 自带工具从上游数据构建；上游数据在源码包 `libime-1.1.17_dict.tar.zst` |
+| 英文词表（`engine/data/english-v1.txt`） | FrequencyWords 2018 `en_50k`（基于 OpenSubtitles，github.com/hermitdave/FrequencyWords），以 hunspell `en_US` 词典过滤，另加少量技术词 | **CC-BY-SA-4.0** | 该文件是 FrequencyWords 数据的派生作品，按 CC-BY-SA-4.0 再分发（署名同上，相同方式共享）；制作方法见 `engine/docs/MIXED-INPUT.md` |
+
+## 随包二进制
+
+三个版本共有：
+
+| 组件 | 版本 | 许可 | 上游源码（源码包 `third-party/`） |
+| --- | --- | --- | --- |
+| libpinyin | 2.6.0 | GPL-3.0-or-later | `libpinyin-2.6.0.tar.gz`（主版本另附 `libpinyin-2.6.0-4.el9.src.rpm`） |
+| libime（libIMECore、libIMEPinyin，内含 kenlm） | 1.1.11 | LGPL-2.1-or-later | `libime-1.1.11.tar.zst` |
+| fcitx5 工具库（libFcitx5Utils） | 5.1.12 | LGPL-2.1-or-later | `fcitx5-5.1.12.tar.zst` |
+| fmt（编译进 libFcitx5Utils） | 10.2.1 | MIT | `fmt-10.2.1.tar.gz` |
+
+libime、fcitx5 未修改源码，只按 `engine/vendor/libime/README.md`、`delivery/el*/build-native.sh` 的选项构建
+（不构建 fcitx4 迁移工具、桌面数据和翻译）；它们以共享库形式随包，用户可以替换成自己构建的版本。
+许可原文在安装包 `engine/vendor/libime/licenses/`、`engine/vendor/runtime/licenses/`。
+
+各版本另带的系统库：
+
+| 版本 | glib2（LGPL-2.1-or-later） | libdb（LGPL-2.1 / Sleepycat） | pcre（BSD-3-Clause） | 其他 |
 | --- | --- | --- | --- | --- |
-| engine（转换组件代码） | 0.4.0 | GPL-3.0-or-later | `engine/LICENSE` | 基于 libpinyin 2.6.0 的 ctypes 绑定与候选逻辑 |
-| libpinyin 运行时 | 2.6.0-4.el9 (`libpinyin.so.13.0.0`) | GPL-3.0-or-later | `engine/vendor/runtime/licenses/libpinyin/COPYING`、`AUTHORS`、`README`、`opengram.license` | 随包分发二进制；源码在 `-sources.tar.gz`（上游 tar 与 src.rpm） |
-| libpinyin 数据表 | 2.6.0-4.el9 | GPL-3.0-or-later（上游数据包） | 同上 | `engine/vendor/runtime/data/*.bin`、`bigram.db`、`table.conf` |
-| glib2 运行时 | 2.68.4-19.el9_8.1 | LGPL-2.1-or-later | `engine/vendor/runtime/licenses/glib2/COPYING` | libpinyin 依赖；源码 `glib2-*.src.rpm` 在 `-sources` 包 |
-| libdb 运行时 | 5.3.28-57.el9_6 | Sleepycat / LGPL-2.1（双许可，随包取 LGPL 文本） | `engine/vendor/runtime/licenses/libdb/LICENSE`、`lgpl-2.1.txt` | bigram.db 访问；源码 `libdb-*.src.rpm` 在 `-sources` 包 |
-| pcre 运行时 | 8.44-4.el9 | BSD-3-Clause | `engine/vendor/runtime/licenses/pcre/COPYING`、`LICENCE` | libpinyin 依赖；源码 `pcre-*.src.rpm` 在 `-sources` 包 |
-| lexicon（代码） | base-v1 | GPL-3.0-or-later | `lexicon/licenses/GPL-3.0.txt` | 见 `lexicon/SOURCES.md` |
-| lexicon 增强词库数据 | 369 条 | CC-BY-4.0 | `lexicon/SOURCES.md`（含来源与哈希） | pypinyin 生成拼音，MIT 许可文本 `lexicon/licenses/pypinyin-MIT.txt` |
-| platform（IBus 适配层） | 0.1.0 | MIT | `platform/LICENSE` | |
-| integration（产品装配与入口） | 0.2.1 | GPL-3.0-or-later | `integration/LICENSE` | 含 `bin/server-ime` 入口 |
-| interface（候选面板与设置界面） | 设置格式 v1 | GPL-3.0-or-later | `interface/LICENSE`（SPDX 头 + 完整 GPL-3.0 文本，36,160 字节） | 由 interface 组件补交；原创文件范围、GTK3/PyGObject/IBus/libpinyin 等运行期依赖的上游许可见 `interface/SOURCES.md`。interface 组件本身不复制第三方源码/二进制/字体；统一发布包另含上表引擎运行依赖 |
-| 字体 | 系统 `google-noto-cjk` 等 | 各自许可 | 不分发 | 由系统提供，安装包不含字体 |
-| 包内中文快速说明 | 0.1.0 | GPL-3.0-or-later | — | `share/ime/docs/README.zh_CN.md`（由构建入口生成，随产品同许可发布） |
+| 主版本（EL9） | 2.68.4-19.el9_8.1 | 5.3.28-57.el9_6 | 8.44-4.el9 | Boost iostreams、zstd 用系统的，不随包 |
+| Rocky/Alma/RHEL 8 | 2.56.4-164.el8 | 5.3.28-42.el8_4 | 8.42-6.el8 | 见下 |
+| CentOS/RHEL 7 | 2.56.1-9.el7_9 | 5.3.21-25.el7 | 8.32-17.el7 | zstd 1.5.5-1.el7（EPEL，BSD-3-Clause / GPL-2.0 双许可，取 BSD） |
 
-## 源码合规
+上游源码为对应的 `.src.rpm`，分别来自 Rocky Linux 9、Rocky Linux 8、CentOS 7.9 归档（及 EPEL 7 归档）。
 
-- `delivery/dist/server-ime-0.1.0-sources.tar.gz`（sha256 `ebacb78b86de1a9fc1b36f595cbdd01bdc61393eeadb38c83adeb7774e7db50a`，
-  86,016,025 字节）包含：
-  `engine/vendor/libpinyin-2.6.0.tar.gz`、`engine/vendor/libpinyin-2.6.0-4.el9.src.rpm`、
-  `engine/vendor/sources/{glib2,libdb,pcre}-*.src.rpm`、`engine/vendor.lock.json`、
-  `engine/LICENSE`、`platform/LICENSE`、`integration/LICENSE`、`interface/LICENSE`、
-  `interface/SOURCES.md`、`lexicon/licenses`、`lexicon/SOURCES.md`；另含全部项目运行源码、engine/CMakeLists.txt、各 tools/bin、delivery/bin 与 delivery/lib、中文构建安装说明 delivery/docs/SOURCE-BUILD.md。
-- 0.1.1 升级测试包与 0.1.0 使用同一份源码包（内容相同，sha256 相同）。
-- 安装载荷**不包含**上述源码包（`delivery/build/0.1.0/build.json` 的 `excluded_from_payload` 有记录），
-  安装体积因此从 112 MiB 降到约 54 MiB 载荷。
-- GPL 组件的完整对应源码可用上述来源包重建；`engine/vendor.lock.json` 固定了 40 个运行时/源码文件哈希。
-- 校验命令：`(cd delivery/dist && sha256sum -c SHA256SUMS)`；逐项内容核对：
-  `python3 delivery/tests/verify_release_content.py`（含许可材料、源码包、中文说明与运行代码哈希）。
+EL7/EL8 版另外自带 Python 运行环境：
 
-## 已知许可事项
+| 组件 | 版本 | 许可 | 上游源码 |
+| --- | --- | --- | --- |
+| Python（python-build-standalone 构建） | 3.11.10 | PSF-2.0；内含的 OpenSSL、libffi、SQLite、zlib、xz、bzip2、ncurses 等均为宽松许可 | python-build-standalone（github.com/astral-sh/python-build-standalone）发布的 3.11.10 x86_64-unknown-linux-gnu install_only 包（sha256 `8b50a442b04724a24c1eebb65a36a0c0e833d35374dbdf9c9470d8a97b164cd9`），未修改，只删去 IDLE、tkinter、测试等不用的部分；许可原文在包内 `python/lib/python3.11/LICENSE.txt` |
+| PyGObject | 3.42.2 | LGPL-2.1-or-later | `PyGObject-3.42.2.tar.gz` |
+| pycairo | 1.26.1 | LGPL-2.1-only 或 MPL-1.1 | `pycairo-1.26.1.tar.gz` |
+| Boost iostreams（静态链接进 libime） | 1.83.0 | BSL-1.0 | 不要求附源码；boost.org 发布的 `boost_1_83_0.tar.bz2` |
+| GCC 运行库（devtoolset-11 / gcc-toolset-12 静态链接部分） | — | GPL-3.0 附 GCC Runtime Library Exception | 不要求附源码 |
 
-1. 所有组件均已随包提供许可文件，**无未解决占位**；`interface/` 的许可材料已由该组件补交并纳入安装包与源码包。
-2. `lexicon` 代码为 GPL-3.0-or-later、数据为 CC-BY-4.0，数据与代码许可不同，再分发时需同时保留两者声明。
-3. 随包分发 libpinyin/glib/libdb/pcre 二进制：必须同时提供对应源码（已提供）并在文档中标注修改情况（未修改，仅按原包复制）。
+## 不随包分发
+
+GTK 3、IBus、gobject-introspection、cairo、字体等由用户系统提供，安装包不含。

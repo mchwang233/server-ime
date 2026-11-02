@@ -60,6 +60,8 @@ REQUIRED_LICENSE_MEMBERS = (
     ("lexicon/SOURCES.md", "lexicon/SOURCES.md"),
     ("interface/LICENSE", "interface/LICENSE"),
     ("interface/SOURCES.md", "interface/SOURCES.md"),
+    ("LICENSE", "LICENSE"),
+    ("delivery/docs/licenses.md", "share/ime/docs/THIRD-PARTY.md"),
 )
 # 中文说明随安装包分发（share/ime/docs/），安装后无需回仓库即可查安装/启动/排查与许可。
 # 文件名必须是清单允许的 ASCII 相对路径；内容不含发布包哈希，避免文档与包哈希互相引用。
@@ -150,6 +152,8 @@ SOURCE_MEMBERS = (
     "lexicon/SOURCES.md",
     "interface/LICENSE",
     "interface/SOURCES.md",
+    "LICENSE",
+    "delivery/docs/licenses.md",
 )
 # 源码包中缺一不可的构建材料（其余成员存在才收录）。
 SOURCE_REQUIRED = (
@@ -168,6 +172,8 @@ PROJECT_SOURCE_MEMBERS = (
     "delivery/bin", "delivery/lib", "delivery/tests", "delivery/docs/install-lifecycle.md",
     "delivery/docs/diagnostics-privacy.md", "delivery/docs/SOURCE-BUILD.md", "delivery/docs/实机验收.md",
     "delivery/manifest/component-manifest.schema.json",
+    "README.md", "delivery/bin/ime-sources",
+    "engine/native", "engine/vendor/libime/README.md", "engine/vendor/libime/licenses",
 )
 SOURCE_REQUIRED += PROJECT_SOURCE_MEMBERS
 

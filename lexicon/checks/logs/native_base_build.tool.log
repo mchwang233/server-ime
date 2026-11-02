@@ -1,5 +1,0 @@
-$ /usr/bin/python3 lexicon/tools/build_native.py
-{"ok": true, "native": "/projects/workspace/20261028-1621-server-ime/lexicon/build/base-v1/native", "entries": 369, "exported": 369, "probe": {"top1": 369, "top5": 369, "total": 369}, "files": {"user.conf": "df0987470bf684f6589ac8a9d69b35412fb3ea9816756f8e5e3e7ae9998294bd", "user_phrase_index.bin": "4ebd2160b40d21ce7f1936b68d9a052a63afbf5b78d04be3ac65cfd1d71d760e", "user_pinyin_index.bin": "6f478935e3990f483e6c9f0448fe47c0d6b85d853cbf59c6b2feb5a92aa6d01d", "user_bigram.db": "0536295ddfb599139d762d57c7242bdc06f11d66f27db78791a8bea10f61c6c5"}}
-
---- stderr ---
-open /projects/workspace/20261028-1621-server-ime/lexicon/build/base-v1/native.tmp-z0w6f7qg/user.conf failed.
