@@ -19,6 +19,14 @@ cd server-ime-el9-<version>
 input method in the current desktop session. `PREFIX` and `DATA_DIR` choose other
 directories. Switch between Chinese and English with Ctrl+Space or a tap of Shift.
 
+To upgrade, run the new release's `install.sh` the same way. If the upgrade fails, nothing
+changes and the version that was running is started again. If it reports that the same
+version is already installed with different content, `./install.sh --repair` reinstalls it
+from this archive (the old files move to `~/.local/opt/server-ime/ime/backup`).
+
+Rollback, uninstall and the other operations: `python3 bin/ime-install --help` in this
+directory, and section 0 of `delivery/docs/使用指南.md` in the source.
+
 If the system has no desktop yet, `install.sh` names what is missing; an administrator
 installs it once with `sudo dnf install python3-gobject gtk3 ibus ibus-gtk3 dbus-daemon`.
 

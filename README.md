@@ -44,7 +44,12 @@ cd server-ime-el9-<版本>
 缺少时 `install.sh` 会列出缺什么，由管理员装一次：
 `sudo dnf install python3-gobject gtk3 ibus ibus-gtk3 dbus-daemon`。EL7 / EL8 版自带 Python，不需要这一步。
 
-主版本的完整安装、升级、回滚和卸载步骤见 [delivery/docs/使用指南.md](delivery/docs/使用指南.md)。
+升级：下载新版本的包，同样解压后运行 `./install.sh`，它会先停掉正在运行的旧版本，装好后再启动新版本。
+升级没成功时（比如包有问题），`install.sh` 会把原来的版本重新启动，什么都不改。
+如果提示“版本已存在且内容不同”（已装的同版本文件被改过，或同一版本号的包重新发布过），
+确认要用这个包覆盖时运行 `./install.sh --repair`，旧文件会移到 `~/.local/opt/server-ime/ime/backup`。
+
+回滚、卸载、校验等其他操作见 [delivery/docs/使用指南.md](delivery/docs/使用指南.md)。
 
 以后每次登录后，在图形桌面的终端里启动：
 
