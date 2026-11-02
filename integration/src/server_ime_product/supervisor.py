@@ -19,6 +19,15 @@ def write_json(path, value):
     tmp.replace(path)
 
 
+def ibus_daemon_options():
+    """Options to turn off what this ibus-daemon has: 1.5.17 (EL7) has no emoji extension."""
+    try:
+        usage = subprocess.run(['ibus-daemon', '--help'], capture_output=True, text=True, timeout=10).stdout
+    except (OSError, subprocess.SubprocessError):
+        usage = ''
+    return ['--emoji-extension=disable'] if '--emoji-extension' in usage else []
+
+
 def request(state_dir, op):
     sock = socket.socket(socket.AF_UNIX)
     sock.settimeout(5)
@@ -117,7 +126,7 @@ def run(args, launcher):
         components.mkdir(exist_ok=True)
         env['IBUS_COMPONENT_PATH'] = str(components)
         start_child('ibus', ['ibus-daemon', '--single', '--panel=disable', '--config=disable',
-            '--emoji-extension=disable', '--cache=none', '--address=unix:tmpdir=' + str(state_dir)])
+            *ibus_daemon_options(), '--cache=none', '--address=unix:tmpdir=' + str(state_dir)])
         def address(p):
             for line in p.read_text().splitlines():
                 if line.startswith('IBUS_ADDRESS='):

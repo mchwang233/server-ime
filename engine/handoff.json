@@ -4,7 +4,7 @@
   "status": "ready",
   "version": "0.4.0",
   "api_version": "1.0",
-  "bundle": "/projects/workspace/20261028-1621-server-ime/engine/build/server-ime-engine-0.4.0.tar.gz",
+  "bundle": "engine/build/server-ime-engine-0.4.0.tar.gz",
   "sha256": "6491a8fc7801f615f63fe2eb3bd5cfad24daea77d20e1080c5d562a5d20d6a79",
   "runtime_entrypoint": "engine/bin/server-ime-engine",
   "python_import": "server_ime_engine.Engine",
@@ -79,7 +79,7 @@
   ],
   "previous_release": {
     "version": "0.3.0",
-    "bundle": "/projects/workspace/20261028-1621-server-ime/engine/build/server-ime-engine-0.3.0.tar.gz",
+    "bundle": "engine/build/server-ime-engine-0.3.0.tar.gz",
     "sha256": "4fc9402e6d196fd22c8be4d155ca28a8ed6c6d10326c69e493fc5cd5e5b402d4",
     "unchanged": true
   },

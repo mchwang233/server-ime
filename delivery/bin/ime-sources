@@ -1,0 +1,82 @@
+#!/usr/bin/python3
+"""Build the corresponding-source archive for one release.
+
+The archive holds the project source at the release's git tag (``project/``) and the
+upstream source of every third-party component shipped in that release's binaries
+(``third-party/``), so the release meets the GPL and LGPL source requirements.
+Which third-party files a release ships is listed in delivery/docs/licenses.md.
+
+    python3 delivery/bin/ime-sources --tag el7-v0.1.13 --name server-ime-el7-0.1.13-sources \\
+        --third-party DIR/libpinyin-2.6.0.tar.gz DIR/libime-1.1.11.tar.zst ... --out delivery/dist-el7
+"""
+import argparse
+import hashlib
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tarfile
+import tempfile
+
+ROOT = Path(__file__).resolve().parents[2]
+README = """# {name}
+
+Corresponding source for the server-ime release `{tag}` (commit {commit}).
+
+- `project/`: the server-ime source at that commit (GPL-3.0-or-later; the `platform/`
+  component is MIT). Build steps: `project/delivery/docs/SOURCE-BUILD.md`, and for the
+  EL7/EL8 releases `project/delivery/el7/README.md` or `project/delivery/el8/README.md`.
+- `third-party/`: the unmodified upstream source of the third-party components whose
+  binaries the release ships; checksums in `third-party/SHA256SUMS`.
+- `THIRD-PARTY.md`: every bundled component, its license and where its source is.
+"""
+
+
+def sha256(path):
+    digest = hashlib.sha256()
+    with open(path, "rb") as stream:
+        for block in iter(lambda: stream.read(1 << 20), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def main():
+    parser = argparse.ArgumentParser(description="build a release's corresponding-source archive")
+    parser.add_argument("--tag", required=True, help="the release's git tag")
+    parser.add_argument("--name", required=True, help="archive name, without .tar.gz")
+    parser.add_argument("--third-party", nargs="+", required=True, type=Path, help="upstream source files")
+    parser.add_argument("--out", required=True, type=Path)
+    args = parser.parse_args()
+    missing = [str(path) for path in args.third_party if not path.is_file()]
+    if missing:
+        sys.exit("missing: " + ", ".join(missing))
+    commit = subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", args.tag + "^{commit}"], text=True).strip()
+    with tempfile.TemporaryDirectory() as work:
+        stage = Path(work) / args.name
+        (stage / "project").mkdir(parents=True)
+        archive = subprocess.run(["git", "-C", str(ROOT), "archive", "--format=tar", commit],
+                                 stdout=subprocess.PIPE, check=True).stdout
+        tar = Path(work) / "project.tar"
+        tar.write_bytes(archive)
+        with tarfile.open(tar) as source:
+            source.extractall(stage / "project")
+        third = stage / "third-party"
+        third.mkdir()
+        sums = []
+        for path in sorted(args.third_party, key=lambda item: item.name):
+            shutil.copyfile(path, third / path.name)
+            sums.append("%s  %s\n" % (sha256(path), path.name))
+        (third / "SHA256SUMS").write_text("".join(sums))
+        (stage / "README.md").write_text(README.format(name=args.name, tag=args.tag, commit=commit))
+        # The current list: older tags carry an older one.
+        shutil.copyfile(ROOT / "delivery/docs/licenses.md", stage / "THIRD-PARTY.md")
+        args.out.mkdir(parents=True, exist_ok=True)
+        result = args.out / (args.name + ".tar.gz")
+        with tarfile.open(result, "w:gz") as out:
+            out.add(stage, arcname=args.name)
+    (args.out / (result.name + ".sha256")).write_text("%s  %s\n" % (sha256(result), result.name))
+    print(result, result.stat().st_size // 1048576, "MB")
+
+
+if __name__ == "__main__":
+    main()

@@ -9,16 +9,16 @@
         "bytes": 23082269,
         "files": 112,
         "manifest_sha256": "99fe22eae45a9e0b6a584ce0468e96eb846721405432ba17605bcddab97c0af5",
-        "path": "/projects/workspace/20261028-1621-server-ime/delivery/dist/server-ime-0.1.6.tar.gz",
+        "path": "delivery/dist/server-ime-0.1.6.tar.gz",
         "payload_bytes": 56584186,
         "sha256": "dec7329551914a55fd647086555b6638716ba224407640a60498c41567e2d69a",
-        "sidecar": "/projects/workspace/20261028-1621-server-ime/delivery/dist/server-ime-0.1.6.tar.gz.sha256"
+        "sidecar": "delivery/dist/server-ime-0.1.6.tar.gz.sha256"
       },
       {
         "bytes": 86066772,
-        "path": "/projects/workspace/20261028-1621-server-ime/delivery/dist/server-ime-0.1.6-sources.tar.gz",
+        "path": "delivery/dist/server-ime-0.1.6-sources.tar.gz",
         "sha256": "c3f8a5734ce224013dc6b11316ba8e1d0c9a9af0da9228d77afe79b46259ec59",
-        "sidecar": "/projects/workspace/20261028-1621-server-ime/delivery/dist/server-ime-0.1.6-sources.tar.gz.sha256"
+        "sidecar": "delivery/dist/server-ime-0.1.6-sources.tar.gz.sha256"
       }
     ],
     "tools": {
