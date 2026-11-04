@@ -2,7 +2,9 @@
 import json
 import os
 from pathlib import Path
+import shlex
 import signal
+import sys
 from ime_interface import config
 from server_ime_engine import Engine
 from server_ime_engine.platform_adapter import PlatformSession
@@ -111,12 +113,18 @@ def run_service(args):
     # Supervisor always owns a ProductPanel. Suppress ONLY this engine's native
     # lookup/auxiliary emissions even when attaching to an existing IBus daemon.
     ServerIME.candidate_presentation = 'custom'
+    launcher = Path(__file__).resolve().parents[2] / 'bin/server-ime'
+    settings = [sys.executable, str(launcher), '--state-dir', args.state_dir, 'settings']
+    ServerIME.settings_command = settings
     factory = IBus.Factory.new(bus.get_connection())
     factory.add_engine('server-ime', ServerIME)
     component = IBus.Component.new(NAME, 'Server IME', __version__, 'GPL-3.0-or-later',
                                   'Server IME', '', '', '')
-    component.add_engine(IBus.EngineDesc.new('server-ime', '服务器输入法', '本地中文拼音',
-                                           'zh_CN', 'GPL-3.0-or-later', 'Server IME', '', 'us'))
+    # setup: IBus Preferences > Input Method > Preferences opens our settings.
+    component.add_engine(IBus.EngineDesc(name='server-ime', longname='服务器输入法',
+                                         description='本地中文拼音', language='zh_CN',
+                                         license='GPL-3.0-or-later', author='Server IME', icon='',
+                                         layout='us', setup=' '.join(map(shlex.quote, settings))))
     if not bus.register_component(component):
         raise RuntimeError('IBus registration failed')
     for sig in (signal.SIGINT, signal.SIGTERM):
