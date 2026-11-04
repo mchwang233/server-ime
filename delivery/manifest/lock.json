@@ -1,17 +1,17 @@
 {
   "assembly_version": "0.2.9",
-  "build_record": "build/0.1.13/build.json",
-  "build_record_sha256": "e7c3a5a862223902a5690204ac510b7676bf458de6d821213d017bb9467b5e76",
+  "build_record": "build/0.1.14/build.json",
+  "build_record_sha256": "7f6250e1306b55899fd3b939fbc0c30f8e7004583c9035e327c8bb12326ae636",
   "built_at": "2026-10-28T00:00:00Z",
   "components": {
     "engine": {
-      "bytes": 186471306,
-      "digest": "52dafcb9c9176a9bc99d4c29b8741a48d22393c2e5effbe48a9f89cbe5d77446",
+      "bytes": 186471216,
+      "digest": "4dc82fce533991eef73387c22b8c8d8fb516ce8eae67ed09c9c7c4c4c28e0afd",
       "files": 302
     },
     "integration": {
-      "bytes": 162876,
-      "digest": "c4ee1707b4e60230003e48e47c6e97dbe22e871640184a37bffa092c7e5c91bc",
+      "bytes": 163653,
+      "digest": "5d3a8e0b868d0033a8dfce721c44f6578695ecc87262bf7a6d12e3f192f7ab88",
       "files": 21
     },
     "interface": {
@@ -25,8 +25,8 @@
       "files": 38
     },
     "platform": {
-      "bytes": 108012,
-      "digest": "dae2c2988ab57f0059207f4ce2baf4051f4e46499005a82c50b54a4ecd5c90fe",
+      "bytes": 109669,
+      "digest": "73f6b3e81e540ccb9cdb118ce1a4ef63e246ce2834b16545336bc5411c975132",
       "files": 23
     }
   },
@@ -67,6 +67,18 @@
       "sha256": "b976ba3cf22f6d73ae7baff021a6b76335b4f9e26963718d8754283264d6a249",
       "size": 7557,
       "source": "interface/SOURCES.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "size": 35147,
+      "source": "LICENSE"
+    },
+    {
+      "path": "share/ime/docs/THIRD-PARTY.md",
+      "sha256": "317b5280cddd6c166ae8b438d21d36f310ca344ad813127c9310a5da42ed5ea1",
+      "size": 5081,
+      "source": "delivery/docs/licenses.md"
     },
     {
       "path": "share/ime/docs/README.zh_CN.md",
@@ -282,17 +294,17 @@
     "lock_version": 1
   },
   "package": {
-    "files": 134,
-    "path": "dist/server-ime-0.1.13.tar.gz",
-    "sha256": "920dc5d2d2f091aeadc3f95c7cca729f1512b0b86a18693c6a0880d1341dff56"
+    "files": 136,
+    "path": "dist/server-ime-0.1.14.tar.gz",
+    "sha256": "5b2f88d1ec6b690d3560ad3a2ed1b5d2c0a952a207d2c833592affa0f17be1c9"
   },
   "path_base": "delivery",
   "product": "server-ime",
-  "release_note": "单按 Shift 切换中英文（Windows 11 方式）；受管 IBus 兼容 1.5.19",
+  "release_note": "",
   "schema": "ime.version-lock/1",
   "sources": {
-    "path": "dist/server-ime-0.1.13-sources.tar.gz",
-    "sha256": "3a5b087e5b9d56eee58138714ce71ef278c6aadc6e8dbcfc6b90759ae9e13f7f"
+    "path": "dist/server-ime-0.1.14-sources.tar.gz",
+    "sha256": "2fb6a3d861e81af1f43b6104e0814f4ea4e951ee5b8d011248c74f52e8820f31"
   },
-  "version": "0.1.13"
+  "version": "0.1.14"
 }
