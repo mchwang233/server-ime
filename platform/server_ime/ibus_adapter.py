@@ -1,4 +1,5 @@
 """IBus 1.5 adapter; owns framework calls, not conversion or personal data."""
+import subprocess
 import uuid
 import gi
 gi.require_version("IBus", "1.0")
@@ -16,6 +17,9 @@ class ServerIME(IBus.Engine):
     # Standalone adapter users retain the native channel. The product explicitly
     # selects custom before creating ANY engines, on managed and existing buses.
     candidate_presentation = "native"
+    # argv that opens the product's settings window; None hides the menu item.
+    settings_command = None
+    _settings_process = None
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -40,7 +44,22 @@ class ServerIME(IBus.Engine):
         items.append(IBus.Property.new("Backend", IBus.PropType.NORMAL,
             IBus.Text.new_from_string(state["status"]), "",
             IBus.Text.new_from_string(state["backend"]), False, True, IBus.PropState.UNCHECKED, None))
+        if self.settings_command:
+            # IBus panels list engine properties in the tray icon's menu; the
+            # panel's own Preferences item configures IBus, not this engine.
+            items.append(IBus.Property.new("Settings", IBus.PropType.NORMAL,
+                IBus.Text.new_from_string("输入法设置…"), "preferences-system",
+                IBus.Text.new_from_string("打开服务器输入法的设置"), True, True,
+                IBus.PropState.UNCHECKED, None))
         return items
+
+    @classmethod
+    def open_settings(cls):
+        running = cls._settings_process
+        if running is not None and running.poll() is None:
+            return  # One settings window at a time.
+        cls._settings_process = subprocess.Popen(cls.settings_command, stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True, close_fds=True)
 
     def render(self, state):
         connection = self.get_connection()
@@ -128,6 +147,8 @@ class ServerIME(IBus.Engine):
     def do_property_activate(self, prop_name, prop_state):
         if prop_name == "InputMode":
             self.controller.set_mode("zh" if prop_state == IBus.PropState.CHECKED else "en")
+        elif prop_name == "Settings" and self.settings_command:
+            self.open_settings()
 
     def do_destroy(self):
         if hasattr(self, "controller"):
