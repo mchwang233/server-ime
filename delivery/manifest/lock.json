@@ -1,7 +1,7 @@
 {
   "assembly_version": "0.2.9",
-  "build_record": "build/0.1.15/build.json",
-  "build_record_sha256": "fdd77b6275d96026ad2fd1f6678aadf2ecc5648c1d8a2651e5f74e8e39337d27",
+  "build_record": "build/0.1.16/build.json",
+  "build_record_sha256": "d43ee62199b062fbe5d0f81d3ff10d94f6ba9381d93986cebde1b908db1560b6",
   "built_at": "2026-10-28T00:00:00Z",
   "components": {
     "engine": {
@@ -10,9 +10,9 @@
       "files": 303
     },
     "integration": {
-      "bytes": 163653,
-      "digest": "5d3a8e0b868d0033a8dfce721c44f6578695ecc87262bf7a6d12e3f192f7ab88",
-      "files": 21
+      "bytes": 174029,
+      "digest": "26be74c9c7d4fa381744fcf8d61817c51573b6a539e2022bcc5bd1b245119097",
+      "files": 23
     },
     "interface": {
       "bytes": 362321,
@@ -25,9 +25,9 @@
       "files": 38
     },
     "platform": {
-      "bytes": 109669,
-      "digest": "73f6b3e81e540ccb9cdb118ce1a4ef63e246ce2834b16545336bc5411c975132",
-      "files": 23
+      "bytes": 117292,
+      "digest": "d4f98e55d053e3f6f88109d9cdaf9c3ab0e6c0d26c8861b870e7368c2bf1b73d",
+      "files": 28
     }
   },
   "installer_tool_version": "0.1.0",
@@ -294,17 +294,17 @@
     "lock_version": 1
   },
   "package": {
-    "files": 136,
-    "path": "dist/server-ime-0.1.15.tar.gz",
-    "sha256": "27d7f2fe19473bd525cdf7e0290f22c83c8f8f9d4b472607c7020fb8239ac131"
+    "files": 140,
+    "path": "dist/server-ime-0.1.16.tar.gz",
+    "sha256": "1df2602909c37ed6c1b9e86b3e69050f9a6a666a3f46a9f08cced3a54583bf66"
   },
   "path_base": "delivery",
   "product": "server-ime",
-  "release_note": "libpinyin 拒收已学习的词时也能正常启动",
+  "release_note": "托盘显示中/英（字更大），输入法图标",
   "schema": "ime.version-lock/1",
   "sources": {
-    "path": "dist/server-ime-0.1.15-sources.tar.gz",
-    "sha256": "4715d5cbc668b1d7c7957b93fd73b8ae5f634b8c9f3bcc4f5f2f20eb6b91a1df"
+    "path": "dist/server-ime-0.1.16-sources.tar.gz",
+    "sha256": "ff21e72c6d96c1ecdde895de79bce17653a4e6d0a09eb93c877d5273d26a2045"
   },
-  "version": "0.1.15"
+  "version": "0.1.16"
 }

@@ -1,4 +1,5 @@
 """IBus 1.5 adapter; owns framework calls, not conversion or personal data."""
+from pathlib import Path
 import subprocess
 import uuid
 import gi
@@ -7,6 +8,12 @@ from gi.repository import IBus
 from .controller import Controller
 
 ENGINE_NAME = "server-ime-test"
+ICON_DIR = Path(__file__).resolve().parent / "icons"
+
+
+def icon_path(name):
+    """Absolute path of a bundled icon (IBus takes a file path or a theme name)."""
+    return str(ICON_DIR / (name + ".svg"))
 
 
 class ServerIME(IBus.Engine):
@@ -37,10 +44,17 @@ class ServerIME(IBus.Engine):
         label = "中" if state["mode"] == "zh" else "英"
         if state["direct_input"]:
             label = "直接输入"
-        items.append(IBus.Property.new("InputMode", IBus.PropType.TOGGLE,
-            IBus.Text.new_from_string(label), "", IBus.Text.new_from_string("Ctrl+空格：中英切换"),
+        # The product registers the engine with icon_prop_key="InputMode": panels
+        # draw this property's symbol (中/英) as the tray icon and GNOME shows it
+        # in the top bar; the icon is used where a panel lists the property.
+        zh = state["mode"] == "zh" and not state["direct_input"]
+        mode = IBus.Property.new("InputMode", IBus.PropType.TOGGLE,
+            IBus.Text.new_from_string(label), icon_path("server-ime-zh" if zh else "server-ime-en"),
+            IBus.Text.new_from_string("Ctrl+空格：中英切换"),
             not state["direct_input"], True,
-            IBus.PropState.CHECKED if state["mode"] == "zh" else IBus.PropState.UNCHECKED, None))
+            IBus.PropState.CHECKED if state["mode"] == "zh" else IBus.PropState.UNCHECKED, None)
+        mode.set_symbol(IBus.Text.new_from_string("中" if zh else "英"))
+        items.append(mode)
         items.append(IBus.Property.new("Backend", IBus.PropType.NORMAL,
             IBus.Text.new_from_string(state["status"]), "",
             IBus.Text.new_from_string(state["backend"]), False, True, IBus.PropState.UNCHECKED, None))
@@ -93,13 +107,21 @@ class ServerIME(IBus.Engine):
             # available to other engines; never stop or configure that panel.
             self.hide_lookup_table()
             self.hide_auxiliary_text()
-        self.register_properties(self.properties(state))
+        props = self.properties(state)
+        self.register_properties(props)
+        # Some panels refresh the tray icon (icon_prop_key) only on
+        # update_property: send InputMode again when its symbol changes.
+        mode = props.get(0)
+        if mode.get_symbol().get_text() != getattr(self, "_tray_icon", None):
+            self._tray_icon = mode.get_symbol().get_text()
+            self.update_property(mode)
         self.state_service.publish(state)
 
     def do_process_key_event(self, keyval, keycode, state):
         return self.controller.key(keyval, keycode, state)
 
     def do_focus_in(self):
+        self._tray_icon = None  # the panel shows the engine icon again on focus
         self.controller.focus_in()
 
     def do_focus_out(self):

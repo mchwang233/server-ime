@@ -125,6 +125,7 @@ def run(args, launcher):
         components = state_dir / 'components'
         components.mkdir(exist_ok=True)
         env['IBUS_COMPONENT_PATH'] = str(components)
+        env['SERVER_IME_MANAGED_IBUS'] = '1'  # no system panel: the tray leaves its icon alone
         start_child('ibus', ['ibus-daemon', '--single', '--panel=disable', '--config=disable',
             *ibus_daemon_options(), '--cache=none', '--address=unix:tmpdir=' + str(state_dir)])
         def address(p):
