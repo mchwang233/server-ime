@@ -1,13 +1,13 @@
 {
   "assembly_version": "0.2.9",
-  "build_record": "build/0.1.14/build.json",
-  "build_record_sha256": "7f6250e1306b55899fd3b939fbc0c30f8e7004583c9035e327c8bb12326ae636",
+  "build_record": "build/0.1.15/build.json",
+  "build_record_sha256": "fdd77b6275d96026ad2fd1f6678aadf2ecc5648c1d8a2651e5f74e8e39337d27",
   "built_at": "2026-10-28T00:00:00Z",
   "components": {
     "engine": {
-      "bytes": 186471216,
-      "digest": "4dc82fce533991eef73387c22b8c8d8fb516ce8eae67ed09c9c7c4c4c28e0afd",
-      "files": 302
+      "bytes": 186476415,
+      "digest": "c938f6ccd16e34170245d5edcea25baa536775ae252a3f98fd0652ad251e7b66",
+      "files": 303
     },
     "integration": {
       "bytes": 163653,
@@ -295,16 +295,16 @@
   },
   "package": {
     "files": 136,
-    "path": "dist/server-ime-0.1.14.tar.gz",
-    "sha256": "5b2f88d1ec6b690d3560ad3a2ed1b5d2c0a952a207d2c833592affa0f17be1c9"
+    "path": "dist/server-ime-0.1.15.tar.gz",
+    "sha256": "27d7f2fe19473bd525cdf7e0290f22c83c8f8f9d4b472607c7020fb8239ac131"
   },
   "path_base": "delivery",
   "product": "server-ime",
-  "release_note": "",
+  "release_note": "libpinyin 拒收已学习的词时也能正常启动",
   "schema": "ime.version-lock/1",
   "sources": {
-    "path": "dist/server-ime-0.1.14-sources.tar.gz",
-    "sha256": "2fb6a3d861e81af1f43b6104e0814f4ea4e951ee5b8d011248c74f52e8820f31"
+    "path": "dist/server-ime-0.1.15-sources.tar.gz",
+    "sha256": "4715d5cbc668b1d7c7957b93fd73b8ae5f634b8c9f3bcc4f5f2f20eb6b91a1df"
   },
-  "version": "0.1.14"
+  "version": "0.1.15"
 }
