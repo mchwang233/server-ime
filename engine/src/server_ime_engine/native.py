@@ -121,8 +121,15 @@ class Native:
         self.get_candidate_type(instance, ptr, C.byref(kind))
         return ptr, text.value.decode("utf-8"), kind.value
 
-    def add_entries(self, context, entries):
-        """In-memory only. Never train/save or open a writable personal model."""
+    def add_entries(self, context, entries, rejected=None):
+        """In-memory only. Never train/save or open a writable personal model.
+
+        A syntactically valid reading can still be refused: libpinyin only takes
+        readings its own character table has (这 has zhe but not zhei, which
+        libime and the syllable list accept). Without ``rejected`` the first
+        refusal raises; with a list, refused entries are appended to it and the
+        rest are still added.
+        """
         iterator = self.begin_add_phrases(context, 7)  # USER_DICTIONARY
         if not iterator:
             raise ValueError("cannot allocate dictionary iterator")
@@ -133,7 +140,9 @@ class Native:
                     continue
                 if not self.iterator_add_phrase(iterator, entry["text"].encode(),
                                                 entry["pinyin"].encode(), entry["count"]):
-                    raise ValueError("native dictionary rejected a validated entry")
+                    if rejected is None:
+                        raise ValueError("native dictionary rejected a validated entry")
+                    rejected.append(entry)
         finally:
             self.end_add_phrases(iterator)
 

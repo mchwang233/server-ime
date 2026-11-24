@@ -2,6 +2,7 @@
 from copy import deepcopy
 from dataclasses import dataclass, asdict, field
 from pathlib import Path
+import logging
 import re
 import shutil
 import tempfile
@@ -14,6 +15,8 @@ from .composition import Composer, spans, literal_key
 from .options import FUZZY_RULES, CORRECTION_RULES, DOUBLE_SCHEMES, rules_flags, sensitive
 from . import lexicon_adapter as lexicon
 from . import libime_backend
+
+LOG = logging.getLogger(__name__)
 
 API_VERSION = "1.0"
 COMPONENT_VERSION = "0.4.0"
@@ -107,7 +110,8 @@ class Engine:
         self.runtime_dir = Path(runtime_dir or root / "vendor/runtime").resolve()
         self.data_dir = Path(data_dir or self.runtime_dir / "data").resolve()
         self._sessions = {}
-        self._context = self._personal_context = None
+        self._context = self._personal_context = self._probe_context = None
+        self._native_rejected = 0
         self._native_snapshot = None
         self._store = None
         self._store_stamp = None
@@ -228,6 +232,9 @@ class Engine:
                 if self._personal_context:
                     self._native.fini(self._personal_context)
                     self._personal_context = None
+                if self._probe_context:
+                    self._native.fini(self._probe_context)
+                    self._probe_context = None
                 self._native.fini(self._context)
                 self._context = None
             if self._libime:
@@ -242,12 +249,38 @@ class Engine:
         context = self._native.init(str(self.data_dir).encode(), directory)
         if not context:
             raise EngineError("native_error", "libpinyin initialization failed")
+        rejected = [] if personal else None
         try:
-            self._native.add_entries(context, entries)
+            self._native.add_entries(context, entries, rejected)
+            # A shipped or imported base entry libpinyin refuses is a packaging
+            # error and still fails loudly. A personal one must not: a single
+            # learned word with a reading libpinyin lacks (这些侧 as zhei'xie'ce)
+            # used to stop the service from starting at all.
+            if rejected and any(row.get("kind") == "base" for row in rejected):
+                raise ValueError("native dictionary rejected a validated entry")
         except Exception:
             self._native.fini(context)
             raise
+        if personal:
+            if rejected and len(rejected) != self._native_rejected:
+                # Counts and kinds only: entry text is user input and is never logged.
+                LOG.warning("libpinyin refused %d personal entries (%s); skipped, "
+                            "the exact-match overlay still offers them",
+                            len(rejected), ", ".join(sorted({row.get("kind", "?") for row in rejected})))
+            self._native_rejected = len(rejected)
         return context
+
+    def _native_accepts(self, text, reading):
+        """Whether libpinyin takes this reading, tried on a scratch context only."""
+        if len(text) >= 16:
+            return True  # never imported natively; the exact-match overlay serves it
+        if not self._probe_context:
+            self._probe_context = self._native.init(str(self.data_dir).encode(), None)
+            if not self._probe_context:
+                raise ValueError("libpinyin initialization failed")
+        rejected = []
+        self._native.add_entries(self._probe_context, [{"text": text, "pinyin": reading, "count": 1}], rejected)
+        return not rejected
 
     def _sync_store(self, force=False):
         try:
@@ -311,7 +344,8 @@ class Engine:
             self._sync_store()
             return {"available": self._store is not None,
                     "enabled": bool(self._store and self._store.learning_enabled),
-                    "entries": len(self._personal), "generation": self._lexicon_generation}
+                    "entries": len(self._personal), "native_rejected": self._native_rejected,
+                    "generation": self._lexicon_generation}
 
     def reload_lexicon(self):
         with NATIVE_LOCK:
@@ -806,6 +840,10 @@ class Session:
             if not reading:
                 return {"recorded": False, "reason": "incomplete_or_ambiguous_reading"}
             lexicon.check_reading(text, reading)
+            if not self.engine._native_accepts(text, reading):
+                # Usually a libime candidate read with a syllable libpinyin's table
+                # lacks; storing it would only add an entry the native model refuses.
+                return {"recorded": False, "reason": "reading_not_in_native_dictionary"}
             return self.engine._store.record_commit(text, reading, event_id=event["event_id"],
                                                     source="engine.candidate", learning_eligible=True,
                                                     private=False, purpose="text")
