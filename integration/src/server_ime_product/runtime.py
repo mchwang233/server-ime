@@ -92,7 +92,7 @@ def run_service(args):
     import gi
     gi.require_version('IBus', '1.0')
     from gi.repository import IBus, GLib
-    from server_ime.ibus_adapter import ServerIME
+    from server_ime.ibus_adapter import ServerIME, icon_path
     from server_ime.state_service import StateService
     from .rpc import Service, NAME
     if not os.environ.get('IBUS_ADDRESS'):
@@ -123,7 +123,8 @@ def run_service(args):
     # setup: IBus Preferences > Input Method > Preferences opens our settings.
     component.add_engine(IBus.EngineDesc(name='server-ime', longname='服务器输入法',
                                          description='本地中文拼音', language='zh_CN',
-                                         license='GPL-3.0-or-later', author='Server IME', icon='',
+                                         license='GPL-3.0-or-later', author='Server IME',
+                                         icon=icon_path('server-ime'), icon_prop_key='InputMode', symbol='拼',
                                          layout='us', setup=' '.join(map(shlex.quote, settings))))
     if not bus.register_component(component):
         raise RuntimeError('IBus registration failed')
