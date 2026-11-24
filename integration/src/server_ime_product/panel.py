@@ -1,6 +1,7 @@
 """Candidate UI wiring, cursor placement and live settings; employee_id=platform."""
 import json
 import os
+import sys
 from pathlib import Path
 from ime_interface import config, keymap
 from ime_interface.panel import CandidatePanel
@@ -95,9 +96,18 @@ def run_panel(args):
     rpc, state = Client(), StateClient()
     panel = ProductPanel(rpc.call('get'), state)
     rpc.subscribe(panel.update_settings)
-    state.subscribe(panel.render, lambda cid: panel.render(None) if cid == getattr(panel, 'context_id', None) else None)
+    from .tray import ModeTray
+    launcher = Path(__file__).resolve().parents[2] / 'bin/server-ime'
+    tray = None if os.environ.get('SERVER_IME_MANAGED_IBUS') else ModeTray(
+        rpc.bus, state, [sys.executable, str(launcher), '--state-dir', args.state_dir, 'settings'],
+        Path(args.state_dir) / 'ibus-icon-hidden')
+    def on_state(snapshot):
+        if tray:
+            tray.update(snapshot)
+        panel.render(snapshot)
+    state.subscribe(on_state, lambda cid: panel.render(None) if cid == getattr(panel, 'context_id', None) else None)
     for cid in state.list_contexts():
-        panel.render(state.get_state(cid))
+        on_state(state.get_state(cid))
     xml = '''<node><interface name="org.superpartner.ServerIME.Panel1">
       <method name="Geometry"><arg type="s" direction="out"/></method>
       </interface></node>'''
@@ -126,6 +136,8 @@ def run_panel(args):
     try:
         Gtk.main()
     finally:
+        if tray:
+            tray.close()
         conn.unregister_object(registration)
         state.close()
     return 0
